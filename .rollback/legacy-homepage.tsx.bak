@@ -1,0 +1,311 @@
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import Reveal from '@/components/Reveal'
+import Label from '@/components/Label'
+import Dot from '@/components/Dot'
+import Placeholder from '@/components/Placeholder'
+import CtaBand from '@/components/CtaBand'
+import { Amp } from '@/components/Brand'
+import { flywheel, isNot, labs, loop, loopRule, pillars, proof, site, valueForms } from '@/lib/data'
+
+export const metadata: Metadata = {
+  title: `${site.name} | ${site.purpose}`,
+  description: site.description,
+  alternates: { canonical: '/' },
+}
+
+export default function HomePage() {
+  return (
+    <>
+      {/* Hero */}
+      <section className="shell grid items-end gap-12 pb-20 pt-36 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16 lg:pb-24 lg:pt-44">
+        <div>
+          <Reveal>
+            <Label>Our purpose</Label>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="mt-8 text-[clamp(3rem,7.6vw,6.4rem)]">
+              We build
+              <br />
+              what comes next
+              <Dot />
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-9 max-w-prose text-lg text-muted">{site.proposition}</p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div className="mt-11 flex flex-wrap items-center gap-x-10 gap-y-4">
+              <Link
+                href="/approach"
+                className="group inline-flex items-center gap-3 border-b border-accent pb-2 font-mono text-[11px] uppercase tracking-label"
+              >
+                How we work
+                <span className="transition-transform duration-300 ease-brand group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+              <Link href="/pillars" className="font-mono text-[11px] uppercase tracking-label text-muted hover:text-ink">
+                The three pillars
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1}>
+          <Placeholder
+            label="Hero image / Technology &amp; craft"
+            alt="Pow and Partners brand surface"
+            ratio="4 / 5"
+            priority
+          />
+        </Reveal>
+      </section>
+
+      {/* Three forms of value */}
+      <section className="on-dark">
+        <div className="shell grid gap-x-12 gap-y-10 py-16 sm:grid-cols-3 lg:py-20">
+          {valueForms.map((form, index) => (
+            <Reveal key={form.name} delay={index * 0.05}>
+              <article className="rule pt-6">
+                <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)]">{form.name}</h2>
+                <p className="mt-3 font-mono text-[10px] uppercase tracking-label label-red">
+                  {form.when}
+                </p>
+                <p className="mt-4 text-sm text-muted">{form.body}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+        <div className="shell pb-16 lg:pb-20">
+          <Reveal>
+            <p className="max-w-prose text-sm text-muted">
+              Almost every business gets one of these. The design of P&amp; is that the first pays
+              for the second, the second proves the third, and the third is where the wealth
+              actually lives.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Positioning */}
+      <section id="positioning" className="shell pt-28 lg:pt-36">
+        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
+          <div>
+            <Reveal>
+              <Label>Positioning</Label>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="mt-7 max-w-[14ch] text-[clamp(2.2rem,4.6vw,3.6rem)]">
+                The category does not exist yet<Dot /> That is the point<Dot />
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="rule mt-10">
+                {isNot.map((item) => (
+                  <div
+                    key={item.claim}
+                    className="grid grid-cols-[1fr_1.1fr] gap-6 border-b border-hairline py-3.5"
+                  >
+                    <span className="text-sm">{item.claim}</span>
+                    <span className="text-sm text-muted">{item.why}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 font-mono text-[10px] uppercase tracking-label text-soft">
+                What P&amp; is not
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="lg:pt-16">
+            <Reveal delay={0.1}>
+              <Label>What P&amp; is</Label>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <p className="mt-7 font-display text-[clamp(1.6rem,2.9vw,2.2rem)] leading-[1.24]">
+                {site.description}
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <div className="rule mt-10 grid gap-8 pt-8 sm:grid-cols-2">
+                {flywheel.map((item) => (
+                  <article key={item.title}>
+                    <h3 className="font-mono text-[10px] uppercase tracking-label label-red">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 text-sm text-muted">{item.body}</p>
+                  </article>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* The loop */}
+      <section id="loop" className="on-accent mt-28">
+        <div className="shell py-24 lg:py-28">
+          <Reveal>
+            <Label>Operating model</Label>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="mt-7 max-w-[18ch] text-[clamp(2.2rem,4.8vw,3.8rem)]">
+              One loop, run in three markets<Dot />
+            </h2>
+          </Reveal>
+
+          <ol className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
+            {loop.map((step, index) => (
+              <li className="rule pt-5" key={step.n}>
+                <Reveal delay={index * 0.05}>
+                  <p className="font-mono text-[10px] tracking-label">{step.n}</p>
+                  <h3 className="mt-3 font-display text-2xl">{step.name}</h3>
+                  <p className="mt-3 text-sm text-muted">{step.body}</p>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+
+          <Reveal delay={0.1}>
+            <p className="mt-14 max-w-prose border-l border-[var(--c-hairline)] pl-6 text-sm">
+              {loopRule}
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Pillars */}
+      <section id="pillars" className="shell pt-28 lg:pt-36">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <Reveal>
+              <Label>The group</Label>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="mt-7 max-w-[20ch] text-[clamp(2.2rem,4.6vw,3.6rem)]">
+                Three operators<Dot /> Three markets<Dot /> One group<Dot />
+              </h2>
+            </Reveal>
+          </div>
+          <Reveal delay={0.1}>
+            <Link
+              href="/pillars"
+              className="border-b border-accent pb-2 font-mono text-[11px] uppercase tracking-label"
+            >
+              All four
+            </Link>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.1}>
+          <p className="mt-8 max-w-prose text-muted">
+            P&amp; is unusual in that each founding partner arrives with a live commercial position
+            in a different market, not a plan to enter one. The group exists to connect them.
+          </p>
+        </Reveal>
+
+        <div className="mt-14 grid gap-px bg-hairline lg:grid-cols-3">
+          {pillars.map((pillar, index) => (
+            <Reveal key={pillar.slug} delay={index * 0.06} className="bg-page">
+              <article className="flex h-full flex-col p-7 lg:p-9">
+                <p className="font-mono text-[10px] uppercase tracking-label text-soft">
+                  {pillar.n}
+                </p>
+                <h3 className="mt-5 font-display text-[clamp(2rem,3.4vw,2.8rem)]">
+                  {pillar.name}
+                  <Dot />
+                </h3>
+                <p className="mt-2 font-mono text-[10px] uppercase tracking-label label-red">
+                  Lead: {pillar.lead}
+                </p>
+                <p className="mt-6 text-sm text-muted">{pillar.summary}</p>
+                <dl className="rule mt-auto grid gap-3 pt-6">
+                  {pillar.market.map((m) => (
+                    <div key={m.label} className="flex items-baseline justify-between gap-4">
+                      <dt className="font-mono text-[10px] uppercase tracking-label text-soft">
+                        {m.label}
+                      </dt>
+                      <dd className="font-display text-xl tabular-nums">{m.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.1}>
+          <div className="rule mt-px grid gap-8 bg-panel p-7 lg:grid-cols-[0.34fr_1fr] lg:p-9">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-label text-soft">R &amp; D</p>
+              <h3 className="mt-5 font-display text-[clamp(2rem,3.4vw,2.8rem)]">
+                {labs.name}
+                <Dot />
+              </h3>
+              <p className="mt-2 font-mono text-[10px] uppercase tracking-label label-red">
+                {labs.role}
+              </p>
+            </div>
+            <p className="max-w-prose text-sm text-muted lg:pt-1">{labs.body}</p>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Proof */}
+      <section id="proof" className="shell pt-28 lg:pt-36">
+        <Reveal>
+          <Label>Proof</Label>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <h2 className="mt-7 max-w-[20ch] text-[clamp(2.2rem,4.6vw,3.6rem)]">
+            Two of the three pillars are already trading<Dot />
+          </h2>
+        </Reveal>
+
+        <div className="rule mt-14">
+          {proof.map((item, index) => (
+            <Reveal key={item.slug} delay={index * 0.06}>
+              <Link
+                href={`/work/${item.slug}`}
+                className="group grid gap-6 border-b border-hairline py-9 lg:grid-cols-[0.3fr_1fr_0.32fr]"
+              >
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-label label-red">
+                    {item.pillar}
+                  </p>
+                  <p className="mt-2 font-mono text-[10px] uppercase tracking-label text-soft">
+                    {item.sector}
+                  </p>
+                </div>
+                <h3 className="max-w-[24ch] font-display text-[clamp(1.6rem,2.8vw,2.3rem)] transition-colors duration-300 ease-brand group-hover:text-accent">
+                  {item.title}
+                </h3>
+                <p className="self-end font-mono text-[10px] uppercase tracking-label text-muted">
+                  {item.status}
+                </p>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* The device */}
+      <section className="shell pt-28 lg:pt-36">
+        <Reveal>
+          <div className="grid items-center gap-10 lg:grid-cols-[0.36fr_1fr]">
+            <Amp className="text-[clamp(7rem,16vw,14rem)] leading-[0.8] text-accent" />
+            <div>
+              <Label>The device</Label>
+              <p className="mt-6 max-w-prose font-display text-[clamp(1.5rem,2.6vw,2rem)] leading-[1.26]">
+                {site.device}
+              </p>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <CtaBand />
+    </>
+  )
+}
