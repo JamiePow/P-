@@ -1,3 +1,20 @@
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+import { createRequire } from 'node:module'
+
+/* Portable paths. This file lives in <repo>/scripts, so the repo is one level
+   up. Both the repo root and the Playwright entry point used to be absolute
+   paths from the machine the script was written on, which meant the suite
+   only ran there. */
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
+const require_ = createRequire(import.meta.url)
+function loadPlaywright() {
+  for (const id of ['/home/claude/.npm-global/lib/node_modules/playwright/index.js', 'playwright', 'playwright-core']) {
+    try { return require_(id) } catch {}
+  }
+  throw new Error('Playwright not found. Run: npm install')
+}
+const pw = loadPlaywright()
 /* ------------------------------------------------------------------------ *
  * End to end proof for the contact form.
  *
@@ -11,15 +28,17 @@
 import { createServer } from 'node:http'
 import { spawn } from 'node:child_process'
 import { mkdirSync, writeFileSync } from 'node:fs'
-import pw from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'
 
-const OUT = process.argv[2] || '/home/claude/launch/e2e'
+const OUT = process.argv[2] || join(REPO, '.e2e')
 mkdirSync(OUT, { recursive: true })
 
 /* Refuse to run against anything already listening. A stale server from a
    previous run keeps its in-process rate limit and duplicate state, which
    silently invalidates every case below. */
 import { createConnection } from 'node:net'
+
+
+
 async function portFree(port) {
   return new Promise((resolve) => {
     const sock = createConnection({ port, host: '127.0.0.1' })
@@ -28,15 +47,15 @@ async function portFree(port) {
     setTimeout(() => { sock.destroy(); resolve(true) }, 800)
   })
 }
-for (const port of [8981, 8982, 8983, 8984]) {
+for (const port of [9311, 9312, 9313, 9314]) {
   if (!(await portFree(port))) {
     console.error(`port ${port} is already in use. Stop it before running this suite.`)
     process.exit(2)
   }
 }
 
-const RECEIVER_PORT = 8981
-const SITE_PORT = 8982
+const RECEIVER_PORT = 9311
+const SITE_PORT = 9312
 const NOTIFY = 'enquiries@example.invalid'
 
 /* ------------------------------------------------------------- receiver -- */
@@ -64,7 +83,7 @@ await new Promise((r) => receiver.listen(RECEIVER_PORT, r))
 
 /* ----------------------------------------------------------------- site -- */
 const site = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', String(SITE_PORT)], {
-  cwd: '/home/claude/pap',
+  cwd: REPO,
   env: {
     ...process.env,
     ENQUIRY_WEBHOOK_URL: `http://127.0.0.1:${RECEIVER_PORT}/hook`,
@@ -284,19 +303,19 @@ const alertText = async (page) => (await page.locator('[role="alert"]').first().
 /* 10 · a phone. Every browser case shares the loopback address, so this one
       runs against its own instance to keep it independent of the limiter. */
 {
-  const mob = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', '8984'], {
-    cwd: '/home/claude/pap',
+  const mob = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', '9314'], {
+    cwd: REPO,
     env: { ...process.env, ENQUIRY_WEBHOOK_URL: `http://127.0.0.1:${RECEIVER_PORT}/hook`, ENQUIRY_NOTIFY_EMAIL: NOTIFY },
     stdio: 'ignore',
     detached: true,
   })
   for (let i = 0; i < 40; i++) {
-    try { const r = await fetch('http://127.0.0.1:8984/api/enquiry'); if (r.ok) break } catch {}
+    try { const r = await fetch('http://127.0.0.1:9314/api/enquiry'); if (r.ok) break } catch {}
     await new Promise((r) => setTimeout(r, 500))
   }
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
   const before = received.length
-  await page.goto('http://127.0.0.1:8984/contact', { waitUntil: 'networkidle' })
+  await page.goto('http://127.0.0.1:9314/contact', { waitUntil: 'networkidle' })
   await page.waitForTimeout(3300)
   await page.fill('#name', 'Mobile Sender')
   await page.fill('#email', 'mobile@example.co.uk')
@@ -313,18 +332,18 @@ const alertText = async (page) => (await page.locator('[role="alert"]').first().
 
 /* 11 · nothing configured at all */
 {
-  const bare = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', '8983'], {
-    cwd: '/home/claude/pap',
+  const bare = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', '9313'], {
+    cwd: REPO,
     env: { ...process.env, ENQUIRY_WEBHOOK_URL: '', ENQUIRY_NOTIFY_EMAIL: '' },
     stdio: 'ignore',
     detached: true,
   })
   for (let i = 0; i < 40; i++) {
-    try { const r = await fetch('http://127.0.0.1:8983/api/enquiry'); if (r.ok) break } catch {}
+    try { const r = await fetch('http://127.0.0.1:9313/api/enquiry'); if (r.ok) break } catch {}
     await new Promise((r) => setTimeout(r, 500))
   }
   const page = await browser.newPage()
-  await page.goto('http://127.0.0.1:8983/contact', { waitUntil: 'networkidle' })
+  await page.goto('http://127.0.0.1:9313/contact', { waitUntil: 'networkidle' })
   await page.waitForTimeout(1200)
 
   /* The page now refuses before the visitor types rather than after. The
@@ -338,7 +357,7 @@ const alertText = async (page) => (await page.locator('[role="alert"]').first().
 
   /* And the endpoint itself still fails closed for anything posted directly,
      which is what actually protects an enquiry from being lost. */
-  const direct = await fetch('http://127.0.0.1:8983/api/enquiry', {
+  const direct = await fetch('http://127.0.0.1:9313/api/enquiry', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -348,7 +367,7 @@ const alertText = async (page) => (await page.locator('[role="alert"]').first().
     }),
   })
   const body = await direct.json()
-  const probe = await (await fetch('http://127.0.0.1:8983/api/enquiry')).json()
+  const probe = await (await fetch('http://127.0.0.1:9313/api/enquiry')).json()
   const ok = await thanks(page)
   const pass =
     !ok && nameDisabled && sendDisabled && /not open yet/i.test(notice) &&

@@ -7,7 +7,7 @@ import { ctas, solutions, solutionsDisclosure } from '@/lib/c04'
 export const metadata: Metadata = {
   title: 'Solutions',
   description:
-    'Atelier for jewellery and bridal, Nexus for field and route operations, Blueprint for construction subcontractors. Built inside the sector rather than for it.',
+    'Atelier for jewellery and bridal, Nexus for field and route operations, Blueprint for construction subcontractors. Each one was built inside a working business and corrected by the people running it.',
   alternates: { canonical: '/solutions' },
 }
 
@@ -17,8 +17,8 @@ export default function SolutionsPage() {
       <PageHead
         n="02"
         folio="Solutions"
-        title={<>Built inside the sector, not for it<span className="c4-stop">.</span></>}
-        lead="Three operating platforms, each shaped by a business that had to run on it."
+        title={<>Three platforms, each built inside a working business<span className="c4-stop">.</span></>}
+        lead="Atelier was built inside a premium jeweller. Nexus was built inside a route-based service operation. Blueprint is being built with construction subcontractors now."
         aside={<p className="c4-body">{solutionsDisclosure}</p>}
       />
 

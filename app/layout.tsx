@@ -8,6 +8,12 @@ import './c04.css'
 /*
   The root layout. One shell, every page.
 
+  It was previously the (concept) route group's layout, which meant the app
+  had no root layout at all and Next refused to render a branded 404 for an
+  unmatched URL. The group folder stays — route groups do not appear in a
+  URL — but the document shell now lives at the root where it belongs, and
+  app/not-found.tsx inherits it.
+
   There used to be two: this one for the concept, and a second under
   app/(site) carrying its own header, footer, type scale, brand line and
   stylesheet. A visitor who clicked the primary call to action crossed

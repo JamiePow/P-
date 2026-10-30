@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { LogoHorizontal } from '@/components/Brand'
 import { meta } from '@/lib/c04'
 import { publicEmail, contact } from '@/lib/contact'
+import MenuDetails from './MenuDetails'
 
 /* ------------------------------------------------------------------------ *
  * The chrome. One header, one footer, every page.
@@ -51,7 +52,7 @@ export function Header({ current }: { current?: string }) {
           with the keyboard, is announced correctly, and works with scripting
           off, which the rest of this site also does.
         */}
-        <details className="c4-menu">
+        <MenuDetails className="c4-menu">
           <summary>
             <span className="c4-menu__label">Menu</span>
             <span className="c4-menu__bars" aria-hidden="true" />
@@ -72,7 +73,7 @@ export function Header({ current }: { current?: string }) {
               </Link>
             </nav>
           </div>
-        </details>
+        </MenuDetails>
       </div>
     </header>
   )

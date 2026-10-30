@@ -119,7 +119,9 @@ export function NexusArt() {
         strokeOpacity="0.28"
         strokeWidth="1.25"
       />
-      <text {...L} x={(12 + x(2) + w) / 2} y="130" textAnchor="middle" fill={EDGE} fillOpacity="0.55">
+      {/* Left-aligned from x=72 rather than centred on the bracket: centred,
+          it ran across the red return path's vertical at x=56. */}
+      <text {...L} x="72" y="130" fill={EDGE} fillOpacity="0.55">
         NEXUS ROUTES · THE PLANNED DAY
       </text>
 
@@ -136,7 +138,7 @@ export function NexusArt() {
         WHAT ACTUALLY HAPPENED, BACK INTO NEXT WEEK&rsquo;S PLAN
       </text>
       <text {...L} x="12" y="26" fill={EDGE} fillOpacity="0.45">
-        FIG. N1 · OPERATIONS AS A LOOP, NOT A LINE
+        FIG. N1 · OPERATIONS AS A LOOP
       </text>
       <text {...L} x="12" y="224" fill={EDGE} fillOpacity="0.45">
         PROOF IS CAPTURED WHERE THE WORK HAPPENS

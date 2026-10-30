@@ -117,5 +117,26 @@ export const commercialTerms = [
   },
 ]
 
+/* ------------------------------------------------------------- sentences -- *
+ * Prose that names a price, derived from the figures above rather than typed.
+ *
+ * These existed as hardcoded strings inside JSX attributes, which is how a
+ * literal \u00a3 escape reached two public pages: a JSX attribute string is
+ * not a JavaScript string literal, so it does not process escape sequences.
+ * Deriving them from money() removes that whole class of problem and stops
+ * the prose drifting from the table if a price ever changes.
+ */
+
+const cheapest = tiers.reduce((a, b) => (a.monthly <= b.monthly ? a : b))
+
+export const entryPricingLine =
+  `Subscriptions start at ${money(cheapest.monthly)} a month. Implementation is quoted by tier and ` +
+  `starts at ${money(cheapest.implementation)}. Before either, the audit is ${money(AUDIT_FEE)} and ` +
+  `the findings are yours.`
+
+export const auditCommitmentLine =
+  `The audit is the only thing you commit to at the start. It costs ${money(AUDIT_FEE)} and the ` +
+  `findings are yours.`
+
 export const pricingNote =
   `All prices exclude VAT. Implementation is charged separately from the subscription and is not included in it. Annual billing is twelve months for the price of ${ANNUAL_MONTHS}.`

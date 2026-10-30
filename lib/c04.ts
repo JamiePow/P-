@@ -152,9 +152,12 @@ export const photography: Shot[] = [
   },
 ]
 
-/* An asset P& owns but which has not reached this workspace. It is recorded
-   here rather than in a second list, so the inventory and the audit cannot
-   disagree about what is missing. */
+/* An asset P& owns but which has not reached this workspace.
+   
+   Recorded here rather than in a second list, so the inventory and the audit
+   cannot disagree about what is missing. It is deliberately NOT rendered on
+   any public page: a visitor should not read production commentary about an
+   asset that has not been supplied. It is reported in the launch handover. */
 export type MissingAsset = { ref: string; place: string; what: string; blocking: boolean }
 
 export const missingAssets: MissingAsset[] = [
@@ -517,7 +520,13 @@ export const stagesNote =
 
 /* Pricing is owned by lib/pricing.ts and re-exported here so the concept
    content layer has one shape to render. There is no second set of numbers. */
-export { tierViews as tiers, commercialTerms as terms, pricingNote } from './pricing'
+export {
+  tierViews as tiers,
+  commercialTerms as terms,
+  pricingNote,
+  entryPricingLine,
+  auditCommitmentLine,
+} from './pricing'
 
 /* ---------- 08 about ---------- */
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Shell, PageHead } from '@/components/c04/Chrome'
 import { Cta } from '@/components/c04/Parts'
 import ValueCalc from '@/components/c04/ValueCalc'
-import { ctas, pricingNote, terms, tiers } from '@/lib/c04'
+import { ctas, entryPricingLine, pricingNote, terms, tiers } from '@/lib/c04'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -18,7 +18,7 @@ export default function PricingPage() {
         n="03"
         folio="Commercial transparency"
         title={<>What it costs<span className="c4-stop">.</span></>}
-        lead="Subscriptions start at \u00a3295 a month. Implementation is quoted by tier and starts at \u00a34,500. Before either, the audit is \u00a33,500 and the findings are yours."
+        lead={entryPricingLine}
         aside={<p className="c4-body">{pricingNote}</p>}
       />
 

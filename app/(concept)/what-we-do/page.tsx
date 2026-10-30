@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Shell, PageHead } from '@/components/c04/Chrome'
 import { Cta, Row } from '@/components/c04/Parts'
 import SystemsFigure from '@/components/c04/SystemsFigure'
-import { changes, ctas, observations, outcomes, stages } from '@/lib/c04'
+import { auditCommitmentLine, changes, ctas, observations, outcomes, stages } from '@/lib/c04'
 
 export const metadata: Metadata = {
   title: 'What we do',
@@ -88,7 +88,7 @@ export default function WhatWeDo() {
               </Row>
             ))}
           </div>
-          <Cta line="The audit is the only thing you commit to at the start. It costs \u00a33,500 and the findings are yours." action="Ask about the audit" href="/contact" />
+          <Cta line={auditCommitmentLine} action="Ask about the audit" href="/contact" />
         </div>
       </section>
     </Shell>

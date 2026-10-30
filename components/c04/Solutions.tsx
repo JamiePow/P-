@@ -20,7 +20,7 @@
 
 import { Chip, Plate } from './Parts'
 import { AtelierSpec, BlueprintArt, BlueprintArtTall, NexusArt, NexusArtTall } from './SolutionArt'
-import { missingAssets, shot, type Solution } from '@/lib/c04'
+import { shot, type Solution } from '@/lib/c04'
 
 /* The four commercial beats, in the order a buyer needs them. */
 function Beats({ s, variant }: { s: Solution; variant: 'stack' | 'row' | 'sheet' }) {
@@ -131,7 +131,6 @@ function Atelier({ s }: { s: Solution }) {
 /* --------------------------------------------------------------- Nexus -- */
 
 function Nexus({ s }: { s: Solution }) {
-  const gap = missingAssets.find((m) => m.place.startsWith('Nexus'))
   return (
     <article className="c4-nex" id={s.name.toLowerCase()} data-reveal>
       <div className="c4-nex__head">
@@ -150,14 +149,6 @@ function Nexus({ s }: { s: Solution }) {
         <NexusArtTall />
       </div>
       <Beats s={s} variant="row" />
-      {gap ? (
-        <div className="c4-nex__gap">
-          <p className="c4-label">
-            {gap.ref} · {gap.place}
-          </p>
-          <p className="c4-small">{gap.what}</p>
-        </div>
-      ) : null}
       <Does items={s.does} cols />
     </article>
   )

@@ -1,3 +1,20 @@
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+import { createRequire } from 'node:module'
+
+/* Portable paths. This file lives in <repo>/scripts, so the repo is one level
+   up. Both the repo root and the Playwright entry point used to be absolute
+   paths from the machine the script was written on, which meant the suite
+   only ran there. */
+const REPO = join(dirname(fileURLToPath(import.meta.url)), '..')
+const require_ = createRequire(import.meta.url)
+function loadPlaywright() {
+  for (const id of ['/home/claude/.npm-global/lib/node_modules/playwright/index.js', 'playwright', 'playwright-core']) {
+    try { return require_(id) } catch {}
+  }
+  throw new Error('Playwright not found. Run: npm install')
+}
+const pw = loadPlaywright()
 /* ------------------------------------------------------------------------ *
  * Whole-site QA. Starts the built site, then for every route and every
  * breakpoint records axe violations, horizontal overflow, heading order and
@@ -9,11 +26,13 @@
 import { spawn } from 'node:child_process'
 import { createConnection } from 'node:net'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import pw from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'
 
-const OUT = process.argv[2] || '/home/claude/qa'
+
+
+
+const OUT = process.argv[2] || join(REPO, '.qa')
 mkdirSync(OUT, { recursive: true })
-const PORT = 8961
+const PORT = 9301
 
 const free = (port) => new Promise((r) => {
   const s = createConnection({ port, host: '127.0.0.1' })
@@ -24,7 +43,7 @@ const free = (port) => new Promise((r) => {
 if (!(await free(PORT))) { console.error(`port ${PORT} in use`); process.exit(2) }
 
 const site = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', String(PORT)], {
-  cwd: '/home/claude/pap',
+  cwd: REPO,
   env: { ...process.env, ENQUIRY_WEBHOOK_URL: '', ENQUIRY_NOTIFY_EMAIL: '' },
   stdio: 'ignore', detached: true,
 })
@@ -34,9 +53,16 @@ for (let i = 0; i < 60; i++) {
   await new Promise((r) => setTimeout(r, 500))
 }
 
-const ROUTES = ['/', '/what-we-do', '/solutions', '/how-we-work', '/pricing', '/about', '/insights', '/contact', '/privacy', '/cookies', '/terms']
+/* /insights is gated on there being something to read: while lib/insights.ts
+   is empty the route 404s, is out of the sitemap and is disallowed in
+   robots.txt. Adding the first entry restores it and this list with it. */
+const INSIGHTS_PUBLISHED = /export const insights: Insight\[\] = \[\s*\]/.test(
+  readFileSync(join(REPO, 'lib/insights.ts'), 'utf8'),
+) === false
+const ROUTES = ['/', '/what-we-do', '/solutions', '/how-we-work', '/pricing', '/about', '/contact', '/privacy', '/cookies', '/terms',
+  ...(INSIGHTS_PUBLISHED ? ['/insights'] : [])]
 const WIDTHS = [390, 768, 1024, 1440]
-const AXE = readFileSync('/home/claude/pap/node_modules/axe-core/axe.min.js', 'utf8')
+const AXE = readFileSync(join(REPO, 'node_modules/axe-core/axe.min.js'), 'utf8')
 const browser = await pw.chromium.launch()
 const report = { routes: {}, journeys: [], links: { checked: 0, broken: [] } }
 
@@ -63,7 +89,32 @@ for (const route of ROUTES) {
       const small = [...document.querySelectorAll('a,button,[role="button"],input,select,textarea')]
         .filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.height < 24 && !e.closest('nav,footer') })
         .length
+      /* Encoding regression. A literal \\u00a3 once reached two public pages,
+         because a JSX attribute string is not a JavaScript string literal and
+         does not process escape sequences. This walks the visible text, the
+         title, the meta description and the structured data looking for
+         anything that should have been a character and is still a code. */
+      const BAD = /\\u[0-9a-fA-F]{4}|\\x[0-9a-fA-F]{2}|\uFFFD|Â£|â€|&(?:amp|lt|gt|quot|nbsp|pound|#\d+);/
+      const encoding = []
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+      let node
+      while ((node = walker.nextNode())) {
+        const tag = node.parentElement?.tagName
+        if (tag === 'SCRIPT' || tag === 'STYLE') continue
+        const t = node.nodeValue
+        if (t && t.trim() && BAD.test(t)) encoding.push('text: ' + t.trim().slice(0, 70))
+      }
+      for (const [k, v] of [
+        ['title', document.title],
+        ['description', document.querySelector('meta[name="description"]')?.content || ''],
+        ['og:title', document.querySelector('meta[property="og:title"]')?.content || ''],
+        ['json-ld', [...document.querySelectorAll('script[type="application/ld+json"]')].map((n) => n.textContent).join(' ')],
+      ]) {
+        if (v && BAD.test(v)) encoding.push(k + ': ' + v.slice(0, 70))
+      }
+
       return {
+        encoding,
         overflow: d.scrollWidth > d.clientWidth,
         offenders: [...new Set(over)].slice(0, 4),
         headings: [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map((h) => h.tagName).join(','),
@@ -79,6 +130,7 @@ for (const route of ROUTES) {
       violations: axe.violations.map((v) => `${v.impact}/${v.id}×${v.nodes.length} ${v.nodes[0]?.target?.[0] ?? ''}`),
       passes: axe.passes.length,
       overflow: info.overflow, offenders: info.offenders, smallTargets: info.smallTargets,
+      encoding: info.encoding,
     }
     Object.assign(entry, {
       headings: info.headings, title: info.title, description: info.description,
@@ -146,7 +198,24 @@ writeFileSync(`${OUT}/qa.json`, JSON.stringify(report, null, 2))
 
 const totalViolations = Object.values(report.routes).reduce(
   (a, r) => a + Object.values(r.widths).reduce((b, w) => b + w.violations.length, 0), 0)
+/* Encoding: report every distinct finding, per route, and fail loudly. */
+const encodingFindings = []
+for (const [route, entry] of Object.entries(report.routes)) {
+  const all = new Set()
+  for (const w of Object.values(entry.widths || {})) (w.encoding || []).forEach((e) => all.add(e))
+  if (all.size) encodingFindings.push({ route, findings: [...all] })
+}
+if (encodingFindings.length) {
+  console.log('\nENCODING DEFECTS')
+  for (const f of encodingFindings) {
+    console.log(`  ${f.route}`)
+    f.findings.forEach((x) => console.log(`      ${x}`))
+  }
+}
+report.encoding = encodingFindings
+
 const missing = ROUTES.filter((r) => !report.routes[r].exists)
 console.log(`\naxe violations across the site: ${totalViolations}`)
 console.log(`routes missing: ${missing.join(', ') || 'none'}`)
 console.log(`journeys passing: ${report.journeys.filter((j) => j.ok).length} of ${report.journeys.length}`)
+console.log(`encoding defects: ${encodingFindings.length === 0 ? 'none' : encodingFindings.length + ' route(s)'}`)
