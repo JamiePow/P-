@@ -36,6 +36,17 @@ if (isExport && process.env.ALLOW_EXPORT_WITHOUT_API !== '1') {
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  /* The two shells were converged into one. These three routes existed on the
+     retired shell. Nothing public ever linked to them, but a redirect costs
+     nothing and stops a stale bookmark reaching a 404. */
+  async redirects() {
+    return [
+      { source: '/approach', destination: '/how-we-work', permanent: true },
+      { source: '/pillars', destination: '/what-we-do', permanent: true },
+      { source: '/work', destination: '/solutions', permanent: true },
+      { source: '/work/:slug', destination: '/solutions', permanent: true },
+    ]
+  },
   ...(isExport ? { output: 'export', images: { unoptimized: true } } : {}),
 }
 

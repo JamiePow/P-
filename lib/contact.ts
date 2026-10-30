@@ -44,5 +44,17 @@ export function publicEmail(): string | null {
   return contact.email
 }
 
+/**
+ * Whether the enquiry form can actually be submitted.
+ *
+ * The server fails closed when it has nowhere to deliver, so the form is
+ * shown and disabled rather than shown and broken. This reads the same two
+ * variables the route handler checks, so the page and the endpoint cannot
+ * disagree about whether enquiries are open.
+ */
+export function enquiriesOpen(env = process.env): boolean {
+  return Boolean(env.ENQUIRY_WEBHOOK_URL) && Boolean(env.ENQUIRY_NOTIFY_EMAIL)
+}
+
 /** For copy that needs to name the channel without naming an address. */
 export const contactRoute = '/contact'

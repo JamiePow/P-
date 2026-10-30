@@ -8,7 +8,7 @@
   a title block, because construction records are drawings and the product
   does not exist yet to be shown any other way.
 
-  All three use the same hairline, the same red and the same mono labels.
+  All three use the same hairline, the same red and the same label face.
 */
 
 import { atelierSpec } from '@/lib/c04'

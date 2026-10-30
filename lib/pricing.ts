@@ -90,9 +90,14 @@ export const view = (t: Tier): TierView => ({
 export const tierViews = tiers.map(view)
 
 /* ---------------------------------------------------------------- terms -- *
- * What is settled, and what is not. The audit's credit treatment is the one
- * commercial term still open, and it is marked rather than described, because
- * the site previously said it was credited in full and that was not approved.
+ * Only settled terms appear here.
+ *
+ * Two commercial decisions are outstanding: whether the audit fee is credited
+ * against implementation, and what each tier includes beyond the scale it is
+ * sized for. Neither is invented and neither is described on the page. They
+ * are carried in the handover instead, because a buyer should not be reading
+ * about what we have not decided. The page states the price and the scale the
+ * tier is sized for, and stops.
  */
 
 export const AUDIT_FEE = 3500
@@ -101,8 +106,6 @@ export const commercialTerms = [
   {
     name: `The audit, ${money(AUDIT_FEE)}`,
     body: 'Paid up front. You keep the finding whether or not we build anything: it names the systems, the handovers and the hours.',
-    /* Shown on the page as an open question rather than as a term. */
-    open: 'Whether the audit fee is credited against implementation is not yet decided.',
   },
   {
     name: 'Implementation',
@@ -116,8 +119,3 @@ export const commercialTerms = [
 
 export const pricingNote =
   `All prices exclude VAT. Implementation is charged separately from the subscription and is not included in it. Annual billing is twelve months for the price of ${ANNUAL_MONTHS}.`
-
-/* Inclusions per tier have not been agreed. The pricing page says so rather
-   than listing benefits invented to justify the gaps between the figures. */
-export const inclusionsOpen =
-  'What each tier includes, beyond the number of sites and systems it is sized for, has not been agreed. The page states the price and what the tier is sized for, and stops there.'

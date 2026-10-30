@@ -8,11 +8,8 @@ import localFont from 'next/font/local'
   monospace, and this stylesheet declares no semibold, so the route loads
   those four files and nothing else.
 
-  They are declared here rather than imported from app/fonts.ts, because
-  that module also declares IBM Plex Mono and Next preloads every face a
-  route's font module declares.
-
-  The site routes keep app/fonts.ts, with the mono face, unchanged.
+  The second shell has been retired, and with it app/fonts.ts and the two
+  IBM Plex Mono files it declared. Four faces now serve the whole site.
 */
 
 export const display = localFont({

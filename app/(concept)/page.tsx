@@ -1,29 +1,18 @@
 import type { Metadata } from 'next'
-import { LogoHorizontal, Monogram } from '@/components/Brand'
-import Folio from '@/components/c04/Folio'
+import Link from 'next/link'
+import { Monogram } from '@/components/Brand'
+import { Header, Footer } from '@/components/c04/Chrome'
 import SystemsFigure from '@/components/c04/SystemsFigure'
 import ValueCalc from '@/components/c04/ValueCalc'
-import Solutions from '@/components/c04/Solutions'
-import { publicEmail } from '@/lib/contact'
-import { deployEnv } from '@/lib/env'
-import {
-  Chip,
-  Cta,
-  Eyebrow,
-  IndexStrip,
-  Plate,
-  ProvWord,
-  Row,
-  SectionHead,
-} from '@/components/c04/Parts'
+import WorkflowFigure from '@/components/c04/WorkflowFigure'
+import { Chip, Cta, Eyebrow, Plate, Row, SectionHead } from '@/components/c04/Parts'
 import {
   accountability,
   ambition,
   changes,
   commitments,
-  commitmentsOpen,
-  contents,
   ctas,
+  difference,
   meta,
   observations,
   outcomes,
@@ -32,87 +21,95 @@ import {
   shot,
   solutions,
   solutionsDisclosure,
-  stages,
-  stagesNote,
   systems,
   terms,
   tiers,
+  workflows,
+  workflowsNote,
 } from '@/lib/c04'
 
 export const metadata: Metadata = {
   title: { absolute: 'Pow & Partners | Give your people their week back' },
   description:
-    'P& helps businesses connect the systems they already run, remove repetitive work and recover operating time. Published pricing, and an audit you keep either way.',
+    'P& connects the systems businesses already run, removes repetitive work and returns operating time. Published pricing, and an audit you keep either way.',
   alternates: { canonical: '/' },
 }
 
-export default function ConceptFour() {
+/*
+  The homepage, in eight movements.
+
+  Previously nine sections of near-identical shape, twenty screens long, whose
+  header and footer linked only to anchors on this page. The rhythm now
+  alternates ground and visual type so no two neighbours look alike, and every
+  link goes to a real page through the shared chrome.
+*/
+
+export default function Home() {
   return (
     <>
-      <Folio />
+      <a href="#main" className="c4-skip">
+        Skip to content
+      </a>
+      <Header />
 
-      <main>
-        {/* ================================================= 01 HERO ===== */}
-        <section className="c4-hero c4-shell" id="hero">
-          <Monogram className="c4-mark-crop" />
-          <Eyebrow>
-            {meta.fullName} · {meta.reach}
-          </Eyebrow>
-          <h1 className="c4-h1">
-            Give your people
-            <br />
-            their <em>week</em> back<span className="c4-stop">.</span>
-          </h1>
+      <main id="main">
+        {/* =============================================== 01 HERO ===== */}
+        <section className="c4-hero" id="hero">
+          <div className="c4-shell">
+            <Monogram className="c4-mark-crop" />
+            <Eyebrow>
+              {meta.fullName} · {meta.reach}
+            </Eyebrow>
+            <h1 className="c4-h1">
+              Give your people
+              <br />
+              their <em>week</em> back<span className="c4-stop">.</span>
+            </h1>
 
-          {/* The technical layer, as part of the environment rather than as a
-              dashboard: the systems named once, on one line, under the claim. */}
-          <p className="c4-hero__systems">
-            <span className="c4-label">The systems you already run</span>
-            <span className="c4-hero__list">
-              {systems.map((s) => (
-                <span key={s.id}>{s.name}</span>
-              ))}
-            </span>
-          </p>
+            {/* The systems named once, on one line, as part of the
+                environment rather than as a dashboard. */}
+            <p className="c4-hero__systems">
+              <span className="c4-label">The systems you already run</span>
+              <span className="c4-hero__list">
+                {systems.map((s) => (
+                  <span key={s.id}>{s.name}</span>
+                ))}
+              </span>
+            </p>
 
-          <div className="c4-hero__grid">
-            <div className="c4-hero__copy">
+            {/* Introduction and actions on one row, which is what fills the
+                space that used to sit empty under the introduction. */}
+            <div className="c4-hero__row">
               <p className="c4-lead">{meta.support}</p>
               <div className="c4-hero__actions">
-                <a href="#changes" className="c4-btn">
-                  See what changes
-                </a>
-                <a href="#closing" className="c4-btn--line">
+                <Link href="/contact" className="c4-btn">
                   Start a conversation
-                </a>
+                </Link>
+                <Link href="/what-we-do" className="c4-btn--line">
+                  See what changes
+                </Link>
               </div>
-            </div>
-            <div className="c4-hero__fig">
-              <Plate shot={shot('IMG 01')} />
             </div>
           </div>
 
-          <IndexStrip items={contents} />
+          {/* The one element on the site that breaks the shell. */}
+          <div className="c4-bleed c4-hero__band">
+            <Plate shot={shot('IMG 01')} variant="band" priority />
+          </div>
         </section>
 
-        {/* ============================================== 02 PROBLEM ===== */}
+        {/* ============================================ 02 PROBLEM ===== */}
         <section className="c4-sec" id="problem">
           <div className="c4-shell">
             <SectionHead
               n="02"
               folio="The problem"
-              title={
-                <>
-                  Nothing is broken.
-                  <br />
-                  Everything is separate
-                </>
-              }
+              title={<>Where the time goes</>}
               aside={
                 <p className="c4-body">
-                  Each system does its job. The cost sits in the handover between them, and it is
-                  paid in people&rsquo;s attention rather than in licence fees, which is why it
-                  never appears on a budget line.
+                  Every system in the business does its job. The time disappears in the handovers
+                  between them, and because it is paid in people&rsquo;s attention rather than in
+                  licence fees, it never appears on a budget line.
                 </p>
               }
             />
@@ -126,34 +123,31 @@ export default function ConceptFour() {
               ))}
             </div>
 
-            {/* The arithmetic, beside the people doing it. */}
-            <div className="c4-split" data-reveal>
-              <Plate shot={shot('IMG 02')} />
+            <div className="c4-split c4-split--solo" data-reveal>
               <div>
                 <p className="c4-label">The arithmetic</p>
                 <h3 className="c4-h3 c4-split__h">
-                  Move the figure to yours and see the year<span className="c4-stop">.</span>
+                  What those hours are worth over a year<span className="c4-stop">.</span>
                 </h3>
+                <p className="c4-note c4-split__hint">Set both figures to match your operation.</p>
                 <ValueCalc />
               </div>
             </div>
-
-            <Cta line={ctas.problem.line} action={ctas.problem.action} />
           </div>
         </section>
 
-        {/* ============================================== 03 CHANGES ===== */}
+        {/* ============================================ 03 CHANGES ===== */}
         <section className="c4-sec on-white" id="changes">
           <div className="c4-shell">
             <SectionHead
               n="03"
               folio="What changes"
-              title={<>Connect. Unify. Automate</>}
+              title={<>What actually changes</>}
               aside={
                 <p className="c4-body">
-                  We start with the systems you already run. Replacement is a last resort, not an
-                  opening position. The work is in the space between them, which is exactly where
-                  nobody has ever been accountable.
+                  We start with the systems you already run. Replacing one is a last resort. The
+                  work is in the space between them, which is exactly where nobody has ever been
+                  accountable.
                 </p>
               }
             />
@@ -166,50 +160,95 @@ export default function ConceptFour() {
               ))}
             </div>
 
-            <div className="c4-expect" data-reveal>
+            <div className="c4-expect c4-expect--solo" data-reveal>
               <div className="c4-expect__copy">
-                <p className="c4-label">What you could reasonably expect</p>
-                <h3 className="c4-h3 c4-expect__h">
-                  Capacity, rather than a saving<span className="c4-stop">.</span>
-                </h3>
+                <p className="c4-label">What you should expect</p>
                 <ul className="c4-expect__list">
                   {outcomes.map((o) => (
                     <li key={o}>{o}</li>
                   ))}
                 </ul>
                 <p className="c4-note c4-expect__note">
-                  Stated as direction, not as a figure. The size of each one is what the audit
-                  measures, and what Measure checks afterwards.
+                  Stated as direction rather than as a figure. The size of each one is what the
+                  audit measures, and what Measure checks afterwards.
                 </p>
               </div>
-              <Plate shot={shot('IMG 03')} />
             </div>
           </div>
         </section>
 
-        {/* ============================================ 04 SOLUTIONS ===== */}
-        <section className="c4-sec" id="solutions">
+        {/* ======================================== 04 IN PRACTICE ===== */}
+        <section className="c4-sec on-warm" id="in-practice">
           <div className="c4-shell">
             <SectionHead
               n="04"
-              folio="Our solutions"
-              title={
-                <>
-                  Built inside the sector,
-                  <br />
-                  not for it
-                </>
+              folio="In practice"
+              title={<>Three sequences, end to end</>}
+              aside={
+                <p className="c4-body">
+                  What connecting systems actually looks like in a working business. Each one runs
+                  from the problem to the measure that would tell you whether it worked.
+                </p>
               }
-              aside={<p className="c4-body">{solutionsDisclosure}</p>}
             />
-
-            <Solutions items={solutions} />
-
-            <Cta line={ctas.solutions.line} action={ctas.solutions.action} />
+            {workflows.map((w) => (
+              <WorkflowFigure key={w.n} w={w} />
+            ))}
+            <p className="c4-note c4-stages__note">{workflowsNote}</p>
           </div>
         </section>
 
-        {/* =========================================== 05 DIFFERENCE ===== */}
+        {/* ========================================== 05 SOLUTIONS ===== */}
+        <section className="c4-sec" id="solutions">
+          <div className="c4-shell">
+            <SectionHead
+              n="05"
+              folio="Our solutions"
+              title={
+                <>
+                  Three platforms, each built
+                  <br />
+                  inside a working business
+                </>
+              }
+              aside={
+                <p className="c4-body">
+                  Atelier was built inside a premium jeweller. Nexus was built inside a route-based
+                  service operation. Blueprint is being built with construction subcontractors now.
+                  Each one started as something a business we run needed working on a Monday
+                  morning.
+                </p>
+              }
+            />
+
+            {/* A preview, not the whole of it. The three full compositions
+                live on /solutions; repeating them here made this one section
+                thirty-six per cent of the homepage. */}
+            <div className="c4-solprev">
+              {solutions.map((sol) => (
+                <article className="c4-solprev__item" key={sol.n} data-reveal>
+                  <p className="c4-label">
+                    Solution {sol.n} · {sol.sector}
+                  </p>
+                  <h3 className="c4-solprev__name">{sol.name}</h3>
+                  <p className="c4-solprev__who">{sol.whoFor}</p>
+                  <p className="c4-solprev__status">
+                    <Chip open={sol.open}>{sol.status}</Chip>
+                  </p>
+                  <Link className="c4-btn--line" href={`/solutions#${sol.name.toLowerCase()}`}>
+                    {sol.name} in full
+                  </Link>
+                </article>
+              ))}
+            </div>
+
+            <p className="c4-note c4-stages__note">{solutionsDisclosure}</p>
+
+            <Cta line={ctas.solutions.line} action={ctas.solutions.action} href="/contact" />
+          </div>
+        </section>
+
+        {/* ========================================= 06 DIFFERENCE ===== */}
         <section
           className="c4-sec on-red"
           id="difference"
@@ -217,96 +256,67 @@ export default function ConceptFour() {
         >
           <Monogram className="c4-mark-crop" />
           <div className="c4-shell" style={{ position: 'relative' }}>
-            <Eyebrow>05 · The P&amp; difference</Eyebrow>
+            <Eyebrow>06 · The P&amp; difference</Eyebrow>
             <h2 className="c4-h1 c4-diff__h" data-reveal>
-              We do not build business cases on redundancies<span className="c4-stop">.</span>
+              {difference.lead}
+              <span className="c4-stop">.</span>
             </h2>
-            <p className="c4-body c4-diff__body">
-              Every automation vendor implies headcount reduction, and most buyers hear it whether
-              or not it is said. We would rather say the opposite plainly, once, and be held to it.
-            </p>
+            <p className="c4-body c4-diff__body">{difference.support}</p>
 
-            <div className="c4-rows c4-rows--commit">
+            <div className="c4-rows--commit">
               {commitments.map((c) => (
                 <div className="c4-row c4-row--commit" key={c.n} data-reveal>
                   <span className="c4-row__n">Commitment {c.n}</span>
                   <p className="c4-commit">{c.text}</p>
                 </div>
               ))}
-              <div className="c4-row c4-row--commit" data-reveal>
-                <span className="c4-row__n">04 to 06</span>
-                <p className="c4-commit c4-commit--open">
-                  <ProvWord value={commitmentsOpen} />
-                </p>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* ============================================= 06 APPROACH ===== */}
-        <section className="c4-sec" id="approach">
+        {/* ======================================= 06b THE PARTNERS ===== */}
+        <section className="c4-sec on-warm" id="partners">
           <div className="c4-shell">
             <SectionHead
-              n="06"
-              folio="Our approach"
-              title={
-                <>
-                  It starts by counting,
-                  <br />
-                  not by selling
-                </>
-              }
+              n="07"
+              folio="Who you would work with"
+              title={<>Three partners, three operating businesses</>}
               aside={
                 <p className="c4-body">
-                  The audit is chargeable at £3,500 because the finding has value whether or not
-                  you go on with us. Whether it is credited against implementation has not been
-                  settled, and the page will say so until it is.
+                  Everything P&amp; sells was built inside one of them and corrected by the people
+                  using it, which is the part a supplier cannot buy. {ambition}
                 </p>
               }
             />
 
-            <div className="c4-figure--wide" data-reveal>
-              <Plate shot={shot('IMG 07')} />
-            </div>
-
-            <div className="c4-rows c4-rows--top">
-              {stages.map((s) => (
-                <div
-                  className={`c4-row c4-row--stage${s.flag ? ' is-marked' : ''}`}
-                  key={s.n}
-                  data-reveal
-                >
-                  <span className="c4-row__n">Stage {s.n}</span>
-                  <div className="c4-row__head">
-                    <p className="c4-stage__cadence">
-                      <span className="c4-label">{s.cadence}</span>
-                      {s.flag ? <span className="c4-label c4-label--red">{s.flag}</span> : null}
-                    </p>
-                    <h3 className="c4-row__name">{s.name}</h3>
-                  </div>
-                  <div className="c4-row__body">{s.body}</div>
+            <div className="c4-people2">
+              {partners.map((p, i) => (
+                <div className="c4-person2" key={p.name} data-reveal>
+                  <Plate shot={shot(`IMG 0${4 + i}`)} variant="portrait" />
+                  <h3 className="c4-person2__name">{p.name}</h3>
+                  <p className="c4-label role">{p.role}</p>
+                  <p>{p.body}</p>
                 </div>
               ))}
             </div>
-            <p className="c4-note c4-stages__note">{stagesNote}</p>
 
-            <Cta line={ctas.approach.line} action={ctas.approach.action} />
+            <div className="c4-rows c4-rows--top">
+              {accountability.map((a, i) => (
+                <Row key={a.name} n={`0${i + 1}`} name={a.name}>
+                  {a.body}
+                </Row>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ============================================== 07 PRICING ===== */}
+        {/* ============================================ 08 PRICING ===== */}
         <section className="c4-sec" id="pricing">
           <div className="c4-shell">
             <SectionHead
-              n="07"
-              folio="Commercial transparency"
-              title={
-                <>
-                  The prices are
-                  <br />
-                  on the website
-                </>
-              }
+              n="08"
+              folio="Pricing"
+              title={<>Published pricing</>}
               aside={<p className="c4-body">{pricingNote}</p>}
             />
 
@@ -336,170 +346,40 @@ export default function ConceptFour() {
                 <div key={t.name}>
                   <h4>{t.name}</h4>
                   <p>{t.body}</p>
-                  {'open' in t && t.open ? (
-                    <p className="c4-open">
-                      <span className="c4-label">Not yet decided</span>
-                      {t.open}
-                    </p>
-                  ) : null}
                 </div>
               ))}
             </div>
 
-            <Cta line={ctas.pricing.line} action={ctas.pricing.action} />
+            <Cta line={ctas.pricing.line} action={ctas.pricing.action} href="/contact" />
           </div>
         </section>
 
-        {/* ================================================ 08 ABOUT ===== */}
-        <section className="c4-sec on-warm" id="about">
-          <div className="c4-shell">
-            <SectionHead
-              n="08"
-              folio="About P&"
-              title={
-                <>
-                  We built these inside
-                  <br />
-                  businesses we had to run
-                </>
-              }
-              aside={
-                <p className="c4-body">
-                  Three founding partners, three sectors, and the same habit in each of them. Build
-                  the thing, run it on Monday morning, then find out what it is actually worth.
-                </p>
-              }
-            />
-
-            <div className="c4-people">
-              {partners.map((p, i) => (
-                <div className="c4-person" key={p.name} data-reveal>
-                  <Plate shot={shot(`IMG ${String(8 + i).padStart(2, '0')}`)} compact />
-                  <h3 className="c4-h3">
-                    {p.name}
-                    {p.surname ? (
-                      <>
-                        {' '}
-                        <ProvWord value={p.surname} />
-                      </>
-                    ) : null}
-                  </h3>
-                  <p className="c4-label role">{p.role}</p>
-                  <p>{p.body}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Credibility stated as method, because there is no third party
-                proof to show and none will be invented. */}
-            <div className="c4-rows c4-rows--top">
-              {accountability.map((a, i) => (
-                <Row key={a.name} n={`0${i + 1}`} name={a.name}>
-                  {a.body}
-                </Row>
-              ))}
-            </div>
-
-            <div className="c4-amb" data-reveal>
-              <p className="c4-label">The wider group</p>
-              <p className="c4-lead">P&amp; builds what comes next. {ambition}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================== 09 CLOSING ===== */}
+        {/* ============================================ 09 CLOSING ===== */}
         <section className="c4-close on-black" id="closing">
           <div className="c4-shell">
             <Eyebrow>09 · Start a conversation</Eyebrow>
             <h2 className="c4-close__h" data-reveal>
-              Tell us where the <em>week</em> goes<span className="c4-stop">.</span>
+              Start a <em>conversation</em>
+              <span className="c4-stop">.</span>
             </h2>
             <p className="c4-body c4-close__body">
-              An hour with the people doing the work is usually enough to see where it is going. If
-              it is not worth fixing, we will say so.
+              Tell us which systems you run and where the time goes, and we will tell you what we
+              would look at first. If we do not think there is enough in it to be worth doing, we
+              will say so.
             </p>
             <div className="c4-hero__actions">
-              <a href="/contact" className="c4-btn">
+              <Link href="/contact" className="c4-btn">
                 Start a conversation
-              </a>
-              <a href="#pricing" className="c4-btn--line">
+              </Link>
+              <Link href="/pricing" className="c4-btn--line">
                 See the pricing first
-              </a>
-            </div>
-
-            <div className="c4-close__foot">
-              <LogoHorizontal label="Pow and Partners" />
-              <p className="c4-label">
-                {publicEmail() ? `${publicEmail()} · ` : ''}
-                {meta.reach}
-              </p>
+              </Link>
             </div>
           </div>
         </section>
       </main>
 
-      {/* ================================================== FOOTER ===== */}
-      <footer className="c4-foot on-black">
-        <div className="c4-shell">
-          <div className="c4-foot__top">
-            <div className="c4-foot__brand">
-              <p className="c4-label">Pow &amp; Partners</p>
-              <p>
-                P&amp; is a technology, innovation and commercial development group. We identify
-                opportunities, build the technology around them, prove it in live operations, and
-                turn what works into products and businesses.
-              </p>
-            </div>
-            <div>
-              <h4>Solutions</h4>
-              <ul>
-                <li>
-                  <a href="#solutions">Atelier</a>
-                </li>
-                <li>
-                  <a href="#solutions">Nexus</a>
-                </li>
-                <li>
-                  <a href="#solutions">Blueprint</a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4>Company</h4>
-              <ul>
-                <li>
-                  <a href="#approach">Approach</a>
-                </li>
-                <li>
-                  <a href="#pricing">Pricing</a>
-                </li>
-                <li>
-                  <a href="#about">About</a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4>Contact</h4>
-              <ul>
-                <li>
-                  <a href="/contact">Start a conversation</a>
-                </li>
-                <li>
-                  <a href="#hero">{meta.reach}</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="c4-foot__base">
-            <span className="c4-label">© 2026 Pow &amp; Partners</span>
-            <span className="c4-label">
-              Registered in <span className="c4-pw">country</span> · Company number{' '}
-              <span className="c4-pw">00000000</span>
-            </span>
-            <span className="c4-label">{deployEnv === 'production' ? meta.reach : 'Review build · not public'}</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   )
 }

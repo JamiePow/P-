@@ -28,15 +28,15 @@ async function portFree(port) {
     setTimeout(() => { sock.destroy(); resolve(true) }, 800)
   })
 }
-for (const port of [8930, 8931, 8932, 8933]) {
+for (const port of [8981, 8982, 8983, 8984]) {
   if (!(await portFree(port))) {
     console.error(`port ${port} is already in use. Stop it before running this suite.`)
     process.exit(2)
   }
 }
 
-const RECEIVER_PORT = 8930
-const SITE_PORT = 8931
+const RECEIVER_PORT = 8981
+const SITE_PORT = 8982
 const NOTIFY = 'enquiries@example.invalid'
 
 /* ------------------------------------------------------------- receiver -- */
@@ -63,8 +63,8 @@ const receiver = createServer((req, res) => {
 await new Promise((r) => receiver.listen(RECEIVER_PORT, r))
 
 /* ----------------------------------------------------------------- site -- */
-const site = spawn('npx', ['next', 'start', '-p', String(SITE_PORT)], {
-  cwd: '/home/claude/pow-and-partners',
+const site = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', String(SITE_PORT)], {
+  cwd: '/home/claude/pap',
   env: {
     ...process.env,
     ENQUIRY_WEBHOOK_URL: `http://127.0.0.1:${RECEIVER_PORT}/hook`,
@@ -284,19 +284,19 @@ const alertText = async (page) => (await page.locator('[role="alert"]').first().
 /* 10 · a phone. Every browser case shares the loopback address, so this one
       runs against its own instance to keep it independent of the limiter. */
 {
-  const mob = spawn('npx', ['next', 'start', '-p', '8933'], {
-    cwd: '/home/claude/pow-and-partners',
+  const mob = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', '8984'], {
+    cwd: '/home/claude/pap',
     env: { ...process.env, ENQUIRY_WEBHOOK_URL: `http://127.0.0.1:${RECEIVER_PORT}/hook`, ENQUIRY_NOTIFY_EMAIL: NOTIFY },
     stdio: 'ignore',
     detached: true,
   })
   for (let i = 0; i < 40; i++) {
-    try { const r = await fetch('http://127.0.0.1:8933/api/enquiry'); if (r.ok) break } catch {}
+    try { const r = await fetch('http://127.0.0.1:8984/api/enquiry'); if (r.ok) break } catch {}
     await new Promise((r) => setTimeout(r, 500))
   }
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
   const before = received.length
-  await page.goto('http://127.0.0.1:8933/contact', { waitUntil: 'networkidle' })
+  await page.goto('http://127.0.0.1:8984/contact', { waitUntil: 'networkidle' })
   await page.waitForTimeout(3300)
   await page.fill('#name', 'Mobile Sender')
   await page.fill('#email', 'mobile@example.co.uk')
@@ -313,30 +313,49 @@ const alertText = async (page) => (await page.locator('[role="alert"]').first().
 
 /* 11 · nothing configured at all */
 {
-  const bare = spawn('npx', ['next', 'start', '-p', '8932'], {
-    cwd: '/home/claude/pow-and-partners',
+  const bare = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', '8983'], {
+    cwd: '/home/claude/pap',
     env: { ...process.env, ENQUIRY_WEBHOOK_URL: '', ENQUIRY_NOTIFY_EMAIL: '' },
     stdio: 'ignore',
     detached: true,
   })
   for (let i = 0; i < 40; i++) {
-    try { const r = await fetch('http://127.0.0.1:8932/api/enquiry'); if (r.ok) break } catch {}
+    try { const r = await fetch('http://127.0.0.1:8983/api/enquiry'); if (r.ok) break } catch {}
     await new Promise((r) => setTimeout(r, 500))
   }
   const page = await browser.newPage()
-  await page.goto('http://127.0.0.1:8932/contact', { waitUntil: 'networkidle' })
-  await page.waitForTimeout(3300)
-  await page.fill('#name', 'Unconfigured')
-  await page.fill('#email', 'unconfigured@example.co.uk')
-  await page.fill('#message', 'This is the exact case that used to report a false success.')
-  await page.click('button[type="submit"]')
-  await settle(page)
+  await page.goto('http://127.0.0.1:8983/contact', { waitUntil: 'networkidle' })
+  await page.waitForTimeout(1200)
+
+  /* The page now refuses before the visitor types rather than after. The
+     fields are shown and disabled, the reason is stated, and the submit
+     button cannot be pressed, so nobody writes a message that is going to
+     fail. The old behaviour — fill it in, press send, receive an error —
+     was correct but wasteful of the visitor's time. */
+  const nameDisabled = await page.locator('#name').isDisabled()
+  const sendDisabled = await page.locator('button[type="submit"]').isDisabled()
+  const notice = (await page.locator('#enquiries-closed').innerText().catch(() => '')).trim()
+
+  /* And the endpoint itself still fails closed for anything posted directly,
+     which is what actually protects an enquiry from being lost. */
+  const direct = await fetch('http://127.0.0.1:8983/api/enquiry', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: 'Unconfigured', email: 'unconfigured@example.co.uk',
+      message: 'This is the exact case that used to report a false success.',
+      elapsed: 9000,
+    }),
+  })
+  const body = await direct.json()
+  const probe = await (await fetch('http://127.0.0.1:8983/api/enquiry')).json()
   const ok = await thanks(page)
-  const msg = await alertText(page)
-  const probe = await (await fetch('http://127.0.0.1:8932/api/enquiry')).json()
-  const pass = !ok && /could not deliver/i.test(msg) && probe.deliveryConfigured === false
-  record('With nothing configured the visitor is told it failed', 'no thank you, an error, and the readiness probe reports unconfigured',
-    `thank you=${ok}, message="${msg.slice(0, 60)}", probe=${JSON.stringify(probe)}`, pass,
+  const pass =
+    !ok && nameDisabled && sendDisabled && /not open yet/i.test(notice) &&
+    direct.status === 503 && body.ok === false && probe.deliveryConfigured === false
+  record('With nothing configured nothing can be sent and nothing is lost',
+    'form disabled with a stated reason, direct POST refused with 503, probe reports unconfigured',
+    `fieldsDisabled=${nameDisabled}, sendDisabled=${sendDisabled}, directStatus=${direct.status}, bodyOk=${body.ok}, probe=${JSON.stringify(probe)}`, pass,
     'This is the defect from the previous audit. It is the case that used to show a thank you.')
   await shot(page, '11-unconfigured')
   await page.close()

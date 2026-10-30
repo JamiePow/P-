@@ -18,7 +18,7 @@ export default function WhatWeDo() {
         n="01"
         folio="What we do"
         title={<>We connect what you already run<span className="c4-stop">.</span></>}
-        lead="Most operations are not broken. They are separate, and the cost sits in the handover between them."
+        lead="Every system in the business does its job. The time disappears in the handovers between them, and it never appears on a budget line."
         aside={
           <p className="c4-body">
             Replacement is a last resort rather than an opening position. We start with the systems
@@ -88,7 +88,7 @@ export default function WhatWeDo() {
               </Row>
             ))}
           </div>
-          <Cta line={ctas.approach.line} action={ctas.approach.action} href="/contact" />
+          <Cta line="The audit is the only thing you commit to at the start. It costs \u00a33,500 and the findings are yours." action="Ask about the audit" href="/contact" />
         </div>
       </section>
     </Shell>

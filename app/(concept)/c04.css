@@ -110,8 +110,8 @@
 .c4 .on-red {
   --page: var(--red);
   --ink: var(--white);
-  --muted: rgba(13, 13, 13, 0.92); /* 4.7:1 on red */
-  --soft: rgba(13, 13, 13, 0.92);
+  --muted: #0D0D0D; /* 5.0:1 on red, and crisper than an alpha */
+  --soft: #0D0D0D;
   --hair: rgba(255, 255, 255, 0.3);
   --hair-firm: rgba(255, 255, 255, 0.46);
   --accent: var(--white);
@@ -345,7 +345,7 @@
 /* The cropped mark. Two uses on the page, both at the edge, both quiet. */
 .c4-mark-crop { position: absolute; pointer-events: none; color: var(--black); opacity: 0.045; }
 .c4-mark-crop svg { height: 100%; width: auto; }
-.c4-hero .c4-mark-crop { right: auto; left: -13%; top: auto; bottom: -18%; height: 58%; opacity: 0.034; }
+.c4-hero .c4-mark-crop { right: auto; left: -11%; top: 2%; bottom: auto; height: 42%; opacity: 0.038; }
 .c4 .on-red .c4-mark-crop { color: #fff; opacity: 0.14; right: -9%; top: 5%; height: 54%; }
 
 /* ---------------------------------------------------- section head ------ */
@@ -807,85 +807,139 @@ body.c4 { margin: 0; }
    inherited. No new colours, no new faces, no new dependencies.
    ========================================================================== */
 
-/* ---- the art-direction plate ------------------------------------------- */
-/* It holds the exact space the photograph will hold, and prints the brief. */
+/* ---- the composed editorial plate --------------------------------------- */
+/*
+   Holds the exact space the photograph will hold. It presents the subject as
+   an editorial caption in the display face rather than standing empty, and it
+   carries no production direction: that lives in the asset register.
+
+   Three variants. `inset` sits in the grid. `band` runs to both viewport
+   edges in the hero. `portrait` is the partners row.
+*/
 
 .c4-plate {
   position: relative;
   width: 100%;
   aspect-ratio: var(--ar, 3 / 2);
-  background: color-mix(in srgb, var(--ink) 4.5%, transparent);
-  border: 1px solid var(--hair);
+  background:
+    linear-gradient(168deg,
+      color-mix(in srgb, var(--warm) 72%, var(--white)) 0%,
+      var(--warm) 46%,
+      color-mix(in srgb, var(--warm) 80%, var(--ink)) 100%);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--s2);
-  padding: 15px 17px 13px;
+  justify-content: flex-end;
   overflow: hidden;
   margin: 0;
+  padding: clamp(20px, 2.6vw, 42px);
+  isolation: isolate;
+  container-type: inline-size;
+}
+/* A single hairline inset from the edge: the frame of a plate in a book. */
+.c4-plate::after {
+  content: '';
+  position: absolute;
+  inset: clamp(9px, 1vw, 15px);
+  border: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
+  pointer-events: none;
+  z-index: 2;
 }
 .c4-plate::before {
-  content: '';
+  content: '&';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 15px;
-  height: 15px;
-  border-top: 2px solid var(--red);
-  border-left: 2px solid var(--red);
+  right: -3%;
+  bottom: -34%;
+  z-index: 1;
+  font-family: var(--d);
+  font-size: 42cqw;
+  line-height: 0.74;
+  color: var(--ink);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
 }
-.c4-plate__guides { position: absolute; inset: 0; pointer-events: none; }
-.c4-plate__guides::before {
-  content: '';
+.c4-plate--band::before { font-size: 30cqw; right: 3%; bottom: -24%; opacity: 0.06; }
+.c4-plate--portrait::before { font-size: 86cqw; right: -14%; bottom: -26%; opacity: 0.085; }
+.c4-plate[data-filled='true'] { padding: 0; background: var(--warm); }
+.c4-plate[data-filled='true']::before { display: none; }
+.c4-plate[data-filled='true']::after { border-color: transparent; }
+.c4-plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* The red tick: a short rule above the reference. */
+.c4-plate__rule {
   position: absolute;
-  left: 33.333%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: color-mix(in srgb, var(--ink) 7%, transparent);
-}
-.c4-plate__guides::after {
-  content: '';
-  position: absolute;
-  top: 66.666%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  top: clamp(20px, 2.6vw, 42px);
+  left: clamp(20px, 2.6vw, 42px);
+  width: 26px;
+  height: 2px;
+  background: var(--red);
+  z-index: 3;
 }
 .c4-plate__ref {
-  position: relative;
-  align-self: flex-start;
-  margin-left: 16px;
-  color: var(--ink);
-  font-family: var(--l); font-weight: 500;
-  font-size: 9.5px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.c4-plate__subject {
-  position: relative;
-  font-family: var(--d);
-  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
-  line-height: 1.22;
-  letter-spacing: -0.012em;
-  max-width: 20ch;
-  color: var(--ink);
-}
-.c4-plate__spec { position: relative; border-top: 1px solid var(--hair); padding-top: 9px; }
-.c4-plate__spec p {
-  font-family: var(--l); font-weight: 500;
-  font-size: 9px;
-  line-height: 1.68;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  position: absolute;
+  top: calc(clamp(20px, 2.6vw, 42px) + 13px);
+  left: clamp(20px, 2.6vw, 42px);
+  z-index: 3;
   color: var(--soft);
+  font-family: var(--l);
+  font-weight: 500;
+  font-size: 9.5px;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
 }
-.c4-plate__meta { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 6px; }
-.c4-plate--compact .c4-plate__spec p:first-child { display: none; }
-.c4-plate--compact .c4-plate__meta { margin-top: 0; }
-.c4-plate--compact .c4-plate__subject { font-size: 1rem; max-width: 18ch; }
+.c4 .c4-plate__subject {
+  position: absolute;
+  left: clamp(20px, 2.6vw, 42px);
+  right: clamp(20px, 2.6vw, 42px);
+  bottom: clamp(20px, 2.6vw, 42px);
+  z-index: 3;
+  font-family: var(--d);
+  font-size: clamp(1.5rem, 3.1vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.019em;
+  max-width: 17ch;
+  color: color-mix(in srgb, var(--ink) 82%, transparent);
+  margin: 0;
+  text-wrap: balance;
+}
+.c4-plate__fmt {
+  position: absolute;
+  right: clamp(20px, 2.6vw, 42px);
+  bottom: clamp(20px, 2.6vw, 42px);
+  z-index: 3;
+  color: var(--soft);
+  font-family: var(--l);
+  font-weight: 500;
+  font-size: 9.5px;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+/* The hero band: full width of the viewport, not of the shell. */
+.c4-plate--band {
+  aspect-ratio: var(--ar, 16 / 9);
+  max-height: 72vh;
+}
+.c4-plate--band .c4-plate__subject { font-size: clamp(1.7rem, 3.6vw, 3.4rem); max-width: 19ch; }
+
+/* Portraits sit smaller and quieter; the names are set beneath them. */
+.c4-plate--portrait .c4-plate__subject { font-size: clamp(1.1rem, 1.7vw, 1.5rem); max-width: 12ch; }
+.c4-plate--portrait { padding: clamp(16px, 1.8vw, 26px); }
+.c4-plate--portrait .c4-plate__rule,
+.c4-plate--portrait .c4-plate__ref { left: clamp(16px, 1.8vw, 26px); }
+.c4-plate--portrait .c4-plate__rule { top: clamp(16px, 1.8vw, 26px); }
+.c4-plate--portrait .c4-plate__ref { top: calc(clamp(16px, 1.8vw, 26px) + 13px); }
+.c4-plate--portrait .c4-plate__fmt { display: none; }
+.c4-plate--portrait .c4-plate__subject { display: none; }
+.c4-plate--portrait {
+  background:
+    linear-gradient(165deg,
+      color-mix(in srgb, var(--warm) 56%, var(--white)) 0%,
+      color-mix(in srgb, var(--warm) 70%, var(--stone)) 62%,
+      color-mix(in srgb, var(--stone) 62%, var(--warm)) 100%);
+  border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+}
+.c4-plate--portrait::after { display: none; }
 
 /* ---- Atelier's specimen ------------------------------------------------ */
 
@@ -1003,7 +1057,7 @@ body.c4 { margin: 0; }
 @media (max-width: 900px) {
   .c4 { --t-hero: clamp(2.5rem, 10.4vw, 3.6rem); --t-h2: clamp(1.75rem, 6.4vw, 2.3rem); --t-h3: 1.3rem; }
   .c4-plate { aspect-ratio: var(--ar-m, var(--ar, 3 / 2)); }
-  .c4-plate__subject { font-size: 1.05rem; max-width: 24ch; }
+  .c4-plate--band { max-height: none; }
   .c4-menu { display: block; }
   .c4-folio__nav { gap: var(--s3); }
   .c4-expect { grid-template-columns: 1fr; gap: var(--s4); }
@@ -1057,9 +1111,7 @@ body.c4 { margin: 0; }
   .c4-person h3 { font-size: 1.15rem; margin-top: var(--s2); }
   .c4-person p { font-size: 13px; line-height: 1.55; margin-top: 10px; }
   .c4-person .role { margin-top: 7px; }
-  .c4-plate { padding: 12px 13px 11px; }
-  .c4-plate--compact .c4-plate__subject { font-size: 0.92rem; }
-  .c4-plate__spec p { font-size: 9px; letter-spacing: 0.08em; }
+  .c4-plate__subject { max-width: 20ch; }
   .c4-spec li { font-size: 9.5px; }
   .c4-spec li + li::before { margin-inline: 9px; }
 }
@@ -1072,8 +1124,6 @@ body.c4 { margin: 0; }
   .c4 .c4-art--tall { display: block; }
   /* A 346 pixel plate has no room for a full shot brief. It keeps its
      reference, its subject and its ratio; the brief lives in the inventory. */
-  .c4-plate__spec p:first-child { display: none; }
-  .c4-plate__meta span:first-child { display: none; }
 }
 
 /* ======================================================================== *
@@ -1365,4 +1415,428 @@ body.c4 { margin: 0; }
   gap: 5px;
   font-size: var(--t-small);
   color: var(--muted);
+}
+
+/* ==========================================================================
+   REFINEMENT · hero band, workflow figures, partners band
+   ========================================================================== */
+
+/* ---- the hero, rebuilt -------------------------------------------------- */
+/*
+   The headline keeps the first screen to itself. The introduction and the two
+   actions sit on one row beneath it, which fills the void that used to sit
+   under the introduction. The photograph then runs to both viewport edges —
+   the only element on the site that breaks the shell, which is what makes it
+   an event rather than a block.
+*/
+
+.c4-hero__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(28px, 5vw, 88px);
+  align-items: end;
+  margin-top: clamp(34px, 4.4vw, 60px);
+}
+.c4-hero__row .c4-lead { margin: 0; max-width: 40ch; }
+.c4-hero__row .c4-hero__actions { margin-top: 0; }
+
+/* Full-bleed: out of the shell, to both viewport edges, without causing a
+   horizontal scrollbar at any width. */
+.c4-bleed {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+.c4-hero__band { margin-top: clamp(46px, 6vw, 92px); }
+.c4-hero__caption {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: var(--s2);
+}
+.c4-hero__caption i { display: block; width: 22px; height: 2px; background: var(--red); flex: none; position: relative; top: -3px; }
+
+@media (max-width: 900px) {
+  .c4-hero__row { grid-template-columns: 1fr; align-items: start; gap: var(--s4); }
+  .c4-hero__row .c4-lead { max-width: none; }
+}
+@media (max-width: 620px) {
+  .c4-hero__actions { width: 100%; }
+  .c4-hero__actions .c4-btn, .c4-hero__actions .c4-btn--line { flex: 1 1 auto; justify-content: center; text-align: center; }
+}
+
+/* ---- workflow figures, Fig. 02 to Fig. 04 ------------------------------- */
+
+.c4-wf { margin: 0; padding-top: var(--s5); border-top: 1px solid var(--hair); }
+.c4-wf { margin-top: var(--s8); }
+.c4-wf:first-of-type { margin-top: 0; }
+.c4-wf__head { margin-bottom: var(--s4); }
+
+.c4 .c4-wf__nodes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 20px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.c4-wf__nodes li {
+  border: 1px solid var(--hair);
+  padding: clamp(14px, 1.6vw, 22px) clamp(12px, 1.4vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  background: color-mix(in srgb, var(--white) 55%, transparent);
+}
+.c4-wf__nodes li.is-pivot { border-color: var(--ink); }
+.c4-wf__step {
+  font-family: var(--l); font-weight: 500;
+  font-size: 9.5px; letter-spacing: 0.19em; text-transform: uppercase; color: var(--soft);
+}
+.c4-wf__name {
+  font-size: var(--t-body);
+  line-height: 1.3;
+  letter-spacing: -0.004em;
+  overflow-wrap: break-word;
+}
+
+.c4-wf__link { display: block; width: 100%; height: 34px; }
+
+.c4 .c4-wf__layer {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--l); font-weight: 500;
+  font-size: 9.5px; letter-spacing: 0.19em; text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 var(--s5);
+}
+.c4-wf__pip { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+
+.c4-wf__beats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(22px, 3vw, 52px);
+}
+.c4-wf__beats > div { display: grid; gap: 11px; align-content: start; }
+.c4-wf__beats p:not(.c4-label) {
+  font-size: var(--t-small);
+  line-height: 1.62;
+  color: var(--soft);
+  margin: 0;
+}
+
+.c4-wf__measure {
+  margin-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--hair);
+  display: flex;
+  gap: clamp(16px, 2.4vw, 40px);
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.c4 .c4-wf__measure ul { display: flex; gap: clamp(14px, 2vw, 34px); flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+.c4 .c4-wf__measure li {
+  font-family: var(--l); font-weight: 500;
+  font-size: 9.5px; letter-spacing: 0.17em; text-transform: uppercase; color: var(--soft);
+  position: relative; padding-left: 14px;
+}
+.c4-wf__measure li::before { content: ''; position: absolute; left: 0; top: 0.52em; width: 7px; height: 1px; background: var(--firm, rgba(13,13,13,0.3)); }
+
+@media (max-width: 900px) {
+  .c4-wf__beats { grid-template-columns: 1fr; gap: var(--s4); }
+}
+@media (max-width: 760px) {
+  /* The run rotates rather than shrinking: four cells in a column, with the
+     connector redrawn down the left edge. */
+  .c4-wf__nodes { grid-template-columns: 1fr; gap: 0; position: relative; padding-left: 26px; }
+  .c4-wf__nodes::before {
+    content: ''; position: absolute; left: 3px; top: 22px; bottom: 22px; width: 1.5px; background: var(--red);
+  }
+  .c4-wf__nodes li { border-left: 0; border-right: 0; border-bottom: 0; }
+  .c4-wf__nodes li:last-child { border-bottom: 1px solid var(--hair); }
+  .c4-wf__nodes li.is-pivot { border-color: var(--hair); box-shadow: inset 2px 0 0 var(--ink); }
+  .c4-wf__link { display: none; }
+  .c4-wf__layer { margin-top: var(--s3); }
+}
+
+/* ---- the partners band -------------------------------------------------- */
+/* Three people, immediately beneath the commitment, at a fraction of the
+   height the old standalone About section took. */
+
+.c4-people2 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 52px);
+}
+.c4-person2 { display: grid; gap: var(--s2); align-content: start; min-width: 0; }
+.c4-person2 .c4-person2__name {
+  font-family: var(--d);
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  line-height: 1.16;
+  letter-spacing: -0.013em;
+  margin: 0;
+}
+.c4-person2 p:not(.c4-label):not(.c4-person2__name) {
+  font-size: var(--t-small); line-height: 1.6; color: var(--soft); margin: 0;
+}
+@media (max-width: 760px) {
+  .c4-people2 { grid-template-columns: 1fr; gap: var(--s5); }
+}
+
+/* ---- the red section, rebalanced ---------------------------------------- */
+/*
+   Supporting copy moves from near-black to ivory at a larger size. Near-black
+   on saturated red measured as passing and read as a fault; this is both
+   legible and legible-looking. Re-measured with axe after the change.
+*/
+
+/*
+   Ivory on Ferrari Red measures 3.8:1. That passes AA for large text and
+   fails it for small, so everything set in ivory here is at or above 24px
+   and everything below that size is solid near-black, which measures 5.0:1.
+   Re-run through axe after any change to this block.
+*/
+.c4 .on-red .c4-diff__body {
+  color: var(--ivory);
+  font-size: clamp(1.5rem, 2.1vw, 1.9rem);   /* >= 24px: WCAG large text */
+  line-height: 1.42;
+  letter-spacing: -0.008em;
+  max-width: 26ch;
+  margin-top: var(--s4);
+}
+.c4 .c4-rows--commit {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(22px, 3vw, 52px);
+  margin-top: var(--s8);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--hair);
+}
+.c4 .c4-rows--commit .c4-row--commit {
+  border: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s3);
+  align-content: start;
+}
+.c4 .c4-rows--commit .c4-row__n { color: #0D0D0D; padding-top: 0; }
+.c4 .c4-rows--commit .c4-commit {
+  color: var(--ivory);
+  font-family: var(--d);
+  font-size: clamp(1.5rem, 2vw, 1.85rem);    /* >= 24px: WCAG large text */
+  line-height: 1.16;
+  letter-spacing: -0.014em;
+  margin: 0;
+}
+@media (max-width: 860px) {
+  .c4-rows--commit { grid-template-columns: 1fr; gap: var(--s4); }
+}
+
+/* ---- single-column variants --------------------------------------------- */
+/* The arithmetic and the expectations no longer sit beside an image plate, so
+   they run at a single measure rather than leaving an empty column. */
+
+.c4-split--solo { grid-template-columns: minmax(0, 1fr); max-width: 58rem; }
+.c4-split__hint { margin-top: 10px; max-width: 40ch; }
+.c4-expect--solo { display: block; }
+.c4 .c4-expect--solo .c4-expect__copy { max-width: none; }
+
+/* ---- the solution commercial header ------------------------------------- */
+/* Three beats, same position, all three solutions, so a buyer can compare
+   them without first working out the shape of each block. */
+
+.c4-sol__comm {
+  display: grid;
+  gap: var(--s3);
+  margin: var(--s4) 0 0;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--hair);
+}
+.c4-sol__comm > div { display: grid; gap: 7px; min-width: 0; }
+.c4 .c4-sol__comm dt { margin: 0; }
+.c4 .c4-sol__comm dd {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.6;
+  color: var(--soft);
+}
+/* Nexus is a horizontal composition, so its header runs as a row. */
+.c4-nex .c4-sol__comm {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px);
+  margin-bottom: var(--s5);
+}
+@media (max-width: 860px) {
+  .c4-nex .c4-sol__comm { grid-template-columns: 1fr; gap: var(--s3); }
+}
+
+/* ---- the enquiry form --------------------------------------------------- */
+/* Moved onto the concept design system when the two shells were converged.
+   Only the class names changed; the validation, spam handling, error
+   announcement and submission logic are untouched. */
+
+.c4-form { border-top: 1px solid var(--hair-firm, var(--hair)); padding-top: var(--s5); }
+.c4-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s5) clamp(24px, 4vw, 56px);
+}
+.c4-form__msg { margin-top: var(--s5); }
+.c4-form__grid > div, .c4-form__msg { display: grid; gap: 10px; min-width: 0; }
+
+.c4-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--hair-firm, rgba(13, 13, 13, 0.28));
+  background: transparent;
+  padding: 0 0 12px;
+  font-family: var(--s);
+  font-size: var(--t-body);
+  color: var(--ink);
+  border-radius: 0;
+  outline: none;
+  transition: border-color var(--fast, 240ms) var(--ease, ease);
+}
+textarea.c4-input { resize: none; min-height: 7.5em; line-height: 1.6; }
+select.c4-input { appearance: none; padding-right: 22px; cursor: pointer; }
+.c4-input:focus-visible { border-bottom-color: var(--red); outline: 2px solid var(--red); outline-offset: 4px; }
+.c4-input[aria-invalid='true'] { border-bottom-color: var(--red); }
+.c4-input:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.c4 .c4-form__err { font-size: var(--t-small); color: var(--ink); margin: 0; }
+.c4-form__notice {
+  border-left: 2px solid var(--red);
+  padding-left: var(--s3);
+  margin-bottom: var(--s5);
+  display: grid;
+  gap: 10px;
+  max-width: 54ch;
+}
+.c4 .c4-form__notice p { margin: 0; }
+.c4-form__mail { border-bottom: 1px solid var(--red); }
+.c4-form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.c4-form__send { margin-top: var(--s5); }
+.c4-form fieldset { border: 0; margin: 0; padding: 0; }
+
+.c4-thanks { border-top: 1px solid var(--hair-firm, var(--hair)); padding-top: var(--s5); max-width: 46ch; }
+.c4 .c4-thanks__h { font-family: var(--d); font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 var(--s3); }
+.c4 .c4-thanks p:not(.c4-thanks__h) { color: var(--soft); font-size: var(--t-body); margin: 0; }
+
+@media (max-width: 760px) {
+  .c4-form__grid { grid-template-columns: 1fr; gap: var(--s4); }
+  .c4-form__send { width: 100%; justify-content: center; text-align: center; }
+}
+
+/* ---- the homepage solutions preview ------------------------------------- */
+/* Three cards pointing at the full compositions on /solutions. Repeating the
+   full treatments here made one section more than a third of the page. */
+
+.c4-solprev {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(22px, 3vw, 52px);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--hair);
+}
+.c4-solprev__item { display: grid; gap: var(--s2); align-content: start; min-width: 0; }
+.c4 .c4-solprev__name {
+  font-family: var(--d);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.021em;
+  margin: 2px 0 0;
+}
+.c4 .c4-solprev__who { font-size: var(--t-small); line-height: 1.6; color: var(--soft); margin: 0; }
+.c4 .c4-solprev__status { margin: var(--s1) 0 var(--s2); }
+.c4-solprev__item .c4-btn--line { justify-self: start; }
+@media (max-width: 860px) {
+  .c4-solprev { grid-template-columns: 1fr; gap: var(--s6); }
+}
+
+/* ---- the narrow-width menu ---------------------------------------------- */
+/* Hidden above 900, where the inline navigation is visible. */
+
+.c4 .c4-menu { display: none; margin-left: auto; position: relative; }
+.c4 .c4-menu > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 8px 12px;
+  font-family: var(--l);
+  font-weight: 500;
+  font-size: 0.64rem;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.c4 .c4-menu > summary::-webkit-details-marker { display: none; }
+.c4 .c4-menu__bars {
+  width: 18px; height: 9px; position: relative; display: block; flex: none;
+  border-top: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+}
+.c4 .c4-menu[open] .c4-menu__bars { border-bottom-color: var(--red); }
+.c4 .c4-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 11px);
+  min-width: min(74vw, 300px);
+  background: var(--ivory, #FAF8F5);
+  border: 1px solid var(--hair-firm);
+  padding: var(--s3) var(--s4) var(--s4);
+  box-shadow: 0 18px 44px rgba(13, 13, 13, 0.09);
+  z-index: 50;
+}
+.c4 .c4-menu__panel nav { display: grid; gap: 2px; }
+.c4 .c4-menu__panel a {
+  font-family: var(--l);
+  font-weight: 500;
+  font-size: 0.68rem;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--soft);
+  padding: 13px 0;
+  border-bottom: 1px solid var(--hair);
+}
+.c4 .c4-menu__panel a:last-child { border-bottom: 0; }
+.c4 .c4-menu__panel a[aria-current='page'] { color: var(--ink); }
+.c4 .c4-menu__cta { color: var(--ink) !important; margin-top: var(--s2); }
+.c4 .c4-menu__cta::after {
+  content: ''; display: block; width: 46px; height: 1.5px; background: var(--red); margin-top: 9px;
+}
+
+@media (max-width: 900px) {
+  .c4 .c4-menu { display: block; }
+  .c4 .c4-head2__nav { margin-left: auto; }
+  /* The band follows its phone ratio, so the format mark and the shape agree. */
+  .c4 .c4-plate--band { aspect-ratio: var(--ar-m, 3 / 2); max-height: none; }
+  /* The mark states the desktop crop; at this width the band uses its phone
+     ratio, so the mark would contradict the shape. */
+  .c4 .c4-plate--band .c4-plate__fmt { display: none; }
+}
+@media (max-width: 620px) {
+  .c4 .c4-head2__cta { font-size: 0.6rem; }
+  .c4 .c4-menu > summary { padding-left: 8px; }
+}
+
+/* ---- phone: compaction --------------------------------------------------- */
+/*
+   A phone stacks every three-column grid into a column, so the page grows
+   even though nothing was added. These reduce the rhythm rather than the
+   content: tighter cells, tighter section padding, no change to what is said.
+*/
+@media (max-width: 620px) {
+  .c4 { --s7: 64px; --s8: 84px; --s9: 104px; }
+  .c4 .c4-wf__nodes li { padding: 13px 0 13px 14px; gap: 5px; }
+  .c4 .c4-wf { margin-top: var(--s8); }
+  .c4 .c4-wf__beats { gap: var(--s3); }
+  .c4 .c4-wf__layer { margin-bottom: var(--s4); }
+  .c4 .c4-solprev { gap: var(--s5); }
+  .c4 .c4-people2 { gap: var(--s5); }
+  .c4 .c4-plate--portrait { aspect-ratio: 5 / 4; }
 }

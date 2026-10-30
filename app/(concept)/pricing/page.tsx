@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Shell, PageHead } from '@/components/c04/Chrome'
 import { Cta } from '@/components/c04/Parts'
 import ValueCalc from '@/components/c04/ValueCalc'
-import { ctas, inclusionsOpen, pricingNote, terms, tiers } from '@/lib/c04'
+import { ctas, pricingNote, terms, tiers } from '@/lib/c04'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -17,8 +17,8 @@ export default function PricingPage() {
       <PageHead
         n="03"
         folio="Commercial transparency"
-        title={<>The prices are on the website<span className="c4-stop">.</span></>}
-        lead="Published rather than quoted on request, because a price you have to ask for is a price that moves."
+        title={<>What it costs<span className="c4-stop">.</span></>}
+        lead="Subscriptions start at \u00a3295 a month. Implementation is quoted by tier and starts at \u00a34,500. Before either, the audit is \u00a33,500 and the findings are yours."
         aside={<p className="c4-body">{pricingNote}</p>}
       />
 
@@ -50,19 +50,10 @@ export default function PricingPage() {
               <article key={t.name}>
                 <h3>{t.name}</h3>
                 <p>{t.body}</p>
-                {'open' in t && t.open ? (
-                  <p className="c4-open">
-                    <span className="c4-label">Not yet decided</span>
-                    {t.open}
-                  </p>
-                ) : null}
               </article>
             ))}
           </div>
 
-          <p className="c4-note" style={{ marginTop: 'var(--s5)', maxWidth: '58ch' }}>
-            {inclusionsOpen}
-          </p>
         </div>
       </section>
 

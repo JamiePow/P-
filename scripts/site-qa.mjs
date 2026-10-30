@@ -11,9 +11,9 @@ import { createConnection } from 'node:net'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import pw from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'
 
-const OUT = process.argv[2] || '/home/claude/launch/qa'
+const OUT = process.argv[2] || '/home/claude/qa'
 mkdirSync(OUT, { recursive: true })
-const PORT = 8940
+const PORT = 8961
 
 const free = (port) => new Promise((r) => {
   const s = createConnection({ port, host: '127.0.0.1' })
@@ -23,8 +23,8 @@ const free = (port) => new Promise((r) => {
 })
 if (!(await free(PORT))) { console.error(`port ${PORT} in use`); process.exit(2) }
 
-const site = spawn('npx', ['next', 'start', '-p', String(PORT)], {
-  cwd: '/home/claude/pow-and-partners',
+const site = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '-p', String(PORT)], {
+  cwd: '/home/claude/pap',
   env: { ...process.env, ENQUIRY_WEBHOOK_URL: '', ENQUIRY_NOTIFY_EMAIL: '' },
   stdio: 'ignore', detached: true,
 })
@@ -34,9 +34,9 @@ for (let i = 0; i < 60; i++) {
   await new Promise((r) => setTimeout(r, 500))
 }
 
-const ROUTES = ['/', '/what-we-do', '/solutions', '/approach', '/pricing', '/about', '/insights', '/work', '/contact', '/privacy', '/cookies', '/terms']
+const ROUTES = ['/', '/what-we-do', '/solutions', '/how-we-work', '/pricing', '/about', '/insights', '/contact', '/privacy', '/cookies', '/terms']
 const WIDTHS = [390, 768, 1024, 1440]
-const AXE = readFileSync('/home/claude/pow-and-partners/node_modules/axe-core/axe.min.js', 'utf8')
+const AXE = readFileSync('/home/claude/pap/node_modules/axe-core/axe.min.js', 'utf8')
 const browser = await pw.chromium.launch()
 const report = { routes: {}, journeys: [], links: { checked: 0, broken: [] } }
 
@@ -98,7 +98,7 @@ const JOURNEYS = [
   ['B', 'Home → Solutions → Atelier → Contact', ['/', '/solutions', '/solutions#atelier', '/contact']],
   ['C', 'Home → Solutions → Nexus → Contact', ['/', '/solutions', '/solutions#nexus', '/contact']],
   ['D', 'Home → Solutions → Blueprint → Contact', ['/', '/solutions', '/solutions#blueprint', '/contact']],
-  ['E', 'Insights → a service → Contact', ['/insights', '/what-we-do', '/contact']],
+  ['E', 'Home → How we work → Contact', ['/', '/how-we-work', '/contact']],
 ]
 for (const [id, label, steps] of JOURNEYS) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })

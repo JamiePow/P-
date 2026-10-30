@@ -47,153 +47,108 @@ export const contents: Entry[] = [
    carrying its own reference, subject, composition, lighting and ratio, at
    the size and in the position the final image will occupy. */
 
+export type Priority = 'critical' | 'high' | 'optional' | 'deferred'
+
 export type Shot = {
   ref: string
   place: string
+  /* Rendered on the page, set in the display face, as the visible content of
+     the composed plate. It should read as an editorial caption, because that
+     is what it becomes. */
   subject: string
+  /* The commissioning brief. Held here for the asset register and for the
+     photographer. It is deliberately NOT rendered on the public page: a
+     visitor should never read production direction. */
   composition: string
   lighting: string
   ratio: string
   mobile: string
-  /* Essential shots carry a section that cannot launch without them.
-     Optional shots improve a section that reads without them. */
-  essential: boolean
-  /* Secondary frames are dropped below 760 so the phone keeps one image
-     per chapter. The slot is not shown there, so it is not briefed for it. */
-  desktopOnly?: boolean
+  /* Minimum delivered width, so the register is actionable. */
+  px: number
+  priority: Priority
 }
 
 export const photography: Shot[] = [
   {
     ref: 'IMG 01',
-    place: 'Hero',
+    place: 'Hero · full-bleed band',
     subject: 'The people behind the processes',
     composition:
-      'One professional absorbed in work in a contemporary operational environment. Eye level, 35mm, no eye contact with the camera.',
-    lighting: 'Natural daylight, window side, no fill. Documentary, understated.',
-    ratio: '4 / 5',
+      'Professionals at work in a contemporary operational environment with real architectural quality. Eye level, 35mm, nobody looking at the camera. The room is part of the picture.',
+    lighting: 'Natural daylight, window side, no fill. Documentary, understated. Warm neutral grade.',
+    ratio: '16 / 9',
     mobile: '3 / 2',
-    essential: true,
+    px: 2800,
+    priority: 'critical',
   },
   {
     ref: 'IMG 02',
-    place: 'The problem',
-    subject: 'The reality of disconnected operations',
-    composition:
-      'Two colleagues reconciling information across screens, paperwork and a spreadsheet. Over the shoulder, both hands visible.',
-    lighting: 'Overhead daylight, unstaged. Complexity without exaggerated frustration.',
-    ratio: '3 / 2',
-    mobile: '3 / 2',
-    essential: true,
-  },
-  {
-    ref: 'IMG 03',
-    place: 'What changes',
-    subject: 'What recovered time looks like',
-    composition:
-      'An owner or operations manager working with their team rather than keying. Mid-conversation, standing, papers set aside.',
-    lighting: 'Daylight, open room. Capacity, clarity and progress, not celebration.',
-    ratio: '16 / 9',
-    mobile: '3 / 2',
-    essential: true,
-  },
-  {
-    ref: 'IMG 04',
     place: 'Atelier',
     subject: 'Jewellery and specialist retail',
     composition:
-      'A jeweller at a contemporary bench or in a premium workshop. Craft in the foreground, the operational reality of the business behind it. Portrait, shot close enough to see the hands working. No product branding in frame.',
+      'A jeweller at a contemporary bench or in a premium workshop. Craft in the foreground, the operational reality of the business behind it. Close enough to see the hands working. No product branding in frame.',
     lighting: 'Raking side light, shallow depth, warm neutral grade.',
     ratio: '4 / 5',
     mobile: '3 / 2',
-    essential: true,
+    px: 1800,
+    priority: 'high',
   },
   {
-    ref: 'IMG 05',
+    ref: 'IMG 03',
     place: 'Nexus',
     subject: 'Connected operations',
     composition:
       'A real logistics, field service or delivery environment. People coordinating work, a device in hand, a vehicle or loading bay in frame.',
-    lighting: 'First light or late afternoon, available light only.',
+    lighting: 'First light or late afternoon, available light only. Cool neutral grade.',
     ratio: '16 / 9',
     mobile: '16 / 9',
-    essential: true,
+    px: 2400,
+    priority: 'high',
+  },
+  {
+    ref: 'IMG 04',
+    place: 'Partners · Jamie Pow',
+    subject: 'Jamie Pow',
+    composition: 'At work, not against a backdrop. Three quarter, hands in frame where natural.',
+    lighting: 'Natural light, no studio. Genuine founder photography only.',
+    ratio: '4 / 5',
+    mobile: '4 / 5',
+    px: 1400,
+    priority: 'high',
+  },
+  {
+    ref: 'IMG 05',
+    place: 'Partners · Taylor Sullivan',
+    subject: 'Taylor Sullivan',
+    composition: 'At work, not against a backdrop. Three quarter, hands in frame where natural.',
+    lighting: 'Natural light, no studio. Genuine founder photography only.',
+    ratio: '4 / 5',
+    mobile: '4 / 5',
+    px: 1400,
+    priority: 'high',
   },
   {
     ref: 'IMG 06',
-    place: 'Blueprint',
-    subject: 'Construction and subcontracting',
-    composition:
-      'A construction professional reviewing drawings, materials or site documentation. Organisation and accountability, not hard-hat cliché.',
-    lighting: 'Site cabin or site edge, daylight, cool neutral grade.',
-    ratio: '16 / 9',
-    mobile: '16 / 9',
-    essential: true,
+    place: 'Partners · Jack Alexander Pow',
+    subject: 'Jack Alexander Pow',
+    composition: 'At work, not against a backdrop. Three quarter, hands in frame where natural.',
+    lighting: 'Natural light, no studio. Genuine founder photography only.',
+    ratio: '4 / 5',
+    mobile: '4 / 5',
+    px: 1400,
+    priority: 'high',
   },
   {
     ref: 'IMG 07',
-    place: 'Our approach',
-    subject: 'Working together',
+    place: 'Blueprint',
+    subject: 'Construction and subcontracting',
     composition:
-      'A natural working session, two or three people around a printed process or a wall. Shot from behind or to the side. Not a boardroom.',
-    lighting: 'Available light, warehouse or office interior.',
-    ratio: '3 / 2',
-    mobile: '3 / 2',
-    essential: true,
-  },
-  {
-    ref: 'IMG 08',
-    place: 'About · Jamie Pow',
-    subject: 'Founder portrait',
-    composition: 'At work, not against a backdrop. Three quarter, hands in frame where natural.',
-    lighting: 'Natural light, no studio. Genuine founder photography only.',
-    ratio: '4 / 5',
-    mobile: '4 / 5',
-    essential: false,
-  },
-  {
-    ref: 'IMG 09',
-    place: 'About · Taylor Sullivan',
-    subject: 'Founder portrait',
-    composition: 'At work, not against a backdrop. Three quarter, hands in frame where natural.',
-    lighting: 'Natural light, no studio. Genuine founder photography only.',
-    ratio: '4 / 5',
-    mobile: '4 / 5',
-    essential: false,
-  },
-  {
-    ref: 'IMG 10',
-    place: 'About · Jack',
-    subject: 'Founder portrait',
-    composition: 'At work, not against a backdrop. Three quarter, hands in frame where natural.',
-    lighting: 'Natural light, no studio. Genuine founder photography only.',
-    ratio: '4 / 5',
-    mobile: '4 / 5',
-    essential: false,
-  },
-  {
-    ref: 'IMG 11',
-    place: 'Atelier · secondary',
-    subject: 'The consultation, not the product',
-    composition:
-      'A premium showroom or consultation table, two people either side of it, a tray or a tablet between them. Shot wide enough to show the room. Natural human presence, no eye contact with the camera.',
-    lighting: 'Window light across the table, warm neutral grade, shallow depth.',
-    ratio: '3 / 2',
-    mobile: '3 / 2',
-    essential: false,
-    desktopOnly: true,
-  },
-  {
-    ref: 'IMG 12',
-    place: 'Blueprint · secondary',
-    subject: 'The site the records come from',
-    composition:
-      'A contemporary site in working order. Structure, materials and organisation legible. Shot from a distance that shows the scale of the job rather than a face.',
-    lighting: 'Overcast or early light, cool neutral grade. No hard-hat portraiture.',
+      'A contemporary site in working order. Structure, materials and organisation legible. Shot for the scale of the job rather than for a face. No hard-hat portraiture.',
+    lighting: 'Overcast or early light, cool neutral grade.',
     ratio: '16 / 9',
     mobile: '16 / 9',
-    essential: false,
-    desktopOnly: true,
+    px: 2400,
+    priority: 'deferred',
   },
 ]
 
@@ -272,15 +227,93 @@ export const changes = [
   },
 ]
 
-/* What a customer can reasonably expect, in the brief's own words. */
+/* What a customer can reasonably expect. Written as things that either are
+   or are not true of a week, rather than as six comparatives. Each one is
+   checkable by the person reading it. */
+
 export const outcomes = [
-  'Less repetitive administration',
-  'Fewer manual handoffs',
-  'Better operational visibility',
-  'More reliable information',
-  'Faster processes',
-  'More capacity without proportionally more headcount',
+  'An order is entered once.',
+  'The invoice goes out the day the job is signed off, not the week after.',
+  'The stock figure on the website is the stock figure in the warehouse.',
+  'The month-to-date number comes from one place, so nobody argues about whose is right.',
+  'A customer question is answered from one screen.',
+  'The people who were keying are doing something else.',
 ]
+
+/* ---------- 04 in practice ----------
+   Three worked operational sequences, drawn in the same language as Fig. 01.
+   Each carries the same four beats so the set stays comparable: the problem,
+   what is connected, the benefit, and the measure.
+
+   The measure is named and never given a number. The audit is what produces
+   a number, and inventing one here would be a claim we cannot stand behind.
+
+   These are illustrative workflows. None of them describes a completed
+   customer project and none names a client. The section says so on the page. */
+
+export type Workflow = {
+  n: string
+  fig: string
+  name: string
+  nodes: string[]
+  /* The node the connected record most obviously changes. Index into nodes. */
+  pivot: number
+  problem: string
+  connects: string
+  benefit: string
+  measures: string[]
+}
+
+export const workflows: Workflow[] = [
+  {
+    n: '01',
+    fig: 'Fig. 02',
+    name: 'Orders, inventory and fulfilment',
+    nodes: ['Storefront', 'Stock', 'Fulfilment', 'The team'],
+    pivot: 1,
+    problem:
+      'An order placed on the website does not reach the warehouse until somebody types it there, so stock is accurate only between the last sale and the next one.',
+    connects:
+      'The storefront, the stock record, the fulfilment queue and the people who need to know, so that one order writes to all of them.',
+    benefit:
+      'Stock is right the moment an order is placed, picking starts without a re-entry, and the customer is told the truth about what is available.',
+    measures: ['Orders entered more than once', 'Time from order to pick', 'Oversells a month'],
+  },
+  {
+    n: '02',
+    fig: 'Fig. 03',
+    name: 'Operations and finance',
+    nodes: ['Job complete', 'Proof', 'Invoice', 'Credit control'],
+    pivot: 2,
+    problem:
+      'Work is completed on site and invoiced from paperwork that comes back days later, so the invoice is always behind the job and the evidence is wherever the van left it.',
+    connects:
+      'Job completion, proof captured where the work happens, invoicing and credit control, all reading from the same record.',
+    benefit:
+      'Completed work raises its own invoice the same day with the signature attached, and a query is answered from the record rather than from memory.',
+    measures: [
+      'Days from completion to invoice',
+      'Value of work sitting uninvoiced',
+      'Queries resolved without a site visit',
+    ],
+  },
+  {
+    n: '03',
+    fig: 'Fig. 04',
+    name: 'Customer data and reporting',
+    nodes: ['Customers', 'Orders', 'Accounts', 'One view'],
+    pivot: 3,
+    problem:
+      'The month-to-date figure depends on which system you ask and who exported it, so the first half of every meeting is spent agreeing whose number is right.',
+    connects: 'Customers, orders and accounts into one reporting view that updates itself.',
+    benefit:
+      'One set of numbers everybody works from, available without an export, so the meeting starts at the decision.',
+    measures: ['Hours spent on the monthly pack', 'Conflicting figures in circulation', 'Days to close'],
+  },
+]
+
+export const workflowsNote =
+  'Illustrative workflows, drawn from the kind of work we do rather than from a particular engagement. They are not completed client projects and no customer is named.'
 
 /* ---------- 04 solutions ---------- */
 
@@ -288,6 +321,11 @@ export type Solution = {
   n: string
   name: string
   sector: string
+  /* The commercial header, in the same four beats on all three, so a buyer
+     can compare them without reading three different shapes. */
+  whoFor: string
+  delivers: string
+  why: string
   /* The four things a prospective customer needs from a solution, in order.
      Anything Blueprint cannot yet evidence is marked proposed in the copy. */
   problem: string
@@ -299,7 +337,6 @@ export type Solution = {
   treatment: 'atelier' | 'nexus' | 'blueprint'
   does: string[]
   img: string
-  imgB?: string
 }
 
 /* Capability lists are drawn from the founding plan for the same operating
@@ -310,6 +347,12 @@ export const solutions: Solution[] = [
     n: '01',
     name: 'Atelier',
     sector: 'Jewellery and bridal',
+    whoFor:
+      'Independent and multi-site jewellers, bridal specialists and premium retailers who sell on knowledge rather than on price.',
+    delivers:
+      'One record for the piece, with the configurator, the jewellery data model, appointments, the client book and the repairs and valuations workflow all reading from it.',
+    why:
+      'If your counter staff check three systems to answer one question, the cost is being paid in the conversations they are not having.',
     problem:
       'Stock, repairs, valuations and appointments live in four places, and the website disagrees with all of them.',
     response:
@@ -320,8 +363,7 @@ export const solutions: Solution[] = [
       'Specialist retail sells on knowledge. Time spent reconciling systems is time not spent with a customer who is spending four figures.',
     status: 'Proved in live trading',
     treatment: 'atelier',
-    img: 'IMG 04',
-    imgB: 'IMG 11',
+    img: 'IMG 02',
     does: [
       'Product configurator: metals, stones, settings, engraving',
       'A jewellery data model: carat, cut, clarity, hallmark, provenance',
@@ -335,6 +377,12 @@ export const solutions: Solution[] = [
     n: '02',
     name: 'Nexus',
     sector: 'Field services, delivery and route operations',
+    whoFor:
+      'Operators running vans, engineers or recurring service rounds, where the work happens away from the office and comes back on paper.',
+    delivers:
+      'Customers and contracts, planning and dispatch, a driver workflow that captures proof where the work happens, and billing that reads from the same record.',
+    why:
+      'Every day between the work and the invoice is a day of someone else\u2019s cash. If yours is measured in days rather than hours, this is the quickest thing to fix.',
     problem:
       'Work leaves on a van and comes back on paper, so the invoice is always a week behind the job.',
     response:
@@ -345,7 +393,7 @@ export const solutions: Solution[] = [
       'Every day between the work and the invoice is a day of someone else\u2019s cash. Shortening it is usually the cheapest working capital improvement an operator can make.',
     status: 'Proved in live trading',
     treatment: 'nexus',
-    img: 'IMG 05',
+    img: 'IMG 03',
     does: [
       'Customers and contracts, sites, subscriptions, self-serve portal',
       'Route and delivery planning, driver mobile workflow, proof of delivery',
@@ -359,19 +407,24 @@ export const solutions: Solution[] = [
     n: '03',
     name: 'Blueprint',
     sector: 'Construction subcontractors',
+    whoFor:
+      'Subcontractors running labour, materials and plant across several contracts, who assemble applications from records held in three places.',
+    delivers:
+      'Capture on site against the job and the drawing revision, so labour, materials, plant and variations accumulate into the application rather than being reconstructed for it.',
+    why:
+      'If you are writing off variations you cannot evidence, the value of those is the case for doing this. It should be tested against your figures.',
     problem:
       'Site hours, materials and variations recorded three times, and a valuation nobody can evidence.',
     response:
-      'Proposed. Capture on site, against the job and against the drawing revision, so labour, materials, plant and variations accumulate into the application instead of being reconstructed for it.',
+      'Capture on site, against the job and against the drawing revision, so labour, materials, plant and variations accumulate into the application instead of being reconstructed for it.',
     improvement:
-      'Proposed. The application is assembled from the record. A disputed variation is answered with the ticket that was signed at the time, by the person who signed it.',
+      'The application is assembled from the record. A disputed variation is answered with the ticket that was signed at the time, by the person who signed it.',
     commercial:
-      'Proposed. Unevidenced variations get written off. The case for Blueprint is the value of the ones currently being lost, and it should be tested against your figures rather than ours.',
-    status: 'In development, capabilities proposed',
+      'Unevidenced variations get written off. The case for Blueprint is the value of the ones currently being lost, and it should be tested against your figures rather than ours.',
+    status: 'In development',
     open: true,
     treatment: 'blueprint',
-    img: 'IMG 06',
-    imgB: 'IMG 12',
+    img: 'IMG 07',
     does: [
       'Site time and labour capture',
       'Materials and plant against the job',
@@ -392,21 +445,30 @@ export const solutionsDisclosure =
 
 /* ---------- 05 the difference ---------- */
 
+/* The section leads with what the work is for. The people-first commitment
+   survives as commitment 02 and in the supporting paragraph, where it
+   supports the proposition rather than being it.
+
+   There are three commitments. No approved wording exists for any further
+   ones, so none is invented and no placeholder is published. */
+
+export const difference = {
+  lead: 'Every engagement is judged on the time it gives back',
+  support:
+    'The baseline is agreed before anything is built and measured again afterwards. That number is what the work is judged on, and it is why our business cases are built on hours returned rather than on headcount.',
+}
+
 export const commitments = [
   {
     n: '01',
-    text: 'We start with the systems you already run. Replacement is a last resort, not an opening position.',
+    text: 'We start with the systems you already run. Replacement is a last resort.',
   },
   {
     n: '02',
-    text: 'We measure the hours returned, and we do not build business cases on redundancies.',
+    text: 'We measure hours returned rather than building business cases around redundancies.',
   },
   { n: '03', text: 'Our prices are published.' },
 ]
-
-export const commitmentsOpen = prov(
-  'Commitments 04, 05 and 06 from the approved brief drop in here, one line each',
-)
 
 /* ---------- 06 approach ---------- */
 
@@ -455,7 +517,7 @@ export const stagesNote =
 
 /* Pricing is owned by lib/pricing.ts and re-exported here so the concept
    content layer has one shape to render. There is no second set of numbers. */
-export { tierViews as tiers, commercialTerms as terms, pricingNote, inclusionsOpen } from './pricing'
+export { tierViews as tiers, commercialTerms as terms, pricingNote } from './pricing'
 
 /* ---------- 08 about ---------- */
 
@@ -471,8 +533,7 @@ export const partners = [
     body: 'Owns the trading business Atelier was built inside, and corrected by.',
   },
   {
-    name: 'Jack',
-    surname: prov('surname'),
+    name: 'Jack Alexander Pow',
     role: 'Partner · Field and route operations',
     body: 'Runs the operation Nexus was specified by, and fixed in, on live routes.',
   },
@@ -500,20 +561,21 @@ export const accountability = [
 /* ---------- calls to action, written as continuations ---------- */
 
 export const ctas = {
-  problem: {
-    line: 'Most of this is visible in an hour with the people doing the work.',
-    action: 'Start a conversation',
-  },
   solutions: {
     line: 'If one of these looks like your business, that is the quickest way in.',
     action: 'Tell us which one',
   },
-  approach: {
-    line: 'The audit is the first step, and the only one you pay for before you know anything.',
-    action: 'Ask about the audit',
-  },
   pricing: {
-    line: 'Not sure which tier. Tell us the systems and we will say which one fits.',
+    line: 'Not sure which tier fits. Tell us the systems you run and we will say which one it is.',
     action: 'Ask about pricing',
   },
 }
+
+/* The enquiry select. The values are the four the API accepts and must not
+   change; only the labels are written for a customer rather than for us. */
+export const enquiryOptions: { value: string; label: string }[] = [
+  { value: 'craft', label: 'Jewellery, bridal or specialist retail' },
+  { value: 'operations', label: 'Field service, delivery or route operations' },
+  { value: 'commerce', label: 'Commerce and digital products' },
+  { value: 'other', label: 'Something else' },
+]

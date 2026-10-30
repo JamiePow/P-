@@ -8,53 +8,65 @@
 */
 
 import type { CSSProperties, ReactNode } from 'react'
-import type { Provisional, Shot } from '@/lib/c04'
+import type { Shot } from '@/lib/c04'
 
 /* The eyebrow: a short red rule, then the folio, on one line. */
 export function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="c4-eyebrow">{children}</p>
 }
 
-/* An inline marker for a word that has not been supplied or approved. */
-export function PW({ children }: { children: ReactNode }) {
-  return <span className="c4-pw">{children}</span>
-}
-
-export function ProvWord({ value }: { value: Provisional }) {
-  return <PW>{value.provisional}</PW>
-}
-
 /*
-  The art-direction plate.
+  The composed editorial plate.
 
-  Not a grey rectangle standing in for a picture. It occupies the exact space
-  and ratio the photograph will occupy, carries its own reference number, and
-  prints the brief a photographer would shoot from: subject, composition,
-  lighting and ratio. The faint thirds mark the frame. It is set in the page's
-  own type, so the layout can be judged before a single image exists.
+  Not a grey rectangle, and no longer a brief printed at the customer. It
+  occupies the exact space and ratio the photograph will occupy and presents
+  its subject as an editorial caption set in the display face, with a red
+  reference tick and a discreet format note. It is a deliberate device that
+  reads as finished, and it is honestly labelled.
+
+  The commissioning direction for each frame — composition, lighting, the
+  delivered width — stays in lib/c04.ts for the asset register and for the
+  photographer. None of it is rendered here.
+
+  When a photograph arrives, pass `src` and the plate becomes the picture at
+  the same ratio in the same place, so nothing in the layout moves.
 */
 export function Plate({
   shot,
   className = '',
-  compact = false,
+  variant = 'inset',
+  src,
+  priority = false,
 }: {
   shot: Shot
   className?: string
-  compact?: boolean
+  variant?: 'inset' | 'band' | 'portrait'
+  src?: string
+  priority?: boolean
 }) {
   const style = { '--ar': shot.ratio, '--ar-m': shot.mobile } as CSSProperties
+  const cls = `c4-plate c4-plate--${variant} ${className}`.trim()
+
+  if (src) {
+    return (
+      <figure className={cls} style={style} data-filled="true">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={shot.subject}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding={priority ? 'sync' : 'async'}
+        />
+      </figure>
+    )
+  }
+
   return (
-    <figure className={`c4-plate${compact ? ' c4-plate--compact' : ''} ${className}`} style={style}>
-      <span className="c4-plate__guides" aria-hidden="true" />
+    <figure className={cls} style={style}>
+      <span className="c4-plate__rule" aria-hidden="true" />
       <span className="c4-plate__ref">{shot.ref}</span>
       <p className="c4-plate__subject">{shot.subject}</p>
-      <div className="c4-plate__spec">
-        <p>{shot.composition}</p>
-        <p className="c4-plate__meta">
-          <span>{shot.lighting}</span>
-          <span>{shot.ratio.replace(' / ', ':')} · to be commissioned</span>
-        </p>
-      </div>
+      <span className="c4-plate__fmt">{shot.ratio.replace(' / ', ':')}</span>
     </figure>
   )
 }
@@ -125,26 +137,6 @@ export function Row({
       </div>
       <div className="c4-row__body">{children}</div>
     </div>
-  )
-}
-
-/* The index strip. The contents list from the proposal, compressed into a
-   single band under the hero so that the right column can carry a picture.
-   It is still the document's contents, and it is still navigation. */
-export function IndexStrip({
-  items,
-}: {
-  items: { n: string; id: string; short: string }[]
-}) {
-  return (
-    <nav className="c4-index" aria-label="Contents">
-      {items.map((c) => (
-        <a key={c.id} href={`#${c.id}`}>
-          <span className="n">{c.n}</span>
-          <span className="t">{c.short}</span>
-        </a>
-      ))}
-    </nav>
   )
 }
 

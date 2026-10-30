@@ -57,6 +57,27 @@ function Beats({ s, variant }: { s: Solution; variant: 'stack' | 'row' | 'sheet'
   )
 }
 
+/* The commercial header. Same four beats, same position, all three, so a
+   buyer can compare them without reading three different shapes. */
+function Commercial({ s }: { s: Solution }) {
+  return (
+    <dl className="c4-sol__comm">
+      <div>
+        <dt className="c4-label">Who it serves</dt>
+        <dd>{s.whoFor}</dd>
+      </div>
+      <div>
+        <dt className="c4-label">What it delivers</dt>
+        <dd>{s.delivers}</dd>
+      </div>
+      <div>
+        <dt className="c4-label">Why enquire</dt>
+        <dd>{s.why}</dd>
+      </div>
+    </dl>
+  )
+}
+
 function Does({ items, cols }: { items: string[]; cols?: boolean }) {
   return (
     <div className="c4-does">
@@ -88,18 +109,14 @@ function Atelier({ s }: { s: Solution }) {
     <article className="c4-atl" id={s.name.toLowerCase()} data-reveal>
       <div className="c4-atl__left">
         <div className="c4-atl__fig">
-          <Plate shot={shot(s.img)} compact />
+          <Plate shot={shot(s.img)} variant="portrait" />
         </div>
         <AtelierSpec />
-        {s.imgB ? (
-          <div className="c4-atl__fig2">
-            <Plate shot={shot(s.imgB)} compact />
-          </div>
-        ) : null}
       </div>
       <div className="c4-atl__right">
         <div className="c4-atl__copy">
           <Head s={s} />
+          <Commercial s={s} />
           <Beats s={s} variant="stack" />
           <p className="c4-sol__status">
             <Chip open={s.open}>{s.status}</Chip>
@@ -123,8 +140,9 @@ function Nexus({ s }: { s: Solution }) {
           <Chip open={s.open}>{s.status}</Chip>
         </p>
       </div>
+      <Commercial s={s} />
       <div className="c4-nex__band">
-        <Plate shot={shot(s.img)} compact />
+        <Plate shot={shot(s.img)} />
       </div>
       <div className="c4-nex__flow">
         <p className="c4-label">How the work moves</p>
@@ -154,7 +172,7 @@ function Blueprint({ s }: { s: Solution }) {
         <div className="c4-bp__title">
           <span className="c4-label">DWG · Solution {s.n}</span>
           <span className="c4-label">{s.sector}</span>
-          <span className="c4-label">Status · proposed</span>
+          <span className="c4-label">Status · in development</span>
         </div>
 
         <div className="c4-bp__body">
@@ -163,6 +181,7 @@ function Blueprint({ s }: { s: Solution }) {
             <p className="c4-sol__status">
               <Chip open={s.open}>{s.status}</Chip>
             </p>
+            <Commercial s={s} />
             <div className="c4-bp__art">
               <BlueprintArt />
               <BlueprintArtTall />
@@ -172,8 +191,7 @@ function Blueprint({ s }: { s: Solution }) {
           <Beats s={s} variant="sheet" />
 
           <div className="c4-bp__figs">
-            <Plate shot={shot(s.img)} compact />
-            {s.imgB ? <Plate shot={shot(s.imgB)} compact /> : null}
+            <Plate shot={shot(s.img)} />
           </div>
 
           <div className="c4-bp__does">
@@ -182,8 +200,8 @@ function Blueprint({ s }: { s: Solution }) {
         </div>
 
         <div className="c4-bp__foot">
-          <span className="c4-label">Capabilities proposed, not released</span>
-          <span className="c4-label">Drawing language used as an editorial device</span>
+          <span className="c4-label">In development · capabilities described are proposed</span>
+          <span className="c4-label">{s.sector}</span>
         </div>
       </div>
     </article>

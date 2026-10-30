@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { pillars } from '@/lib/data'
+import { enquiryOptions } from '@/lib/c04'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 type Errors = Record<string, string>
@@ -130,9 +130,9 @@ export default function ContactForm({
 
   if (status === 'sent') {
     return (
-      <div className="rule pt-10">
-        <p className="font-display text-3xl">Thank you.</p>
-        <p className="mt-4 max-w-prose text-muted">
+      <div className="c4-thanks" role="status">
+        <p className="c4-thanks__h">Thank you.</p>
+        <p>
           Your enquiry has reached us. We read everything that comes in and reply within one working
           day.
         </p>
@@ -140,10 +140,9 @@ export default function ContactForm({
     )
   }
 
-  const field =
-    'mt-2 w-full border-b border-hairline bg-transparent pb-3 font-sans text-base outline-none transition-colors duration-300 ease-brand focus:border-accent aria-[invalid=true]:border-accent disabled:cursor-not-allowed disabled:opacity-55'
-  const label = 'font-mono text-[10px] uppercase tracking-label text-muted'
-  const hint = 'mt-2 font-sans text-sm text-ink'
+  const field = 'c4-input'
+  const label = 'c4-label'
+  const hint = 'c4-form__err'
 
   const err = (k: string) =>
     errors[k] ? (
@@ -157,13 +156,11 @@ export default function ContactForm({
   })
 
   return (
-    <form onSubmit={onSubmit} noValidate className="rule pt-10">
+    <form onSubmit={onSubmit} noValidate className="c4-form">
       {!enabled ? (
-        <div className="mb-9 border-l-2 border-accent pl-5" id="enquiries-closed">
-          <p className="font-mono text-[10px] uppercase tracking-label text-muted">
-            Enquiries are not open yet
-          </p>
-          <p className="mt-3 max-w-prose font-sans text-sm">
+        <div className="c4-form__notice" id="enquiries-closed">
+          <p className="c4-label">Enquiries are not open yet</p>
+          <p className="c4-small">
             The enquiry mailbox is still being set up, so this form cannot be sent and has been
             disabled. It is shown here so the page can be reviewed as it will work. Nothing typed
             into it would reach us.
@@ -177,15 +174,15 @@ export default function ContactForm({
         tabIndex={-1}
         role="alert"
         aria-live="assertive"
-        className={status === 'error' && message ? 'mb-9 border-l-2 border-accent pl-5' : 'sr-only'}
+        className={status === 'error' && message ? 'c4-form__notice' : 'c4-sr'}
       >
         {status === 'error' && message ? (
-          <p className="font-sans text-sm">
+          <p className="c4-small">
             {message}
             {fallbackEmail ? (
               <>
                 {' '}
-                <a href={`mailto:${fallbackEmail}`} className="border-b border-accent">
+                <a href={`mailto:${fallbackEmail}`} className="c4-form__mail">
                   {fallbackEmail}
                 </a>
               </>
@@ -195,7 +192,7 @@ export default function ContactForm({
       </div>
 
       <fieldset disabled={!enabled} aria-describedby={!enabled ? 'enquiries-closed' : undefined} className="contents">
-      <div className="grid gap-9 sm:grid-cols-2">
+      <div className="c4-form__grid">
         <div>
           <label className={label} htmlFor="name">
             Your name
@@ -220,23 +217,22 @@ export default function ContactForm({
           <label className={label} htmlFor="pillar">
             What it concerns
           </label>
-          <select className={field} id="pillar" name="pillar" defaultValue={pillars[2].slug}>
-            {pillars.map((pillar) => (
-              <option key={pillar.slug} value={pillar.slug}>
-                {pillar.name}
+          <select className={field} id="pillar" name="pillar" defaultValue="operations">
+            {enquiryOptions.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
               </option>
             ))}
-            <option value="other">Something else</option>
           </select>
         </div>
       </div>
 
-      <div className="mt-9">
+      <div className="c4-form__msg">
         <label className={label} htmlFor="message">
           The project, in a few lines
         </label>
         <textarea
-          className={`${field} resize-none`}
+          className={field}
           id="message"
           name="message"
           rows={5}
@@ -248,7 +244,7 @@ export default function ContactForm({
 
       {/* Hidden from people, from screen readers and from the tab order.
           Anything that fills it in is not a visitor. */}
-      <div aria-hidden="true" className="absolute left-[-9999px] h-px w-px overflow-hidden">
+      <div aria-hidden="true" className="c4-form__hp">
         <label htmlFor="website">Leave this field empty</label>
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
@@ -259,12 +255,9 @@ export default function ContactForm({
         type="submit"
         disabled={!enabled || status === 'sending'}
         aria-busy={status === 'sending'}
-        className="group mt-10 inline-flex items-center gap-3 border-b border-accent pb-2 font-mono text-[11px] uppercase tracking-label disabled:cursor-wait disabled:opacity-50"
+        className="c4-btn c4-form__send"
       >
         {!enabled ? 'Enquiries not open yet' : status === 'sending' ? 'Sending' : 'Send it over'}
-        <span className="transition-transform duration-300 ease-brand group-hover:translate-x-1">
-          &rarr;
-        </span>
       </button>
     </form>
   )

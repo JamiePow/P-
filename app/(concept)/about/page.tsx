@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Shell, PageHead } from '@/components/c04/Chrome'
-import { Cta, Plate, ProvWord, Row } from '@/components/c04/Parts'
+import { Cta, Plate, Row } from '@/components/c04/Parts'
 import { accountability, ambition, partners, shot } from '@/lib/c04'
 
 export const metadata: Metadata = {
@@ -16,8 +16,8 @@ export default function AboutPage() {
       <PageHead
         n="04"
         folio="About P&"
-        title={<>We built these inside businesses we had to run<span className="c4-stop">.</span></>}
-        lead="Three founding partners, three sectors, and the same habit in each of them."
+        title={<>Three partners, three operating businesses<span className="c4-stop">.</span></>}
+        lead="Everything P& sells was built inside one of them and corrected by the people using it."
         aside={<p className="c4-body">{ambition}</p>}
       />
 
@@ -27,16 +27,8 @@ export default function AboutPage() {
           <div className="c4-people" style={{ marginTop: 'var(--s4)' }}>
             {partners.map((p, i) => (
               <article className="c4-person" key={p.name}>
-                <Plate shot={shot(`IMG ${String(8 + i).padStart(2, '0')}`)} compact />
-                <h3>
-                  {p.name}
-                  {'surname' in p && p.surname ? (
-                    <>
-                      {' '}
-                      <ProvWord value={p.surname} />
-                    </>
-                  ) : null}
-                </h3>
+                <Plate shot={shot(`IMG 0${4 + i}`)} variant="portrait" />
+                <h3>{p.name}</h3>
                 <p className="role c4-label">{p.role}</p>
                 <p className="c4-body">{p.body}</p>
               </article>
