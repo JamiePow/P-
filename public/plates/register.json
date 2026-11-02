@@ -1,0 +1,98 @@
+[
+  {
+    "file": "hero-wide.webp",
+    "px": "2000x1125",
+    "kb": 501,
+    "stands_for": "IMG 01 \u2014 hero. Architectural interior, raking daylight."
+  },
+  {
+    "file": "hero-tall.webp",
+    "px": "1000x1600",
+    "kb": 396,
+    "stands_for": "IMG 01m \u2014 hero, mobile composition."
+  },
+  {
+    "file": "group-tall.webp",
+    "px": "1200x1500",
+    "kb": 97,
+    "stands_for": "IMG 02 \u2014 the group. Cut stone, material detail."
+  },
+  {
+    "file": "powxd-wide.webp",
+    "px": "1600x1000",
+    "kb": 6,
+    "stands_for": "powxd panel \u2014 Lacquer. Deep burgundy, hard specular."
+  },
+  {
+    "file": "powxd-tall.webp",
+    "px": "1200x1500",
+    "kb": 7,
+    "stands_for": "powxd panel, portrait \u2014 Lacquer. Deep burgundy, hard specular."
+  },
+  {
+    "file": "crafted-wide.webp",
+    "px": "1600x1000",
+    "kb": 137,
+    "stands_for": "crafted panel \u2014 Linen. Sage, gold in the highlight."
+  },
+  {
+    "file": "crafted-tall.webp",
+    "px": "1200x1500",
+    "kb": 124,
+    "stands_for": "crafted panel, portrait \u2014 Linen. Sage, gold in the highlight."
+  },
+  {
+    "file": "nexus-wide.webp",
+    "px": "1600x1000",
+    "kb": 109,
+    "stands_for": "nexus panel \u2014 Water. Refracted light over a dark floor."
+  },
+  {
+    "file": "nexus-tall.webp",
+    "px": "1200x1500",
+    "kb": 102,
+    "stands_for": "nexus panel, portrait \u2014 Water. Refracted light over a dark floor."
+  },
+  {
+    "file": "atelier-wide.webp",
+    "px": "1600x1000",
+    "kb": 215,
+    "stands_for": "atelier panel \u2014 Patinated bronze. Oxidised, mineral."
+  },
+  {
+    "file": "atelier-tall.webp",
+    "px": "1200x1500",
+    "kb": 205,
+    "stands_for": "atelier panel, portrait \u2014 Patinated bronze. Oxidised, mineral."
+  },
+  {
+    "file": "blueprint-wide.webp",
+    "px": "1600x1000",
+    "kb": 8,
+    "stands_for": "blueprint panel \u2014 Cyanotype. Drafted geometry on paper."
+  },
+  {
+    "file": "blueprint-tall.webp",
+    "px": "1200x1500",
+    "kb": 8,
+    "stands_for": "blueprint panel \u2014 Cyanotype. Drafted geometry on paper."
+  },
+  {
+    "file": "hall-wide.webp",
+    "px": "2000x1125",
+    "kb": 20,
+    "stands_for": "IMG 07 \u2014 ethos. Architectural interior, daylight between piers."
+  },
+  {
+    "file": "hall-tall.webp",
+    "px": "1050x1600",
+    "kb": 16,
+    "stands_for": "IMG 07 \u2014 ethos. Architectural interior, daylight between piers."
+  },
+  {
+    "file": "close-wide.webp",
+    "px": "2000x900",
+    "kb": 43,
+    "stands_for": "IMG 09 \u2014 closing band. Near-dark, single light."
+  }
+]
