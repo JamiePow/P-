@@ -2,9 +2,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Monogram } from '@/components/Brand'
 import Header from '@/components/group/Header'
-import Card from '@/components/group/Card'
-import { Ready, Reveal } from '@/components/group/Parts'
-import { believe, closing, featured, help, hero, portfolio, who } from '@/lib/group'
+import Business from '@/components/group/Business'
+import { Plate, Ready, Reveal } from '@/components/group/Parts'
+import { believe, closing, featured, help, hero, img, portfolio, src, who } from '@/lib/group'
 import { site } from '@/lib/data'
 
 import '../group.css'
@@ -12,19 +12,17 @@ import '../group.css'
 /*
   The P& group homepage.
 
-  Six sections, in the order the brand argues for rather than the order the
-  portfolio does: the brand, who we are, what we believe, how we work with
-  brands, the businesses, the conversation.
+  Six moments, no two sharing a shape: a figure inside an ambitious space;
+  a band with the headline crossing its edge; one italic sentence at full
+  viewport; a held detail with three principles stepping past it; three
+  businesses in three treatments; the red field into the black.
 
-  The previous version opened with the portfolio and gave each business a
-  full-bleed panel, which made P& read as a holding company presenting three
-  products. The business plan lists "a holding company — owns businesses; does
-  not make them better" under What P& is NOT, so that framing was wrong at the
-  source. The portfolio is now one curated row near the end.
+  Every section opens with a red rule and letterspaced caps, and every
+  display statement closes with a red full stop. Both devices are taken from
+  the business plan, not invented for the site.
 
-  Every display statement closes with a red full stop, and every section opens
-  with a red rule and letterspaced caps, because that is how the plan sets its
-  own pages. Both devices are the brand's, not decoration.
+  The photography is licensed stock standing in for a commissioned shoot; the
+  register and its caveats are in lib/group.ts.
 
   This page shares no layout, component or stylesheet with the rest of the
   site; the remaining pages still render from c04.css and are unchanged.
@@ -33,7 +31,7 @@ import '../group.css'
 export const metadata: Metadata = {
   title: { absolute: `${site.name} | Ideas, made valuable` },
   description:
-    'An innovation group that builds technology, brands and businesses, and proves them in live trading before selling them to anyone.',
+    'We put design, technology and commercial thinking in the same room, then use them to build products, businesses and experiences that make people’s lives easier.',
 }
 
 export default function Home() {
@@ -45,160 +43,150 @@ export default function Home() {
       <Header />
 
       <main id="main">
-        {/* ------------------------------------------- 01 · the brand ---- */}
+        {/* --------------------------------------------- 01 · the hero --- */}
         <section className="g-hero on-dark" aria-labelledby="g-hero-h">
-          <div className="g-hero__plate">
+          <div className="g-hero__img">
             <picture>
-              <source media="(max-width: 860px)" srcSet="/plates/dawn-tall.webp" />
+              <source media="(max-width: 860px)" srcSet={src('hero', true)} />
               <img
-                src="/plates/dawn-wide.webp"
-                alt="Morning light through a window, falling across the floor of an empty room. Temporary constructed image, pending commissioned photography."
-                width={2000}
-                height={1125}
+                src={src('hero')}
+                alt={img.hero.alt}
                 fetchPriority="high"
                 decoding="async"
               />
             </picture>
           </div>
 
-          <div className="g-hero__inner">
-            <div className="g-hero__rule" aria-hidden="true" />
-            <h1 className="g-hero__h" id="g-hero-h">
-              {hero.headline}
-              <span className="g-dot">.</span>
-            </h1>
+          <div className="g-hero__in">
+            <div>
+              <div className="g-hero__rule" aria-hidden="true" />
+              <h1 className="g-hero__h" id="g-hero-h">
+                {hero.headline}
+                <span className="g-dot">.</span>
+              </h1>
+            </div>
             <p className="g-hero__sub">{hero.support}</p>
           </div>
 
-          <div className="g-hero__cue" aria-hidden="true">
-            <span>Scroll</span>
-            <i />
-          </div>
+          <p className="g-hero__cue" aria-hidden="true">
+            Scroll
+          </p>
         </section>
 
-        {/* ------------------------------------------- 02 · who we are --- */}
+        {/* ------------------------------------------ 02 · who we are --- */}
         <section className="g-who" aria-labelledby="g-who-h">
-          <Reveal className="g-who__body">
-            <p className="g-eyebrow" id="g-who-h">
-              {who.eyebrow}
-            </p>
-            <h2 className="g-display g-who__display">
-              {who.display}
-              <span className="g-dot">.</span>
-            </h2>
-            <p className="g-who__text">{who.body}</p>
-          </Reveal>
-
-          <Reveal as="figure" className="g-who__plate">
-            <img
-              src="/plates/wall-tall.webp"
-              alt="A studio wall of pinned drawings and notes in raking light. Temporary constructed image, pending commissioned photography."
-              width={1200}
-              height={1500}
-              loading="lazy"
-              decoding="async"
-            />
-          </Reveal>
+          <div className="g-who__band">
+            <Plate name="who" className="g-who__plate" />
+            <div className="g-who__over">
+              <Reveal as="div">
+                <h2 className="g-who__h" id="g-who-h">
+                  {who.display}
+                  <span className="g-dot">.</span>
+                </h2>
+              </Reveal>
+            </div>
+          </div>
+          <div className="g-who__wrap">
+            <div className="g-who__grid">
+              <Reveal>
+                <p className="g-eyebrow">{who.eyebrow}</p>
+              </Reveal>
+              <Reveal className="g-who__text" index={1}>
+                <p>{who.body}</p>
+              </Reveal>
+            </div>
+          </div>
         </section>
 
-        {/* ------------------------------------------- 03 · the ethos ---- */}
-        <Reveal as="section" className="g-believe on-dark" margin="0px 0px -140px 0px">
-          <div className="g-believe__plate">
-            <picture>
-              <source media="(max-width: 860px)" srcSet="/plates/studio-tall.webp" />
-              <img
-                src="/plates/studio-wide.webp"
-                alt="A working bench under a task light, with drawings, paper and a steel rule. Temporary constructed image, pending commissioned photography."
-                width={2000}
-                height={1125}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
+        {/* -------------------------------------- 03 · what we believe --- */}
+        <section className="g-believe on-dark" aria-labelledby="g-believe-h">
+          <div className="g-believe__img">
+            <Plate name="believe" />
           </div>
-          <div className="g-believe__inner">
-            <p className="g-eyebrow">{believe.eyebrow}</p>
-            <p className="g-display g-believe__display">
-              {believe.display}
-              <span className="g-dot">.</span>
-            </p>
-            <p className="g-believe__text">{believe.body}</p>
+          <div className="g-believe__in">
+            <Reveal>
+              <p className="g-eyebrow">{believe.eyebrow}</p>
+            </Reveal>
+            <Reveal as="div" index={1}>
+              <h2 className="g-believe__h" id="g-believe-h">
+                {believe.display}
+                <span className="g-dot">.</span>
+              </h2>
+            </Reveal>
+            <Reveal className="g-believe__text" index={2}>
+              <p>{believe.body}</p>
+            </Reveal>
           </div>
-        </Reveal>
+        </section>
 
-        {/* ------------------------------------- 04 · working with brands  */}
-        <section className="g-help" aria-labelledby="g-help-h">
-          <Reveal className="g-help__head">
-            <p className="g-eyebrow" id="g-help-h">
-              {help.eyebrow}
-            </p>
-            <h2 className="g-display g-help__display">
-              {help.display}
-              <span className="g-dot">.</span>
-            </h2>
-          </Reveal>
-
-          <Reveal className="g-help__run">
-            {help.items.map(([name, body]) => (
-              <div className="g-help__item" key={name}>
-                <h3>{name}</h3>
-                <p>{body}</p>
+        {/* ---------------------------------------- 04 · how we think --- */}
+        <section className="g-think" aria-labelledby="g-think-h">
+          <div className="g-think__grid">
+            <Plate name="think" className="g-think__fig" />
+            <div>
+              <div className="g-think__head">
+                <Reveal>
+                  <p className="g-eyebrow">{help.eyebrow}</p>
+                </Reveal>
+                <Reveal as="div" index={1}>
+                  <h2 className="g-display g-think__h" id="g-think-h">
+                    {help.display}
+                    <span className="g-dot">.</span>
+                  </h2>
+                </Reveal>
               </div>
-            ))}
-          </Reveal>
 
-          <Reveal className="g-help__commercial">
-            <p>{help.commercial}</p>
-          </Reveal>
+              {help.items.map(([name, body], i) => (
+                <Reveal key={name} className="g-step" index={i}>
+                  <h3>{name}</h3>
+                  <p>{body}</p>
+                </Reveal>
+              ))}
+
+              <Reveal className="g-think__comm">
+                <p>{help.commercial}</p>
+              </Reveal>
+            </div>
+          </div>
         </section>
 
-        {/* ------------------------------------------ 05 · the portfolio - */}
-        <section className="g-folio" id="businesses" aria-labelledby="g-folio-h">
+        {/* ----------------------------------- 05 · what we are building - */}
+        <section id="businesses" aria-labelledby="g-folio-h">
           <Reveal className="g-folio__head">
-            <p className="g-eyebrow" id="g-folio-h">
-              {portfolio.eyebrow}
-            </p>
-            <h2 className="g-display g-folio__display">
+            <p className="g-eyebrow">{portfolio.eyebrow}</p>
+            <h2 className="g-display g-folio__h" id="g-folio-h">
               {portfolio.display}
               <span className="g-dot">.</span>
             </h2>
           </Reveal>
 
-          <div className="g-folio__grid">
-            {featured.map((b, i) => (
-              <Card key={b.key} b={b} priority={i === 0} />
-            ))}
-          </div>
+          {featured.map((b, i) => (
+            <Business
+              key={b.key}
+              b={b}
+              treatment={(['band', 'split', 'offset'] as const)[i % 3]}
+            />
+          ))}
         </section>
 
-        {/* ------------------------------------------ 06 · the close ----- */}
+        {/* ---------------------------------------------- 06 · close ---- */}
         <div className="g-red">
-          <Reveal className="g-red__inner">
+          <Reveal className="g-red__in">
             <span className="g-red__mark">
               <Monogram />
             </span>
-            <p className="g-red__line">
-              {closing.signoff}
-              <span className="g-dot">.</span>
-            </p>
+            <p className="g-red__line">{closing.signoff}.</p>
           </Reveal>
         </div>
 
         <section className="g-close on-dark" aria-labelledby="g-close-h">
-          <div className="g-close__plate">
-            <img
-              src="/plates/close-wide.webp"
-              alt=""
-              width={2000}
-              height={900}
-              loading="lazy"
-              decoding="async"
-            />
+          <div className="g-close__img">
+            <Plate name="close" />
           </div>
-          <Reveal className="g-close__inner">
+          <Reveal className="g-close__in">
             <div>
               <p className="g-eyebrow">Start here</p>
-              <h2 className="g-display g-close__line" id="g-close-h">
+              <h2 className="g-display g-close__h" id="g-close-h">
                 {closing.display}
                 <span className="g-dot">.</span>
               </h2>
@@ -212,7 +200,7 @@ export default function Home() {
       </main>
 
       <footer className="g-foot">
-        <div className="g-foot__inner g-label">
+        <div className="g-foot__in g-label">
           <span>
             {site.name} · {new Date().getFullYear()}
           </span>

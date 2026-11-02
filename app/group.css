@@ -1,66 +1,61 @@
 /* ==========================================================================
    P& — GROUP HOMEPAGE
 
-   Scoped to .g and sharing nothing with c04.css, so the remaining pages are
+   Scoped to .g, sharing nothing with c04.css, so the remaining pages are
    untouched until their turn comes.
 
-   The composition rules, taken from the business plan rather than invented:
+   The composition rules:
 
-     · Every section opens the way the plan's pages open — a short red rule, a
-       gap, then letterspaced caps. That device is the brand's, and losing it
-       is what made the previous pass feel generic.
-     · Every display statement closes with a red full stop. In the plan every
-       headline carries one, and lib/data.ts records why: "the red dot marks
-       momentum, and what comes next". It is the thread through the page.
-     · The plan's own rhythm is a near-black cover, ivory interiors and a
-       near-black close. The page follows it.
+     · Every section opens the way the business plan's pages open — a short
+       red rule, a gap, letterspaced caps.
+     · Every display statement closes with a red full stop.
+     · No two sections share a shape. Scale, proportion and the relationship
+       between type and photograph change each time.
+     · Photography is the material. Type sits on it, beside it, or across its
+       edge — never instead of it.
      · A business colour marks. It never fills.
    ========================================================================== */
 
 .g {
-  /* ---- neutrals ---- */
   --ivory: #faf8f5;
-  --bone: #f1ece4;
   --ink: #0d0d0d;
-  --ink-soft: rgba(13, 13, 13, 0.62);
-  --ink-faint: rgba(13, 13, 13, 0.60);   /* 5.02:1 on ivory */
-  --hair: rgba(13, 13, 13, 0.13);
-  --hair-firm: rgba(13, 13, 13, 0.22);
-  --warm: #b8b5ae;
+  --black: #070707;
+  --stone: #b8b5ae;
+  --warm: #e6e3dc;
 
-  /* ---- on a dark ground ---- */
+  --ink-soft: rgba(13, 13, 13, 0.64);
+  --ink-faint: rgba(13, 13, 13, 0.60);     /* 5.02:1 on ivory */
+  --hair: rgba(13, 13, 13, 0.13);
+
   --light: #f4f1ec;
-  --light-soft: rgba(244, 241, 236, 0.74);
+  --light-soft: rgba(244, 241, 236, 0.76);
   --light-faint: rgba(244, 241, 236, 0.60); /* 6.60:1 on near-black */
   --hair-light: rgba(244, 241, 236, 0.20);
 
-  /* ---- the group red, in two roles ----
-     --red-ink is legible type and anything that must be read: 6.07:1 on
-     ivory. --red-signal is the brand's true Ferrari Red, used for graphics
-     and for the full stops, which are display-scale and therefore judged
-     against the 3:1 large-text bar it clears at 3.77:1. It is never used for
-     body copy, where it would fail. */
+  /* The group red in two roles. --red-ink is anything that must be read:
+     6.07:1 on ivory. --red-signal is the true Ferrari Red, used for graphics
+     and for the full stops, which are display scale and so judged against
+     the 3:1 large-text bar it clears at 3.77:1. Never body copy. */
   --red-ink: #bf0a0a;
   --red-signal: #ff0000;
   --accent: var(--red-ink);
 
-  /* ---- type ---- */
   --d: var(--font-display), Georgia, 'Times New Roman', serif;
   --s: var(--font-sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-  --t-hero: clamp(3rem, 8.2vw, 8rem);
-  --t-display: clamp(1.75rem, 3.9vw, 3.5rem);
-  --t-name: clamp(1.4rem, 2.1vw, 1.95rem);
+  --t-hero: clamp(3rem, 10.2vw, 10.5rem);
+  --t-display: clamp(1.9rem, 4vw, 3.4rem);
+  --t-name: clamp(1.4rem, 2.3vw, 2.1rem);
   --t-lead: clamp(1rem, 1.15vw, 1.1rem);
   --t-body: 0.97rem;
   --t-label: 0.68rem;
   --ls-label: 0.19em;
 
-  --gutter: clamp(20px, 5vw, 76px);
-  --max: 1560px;
+  --gutter: clamp(20px, 5vw, 80px);
+  --max: 1680px;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur: 900ms;
+  --dur: 1100ms;
 
   background: var(--ivory);
   color: var(--ink);
@@ -81,87 +76,92 @@
 
 .g-skip {
   position: absolute; left: -9999px; top: 0; z-index: 100;
-  background: var(--ink); color: var(--light); padding: 12px 18px;
-  font-size: var(--t-body);
+  background: var(--ink); color: var(--light); padding: 12px 18px; font-size: var(--t-body);
 }
 .g-skip:focus { left: 12px; top: 12px; }
-
 .g-sr {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
 
-/* ==========================================================================
-   THE TWO BRAND DEVICES
-   ========================================================================== */
+/* ---- the two brand devices -------------------------------------------- */
 
-/* The section opening, exactly as the plan sets it: rule, gap, caps. */
 .g-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  font-size: var(--t-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--ink-faint);
+  display: flex; align-items: center; gap: 15px;
+  font-size: var(--t-label); letter-spacing: var(--ls-label);
+  text-transform: uppercase; font-weight: 500; line-height: 1; color: var(--ink-faint);
 }
 .g-eyebrow::before {
-  content: '';
-  width: 30px;
-  height: 1.5px;
-  background: var(--red-signal);
-  flex: none;
+  content: ''; width: 30px; height: 1.5px; background: var(--red-signal); flex: none;
 }
 .on-dark .g-eyebrow { color: var(--light-faint); }
 
-/* The red full stop. Display scale only — never in body copy. */
 .g-dot { color: var(--red-signal); }
 
-/* The solid red mark, used where a rule would be too quiet. */
-.g-stop { display: block; width: 11px; height: 11px; background: var(--red-signal); flex: none; }
-
 .g-display {
-  font-family: var(--d);
-  font-weight: 400;
-  font-size: var(--t-display);
-  line-height: 1.13;
-  letter-spacing: -0.016em;
-  text-wrap: pretty;
+  font-family: var(--d); font-weight: 400; font-size: var(--t-display);
+  line-height: 1.08; letter-spacing: -0.018em; text-wrap: pretty;
+}
+.g-label {
+  font-size: var(--t-label); letter-spacing: var(--ls-label);
+  text-transform: uppercase; font-weight: 500; line-height: 1;
 }
 
-.g-label {
-  font-size: var(--t-label);
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  font-weight: 500;
-  line-height: 1;
+/* ==========================================================================
+   MOTION
+   A clip wipe on the frame with the photograph easing down in scale inside
+   it: frame and contents at different rates, which is what makes a reveal
+   read as cinema rather than a fade.
+   ========================================================================== */
+
+.js-reveal .g [data-reveal] {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.js-reveal .g [data-reveal][data-revealed='true'] { opacity: 1; transform: none; }
+
+.js-reveal .g [data-reveal-plate] {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1500ms var(--ease);
+}
+.js-reveal .g [data-reveal-plate][data-revealed='true'] { clip-path: inset(0 0 0 0); }
+.g [data-plate] img { transform: scale(1.09); transition: transform 2400ms var(--ease); }
+.g [data-plate][data-revealed='true'] img { transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .g [data-reveal],
+  .js-reveal .g [data-reveal-plate] {
+    opacity: 1 !important; transform: none !important; clip-path: none !important;
+  }
+  .g [data-plate] img,
+  .g .g-hero__img img { transform: none !important; }
+  .g .g-biz__rule, .g .g-hero__rule { transform: none !important; }
 }
 
 /* ==========================================================================
    HEADER
+   Solid past the hero. Retracts on the way down, returns on the way up.
    ========================================================================== */
 
 .g-head {
   position: fixed; inset: 0 0 auto 0; z-index: 60;
   display: flex; align-items: center; justify-content: space-between;
-  gap: var(--gutter);
-  padding: clamp(18px, 2.2vw, 30px) var(--gutter);
-  color: var(--light);
-  border-bottom: 1px solid transparent;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
-              border-color var(--dur) var(--ease);
+  gap: var(--gutter); padding: clamp(18px, 2.2vw, 30px) var(--gutter);
+  color: var(--light); border-bottom: 1px solid transparent;
+  transition: background 700ms var(--ease), color 700ms var(--ease),
+              transform 620ms var(--ease), border-color 700ms var(--ease);
 }
 .g-head[data-solid='true'] {
-  background: rgba(250, 248, 245, 0.92);
-  backdrop-filter: saturate(140%) blur(14px);
-  color: var(--ink);
-  border-bottom-color: var(--hair);
+  background: rgba(250, 248, 245, 0.93);
+  backdrop-filter: saturate(150%) blur(16px);
+  color: var(--ink); border-bottom-color: var(--hair);
 }
+.g-head[data-hide='true'] { transform: translateY(-102%); }
+.g-head:focus-within { transform: none; }
+
 .g-head__mark { display: block; width: clamp(92px, 9vw, 132px); flex: none; }
 .g-head__mark svg { width: 100%; height: auto; display: block; }
-.g-head__nav { display: flex; align-items: center; gap: clamp(22px, 2.6vw, 44px); }
+.g-head__nav { display: flex; align-items: center; gap: clamp(22px, 2.6vw, 46px); }
 .g-head__link {
   font-size: var(--t-label); letter-spacing: var(--ls-label);
   text-transform: uppercase; font-weight: 500; padding: 6px 0; position: relative;
@@ -178,12 +178,9 @@
   color: inherit; font: 500 var(--t-label)/1 var(--s);
   letter-spacing: var(--ls-label); text-transform: uppercase; cursor: pointer;
 }
-
 .g-sheet {
-  position: fixed; inset: 0; z-index: 70;
-  background: var(--ink); color: var(--light);
-  display: flex; flex-direction: column; justify-content: center;
-  padding: var(--gutter);
+  position: fixed; inset: 0; z-index: 70; background: var(--ink); color: var(--light);
+  display: flex; flex-direction: column; justify-content: center; padding: var(--gutter);
   opacity: 0; visibility: hidden;
   transition: opacity 420ms var(--ease), visibility 420ms;
 }
@@ -211,365 +208,383 @@
 }
 
 /* ==========================================================================
-   01 — HERO
+   01 — THE HERO
+   Type low and wide; the supporting line pushed hard right under a hairline,
+   so headline and copy hold opposite corners instead of stacking.
    ========================================================================== */
 
 .g-hero {
-  position: relative; min-height: 100svh;
-  display: flex; align-items: flex-end;
+  position: relative; min-height: 100svh; display: flex; align-items: flex-end;
   color: var(--light); overflow: clip; background: #0b0a09;
 }
-.g-hero__plate { position: absolute; inset: 0; z-index: 0; }
-.g-hero__plate img { transform: scale(1.06); transition: transform 2600ms var(--ease); }
-.g[data-ready='true'] .g-hero__plate img { transform: scale(1); }
+.g-hero__img { position: absolute; inset: 0; z-index: 0; }
+.g-hero__img img { transform: scale(1.12); transition: transform 2600ms var(--ease); }
+.g[data-ready='true'] .g-hero__img img { transform: scale(1); }
 .g-hero::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(100deg, rgba(8, 8, 8, 0.80) 0%, rgba(8, 8, 8, 0.52) 38%,
-                    rgba(8, 8, 8, 0.10) 66%, rgba(8, 8, 8, 0.32) 100%),
-    linear-gradient(to top, rgba(8, 8, 8, 0.55) 0%, rgba(8, 8, 8, 0) 42%);
+    linear-gradient(104deg, rgba(6, 6, 6, 0.80) 0%, rgba(6, 6, 6, 0.46) 40%,
+                    rgba(6, 6, 6, 0.06) 70%, rgba(6, 6, 6, 0.26) 100%),
+    linear-gradient(to top, rgba(6, 6, 6, 0.74) 0%, rgba(6, 6, 6, 0) 48%);
 }
-.g-hero__inner {
-  position: relative; z-index: 2; width: 100%;
-  max-width: var(--max); margin: 0 auto;
-  padding: 0 var(--gutter) clamp(76px, 9vh, 128px);
+.g-hero__in {
+  position: relative; z-index: 2; width: 100%; max-width: var(--max); margin: 0 auto;
+  padding: 0 var(--gutter) clamp(64px, 8vh, 112px);
+  display: grid; grid-template-columns: 1fr auto; gap: clamp(24px, 5vw, 90px); align-items: end;
 }
 .g-hero__h {
   font-family: var(--d); font-weight: 400; font-size: var(--t-hero);
-  line-height: 1.0; letter-spacing: -0.024em; padding-bottom: 0.08em;
-  max-width: 14ch; text-wrap: balance;
+  line-height: 0.94; letter-spacing: -0.03em; padding-bottom: 0.06em;
+  max-width: 11ch; text-wrap: balance;
 }
 .g-hero__rule {
   width: clamp(44px, 6vw, 86px); height: 2px; background: var(--red-signal);
-  margin: 0 0 clamp(26px, 3.4vw, 40px);
+  margin: 0 0 clamp(24px, 3vw, 36px);
   transform-origin: left; transform: scaleX(0);
   transition: transform 1100ms var(--ease) 240ms;
 }
 .g[data-ready='true'] .g-hero__rule { transform: scaleX(1); }
 .g-hero__sub {
-  margin-top: clamp(26px, 3.4vw, 42px); font-size: var(--t-lead);
-  color: var(--light-soft); max-width: 46ch;
+  font-size: var(--t-lead); color: var(--light-soft); max-width: 30ch;
+  padding-top: 22px; padding-bottom: 0.9rem; border-top: 1px solid var(--hair-light);
 }
 .g-hero__cue {
-  position: absolute; z-index: 2; right: var(--gutter);
-  bottom: clamp(76px, 9vh, 128px);
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  position: absolute; z-index: 2; right: var(--gutter); top: 50%;
+  transform: translateY(-50%); writing-mode: vertical-rl;
+  font-size: 0.64rem; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--light-faint);
-}
-.g-hero__cue span {
-  font-size: var(--t-label); letter-spacing: var(--ls-label);
-  text-transform: uppercase; writing-mode: vertical-rl;
-}
-.g-hero__cue i {
-  display: block; width: 1px; height: 56px;
-  background: linear-gradient(to bottom, var(--light-faint), transparent);
 }
 
 @media (max-width: 860px) {
-  .g-hero__h { max-width: 11ch; }
-  .g-hero__sub { margin-top: 20px; }
+  .g-hero__in { grid-template-columns: 1fr; gap: 24px; }
+  .g-hero__h { max-width: 9ch; }
+  .g-hero__sub { max-width: none; padding-bottom: 0; }
   .g-hero__cue { display: none; }
   .g-hero::after {
-    background: linear-gradient(to top, rgba(8, 8, 8, 0.82) 0%, rgba(8, 8, 8, 0.30) 48%,
-                                rgba(8, 8, 8, 0.44) 100%);
+    background: linear-gradient(to top, rgba(6, 6, 6, 0.86) 0%, rgba(6, 6, 6, 0.34) 52%,
+                                rgba(6, 6, 6, 0.46) 100%);
   }
 }
 
 /* ==========================================================================
    02 — WHO WE ARE
-   An unequal editorial spread, the way the plan's interior pages are set.
+   A full-bleed band with the headline crossing its lower edge onto the ivory.
+   Type and photograph share a plane; that layering is the section.
    ========================================================================== */
 
-.g-who {
+.g-who { position: relative; padding: clamp(80px, 11vh, 150px) 0 clamp(70px, 9vh, 120px); }
+.g-who__wrap { padding-top: clamp(26px, 3.2vw, 44px); }
+.g-who__band {
+  position: relative; width: 100%; height: clamp(360px, 60vh, 620px);
+  overflow: clip; background: var(--ink);
+}
+/* A scrim across the lower half, so the headline's contrast does not depend
+   on how dark the photograph happens to be at that point. */
+.g-who__band::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.52) 34%,
+                              rgba(5, 5, 5, 0.04) 68%);
+}
+/* The headline is anchored to the band's bottom edge rather than pulled up
+   across it. The layering reads the same — type on photograph, flush to its
+   boundary — and the text can never land on the ivory, where ivory on ivory
+   measured 1.2:1 and axe was right to stop it. */
+.g-who__over {
+  position: absolute; z-index: 2; inset: auto 0 0 0;
   max-width: var(--max); margin: 0 auto;
-  padding: clamp(84px, 12vh, 170px) var(--gutter) clamp(72px, 10vh, 140px);
-  display: grid; grid-template-columns: 7fr 5fr;
-  gap: clamp(32px, 6vw, 96px); align-items: center;
+  padding: 0 var(--gutter) clamp(26px, 3.4vw, 52px);
 }
-.g-who__body { padding-top: 0; }
-.g-who__display { margin: clamp(22px, 2.8vw, 34px) 0 0; max-width: 17ch; }
-.g-who__text {
-  margin-top: clamp(30px, 4vw, 52px);
-  font-size: var(--t-lead); color: var(--ink-soft); max-width: 48ch;
+.g-who__wrap { position: relative; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.g-who__h {
+  font-family: var(--d); font-weight: 400;
+  font-size: clamp(1.9rem, 5.2vw, 4.6rem); line-height: 1.02; letter-spacing: -0.022em;
+  max-width: 15ch; color: var(--light);
 }
-.g-who__plate {
-  position: relative; aspect-ratio: 4 / 5; overflow: clip;
-  background: var(--ink);
+.g-who__grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 5vw, 90px); margin-top: clamp(22px, 2.6vw, 34px);
 }
-.g-who__plate img { transition: transform 1600ms var(--ease); transform: scale(1.06); }
-.g-who__plate[data-revealed='true'] img { transform: scale(1); }
+.g-who__text { grid-column: 2; font-size: var(--t-lead); color: var(--ink-soft); max-width: 46ch; }
 
 @media (max-width: 860px) {
-  .g-who { grid-template-columns: 1fr; gap: clamp(28px, 7vw, 42px); }
-  .g-who__plate { aspect-ratio: 3 / 2; order: 2; }
-  .g-who__body { order: 1; }
-  .g-who__display, .g-who__text { max-width: none; }
+  .g-who__h { max-width: none; font-size: clamp(1.75rem, 8.2vw, 2.5rem); }
+  .g-who__band { height: clamp(420px, 66vh, 560px); }
+  .g-who__grid { grid-template-columns: 1fr; gap: 18px; }
+  .g-who__text { grid-column: 1; max-width: none; }
 }
 
 /* ==========================================================================
    03 — WHAT WE BELIEVE
-   The page's centre of gravity. Near-black, one architectural interior, one
-   sentence, set in italic because that is how the plan sets it.
+   Full viewport, one italic sentence, nothing else. The page's largest type
+   and its quietest section.
    ========================================================================== */
 
 .g-believe {
-  position: relative; color: var(--light);
-  background: #070707; overflow: clip;
-  min-height: clamp(540px, 92svh, 940px);
-  display: flex; align-items: center;
+  position: relative; min-height: 100svh; display: flex; align-items: center;
+  color: var(--light); background: var(--black); overflow: clip;
 }
-.g-believe__plate { position: absolute; inset: 0; z-index: 0; }
-.g-believe__plate img { transform: scale(1.07); transition: transform 2400ms var(--ease); }
-.g-believe[data-revealed='true'] .g-believe__plate img { transform: scale(1); }
+.g-believe__img { position: absolute; inset: 0; z-index: 0; }
 .g-believe::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(94deg, rgba(10, 7, 4, 0.88) 0%, rgba(10, 7, 4, 0.66) 40%,
-                    rgba(10, 7, 4, 0.20) 68%, rgba(10, 7, 4, 0.30) 100%);
+  background: linear-gradient(96deg, rgba(6, 5, 4, 0.90) 0%, rgba(6, 5, 4, 0.68) 42%,
+                              rgba(6, 5, 4, 0.20) 74%, rgba(6, 5, 4, 0.44) 100%);
 }
-.g-believe__inner {
-  position: relative; z-index: 2; width: 100%;
-  max-width: var(--max); margin: 0 auto;
-  padding: clamp(84px, 12vh, 150px) var(--gutter);
+.g-believe__in {
+  position: relative; z-index: 2; width: 100%; max-width: var(--max); margin: 0 auto;
+  padding: clamp(80px, 12vh, 150px) var(--gutter);
 }
-.g-believe__display {
-  margin: clamp(24px, 3vw, 38px) 0 0;
-  font-style: italic;
-  font-size: clamp(1.8rem, 4.1vw, 3.7rem);
-  max-width: 20ch;
+.g-believe__h {
+  font-family: var(--d); font-style: italic; font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 6.2rem); line-height: 1.02; letter-spacing: -0.025em;
+  max-width: 13ch; margin-top: clamp(26px, 3.4vw, 44px);
 }
 .g-believe__text {
-  margin-top: clamp(30px, 4vw, 52px);
-  font-size: var(--t-lead); color: var(--light-soft); max-width: 42ch;
+  margin-top: clamp(26px, 3.4vw, 44px); font-size: var(--t-lead);
+  color: var(--light-soft); max-width: 40ch;
 }
 
 @media (max-width: 860px) {
   .g-believe { min-height: 0; }
-  .g-believe__display, .g-believe__text { max-width: none; }
+  .g-believe__h, .g-believe__text { max-width: none; }
   .g-believe::after {
-    background: linear-gradient(to top, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.52) 54%,
-                                rgba(5, 5, 5, 0.70) 100%);
+    background: linear-gradient(to top, rgba(6, 5, 4, 0.90) 0%, rgba(6, 5, 4, 0.60) 54%,
+                                rgba(6, 5, 4, 0.74) 100%);
   }
 }
 
 /* ==========================================================================
-   04 — HOW WE WORK WITH BRANDS
-   Five columns, hairline-ruled, exactly as the plan sets its operating loop.
-   Not cards: a run.
+   04 — HOW WE THINK
+   A held detail image on the left and three moments walking down the right,
+   each stepped further in. Not three columns.
    ========================================================================== */
 
-.g-help {
-  max-width: var(--max); margin: 0 auto;
-  padding: clamp(84px, 12vh, 160px) var(--gutter) clamp(72px, 10vh, 140px);
+.g-think { max-width: var(--max); margin: 0 auto; padding: clamp(80px, 11vh, 160px) var(--gutter); }
+.g-think__grid {
+  display: grid; grid-template-columns: 5fr 7fr;
+  gap: clamp(30px, 5vw, 90px); align-items: start;
 }
-.g-help__head { display: block; }
-.g-help__display { margin-top: clamp(22px, 2.8vw, 34px); max-width: 20ch; }
-.g-help__run {
-  margin-top: clamp(44px, 6vw, 86px);
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  border-top: 2px solid var(--red-signal);
+.g-think__fig {
+  position: sticky; top: clamp(90px, 14vh, 150px);
+  aspect-ratio: 4 / 5; overflow: clip; background: var(--ink);
 }
-.g-help__item {
-  padding: clamp(20px, 2.4vw, 32px) clamp(16px, 1.8vw, 26px) 0 0;
-  border-right: 1px solid var(--hair);
-}
-.g-help__item:last-child { border-right: 0; padding-right: 0; }
-.g-help__item h3 {
+.g-think__head { margin-bottom: clamp(40px, 5vw, 72px); }
+.g-think__h { max-width: 16ch; margin-top: clamp(20px, 2.6vw, 32px); }
+
+.g-step { padding: clamp(26px, 3.4vw, 44px) 0; border-top: 1px solid var(--hair); }
+.g-step:first-of-type { border-top: 2px solid var(--red-signal); }
+.g-step:nth-of-type(2) { padding-left: clamp(0px, 4vw, 64px); }
+.g-step:nth-of-type(3) { padding-left: clamp(0px, 8vw, 128px); }
+.g-step h3 {
   font-family: var(--d); font-weight: 400; font-size: var(--t-name);
   line-height: 1.1; letter-spacing: -0.012em;
 }
-.g-help__item p { margin-top: 12px; color: var(--ink-soft); }
+.g-step p { margin-top: 12px; color: var(--ink-soft); max-width: 44ch; }
 
-/* The commercial line. The brief is explicit that a visitor has to
-   understand we work with other businesses, so it is stated plainly rather
-   than left to be inferred from the portfolio. */
-.g-help__commercial {
-  margin-top: clamp(44px, 5.6vw, 74px);
-  padding-top: clamp(26px, 3vw, 36px);
-  border-top: 2px solid var(--red-signal);
-  max-width: 46ch;
+/* The brief is explicit that a visitor must understand we work with other
+   businesses, so it is stated plainly rather than inferred from the portfolio. */
+.g-think__comm {
+  margin-top: clamp(40px, 5vw, 70px); padding-top: clamp(24px, 3vw, 34px);
+  border-top: 2px solid var(--red-signal); max-width: 46ch;
 }
-.g-help__commercial p {
-  font-family: var(--d);
-  font-size: clamp(1.15rem, 1.9vw, 1.65rem);
-  line-height: 1.32;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+.g-think__comm p {
+  font-family: var(--d); font-size: clamp(1.15rem, 1.9vw, 1.7rem);
+  line-height: 1.3; color: var(--ink);
 }
 
 @media (max-width: 860px) {
-  .g-help__run { grid-template-columns: 1fr; }
-  .g-help__item {
-    border-right: 0; padding-right: 0;
-    border-bottom: 1px solid var(--hair); padding-bottom: clamp(18px, 3vw, 26px);
-  }
-  .g-help__item:last-child { border-bottom: 0; }
-}
-@media (max-width: 620px) {
-  .g-help__display { max-width: none; }
+  .g-think__grid { grid-template-columns: 1fr; gap: clamp(26px, 6vw, 38px); }
+  .g-think__fig { position: static; aspect-ratio: 3 / 2; }
+  .g-step:nth-of-type(2), .g-step:nth-of-type(3) { padding-left: 0; }
+  .g-step p, .g-think__h, .g-think__comm { max-width: none; }
 }
 
 /* ==========================================================================
-   05 — OUR BUSINESSES
-   Curated, not extensive. Three plates in a row, each re-pointing the accent.
-   The portfolio demonstrates the thinking; it is no longer the subject.
+   05 — WHAT WE ARE BUILDING
+   Three businesses, three treatments.
    ========================================================================== */
 
-.g-folio {
+.g-folio__head {
   max-width: var(--max); margin: 0 auto;
-  padding: clamp(10px, 2vw, 24px) var(--gutter) clamp(84px, 11vh, 150px);
+  padding: clamp(70px, 9vh, 130px) var(--gutter) clamp(34px, 4.4vw, 58px);
 }
-.g-folio__head { display: block; padding-bottom: clamp(34px, 4.6vw, 62px); }
-.g-folio__display { margin-top: clamp(22px, 2.8vw, 34px); max-width: 18ch; }
-.g-folio__grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: clamp(20px, 2.6vw, 40px);
+.g-folio__h { max-width: 18ch; margin-top: clamp(20px, 2.6vw, 32px); }
+
+.g-biz { --mark: var(--red-ink); position: relative; }
+.g-biz--nexus     { --accent: #0f3d3e; --mark: #1f6b66; }
+.g-biz--blueprint { --accent: #15395b; --mark: #27659f; }
+.g-biz--atelier   { --accent: #0d6b62; --mark: #2f8f80; }
+/* Lifted on a dark ground, where the canonical values sit under 4:1. */
+.g-biz--band.g-biz--nexus { --mark: #68b4a7; }
+
+.g-biz__name {
+  font-family: var(--d); font-weight: 400; line-height: 1; letter-spacing: -0.016em;
 }
-
-.g-card { --mark: var(--red-ink); display: block; }
-.g-card--nexus     { --accent: #0f3d3e; --mark: #1f6b66; }
-.g-card--atelier   { --accent: #0d6b62; --mark: #0d6b62; }
-.g-card--blueprint { --accent: #15395b; --mark: #27659f; }
-
-.g-card__plate {
-  position: relative; aspect-ratio: 4 / 5; overflow: clip; background: var(--ink);
-}
-.g-card__plate img { transform: scale(1.055); transition: transform 1600ms var(--ease); }
-.g-card[data-revealed='true'] .g-card__plate img { transform: scale(1); }
-.g-card:hover .g-card__plate img { transform: scale(1.03); }
-
-.g-card__rule {
-  height: 1.5px; background: var(--mark); margin-top: clamp(18px, 2vw, 24px);
+.g-biz__sector { margin-top: 12px; opacity: 0.72; }
+.g-biz__line { margin-top: 16px; max-width: 34ch; }
+.g-biz__rule {
+  height: 1.5px; background: var(--mark); margin-top: clamp(16px, 2vw, 24px);
   transform-origin: left; transform: scaleX(0);
-  transition: transform 1000ms var(--ease) 160ms;
+  transition: transform 1100ms var(--ease) 0.15s;
 }
-.g-card[data-revealed='true'] .g-card__rule { transform: scaleX(1); }
-
-.g-card__name {
-  margin-top: clamp(14px, 1.6vw, 18px);
-  font-family: var(--d); font-weight: 400; font-size: var(--t-name);
-  line-height: 1.08; letter-spacing: -0.012em;
+.g-biz[data-revealed='true'] .g-biz__rule { transform: scaleX(1); }
+.g-biz__foot { margin-top: clamp(18px, 2.2vw, 26px); display: flex; align-items: center; gap: 22px; }
+.g-biz__stage { display: inline-flex; align-items: center; gap: 9px; opacity: 0.72; }
+.g-biz__stage::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--mark); flex: none;
 }
-.g-card__sector { margin-top: 10px; color: var(--ink-faint); }
-.g-card__line { margin-top: clamp(12px, 1.4vw, 16px); color: var(--ink-soft); }
-.g-card__foot {
-  margin-top: clamp(16px, 1.8vw, 22px);
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-}
-.g-card__stage { display: inline-flex; align-items: center; gap: 9px; color: var(--ink-faint); }
-.g-card__stage::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--mark); flex: none;
-}
-.g-card__go {
+.g-biz__go {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: var(--t-label); letter-spacing: var(--ls-label);
   text-transform: uppercase; font-weight: 500; padding: 6px 0; position: relative;
 }
-.g-card__go::after {
+.g-biz__go::after {
   content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
   background: var(--mark); transform: scaleX(0); transform-origin: left;
   transition: transform 520ms var(--ease);
 }
-.g-card:hover .g-card__go::after { transform: scaleX(1); }
-.g-card__go i { display: block; width: 18px; height: 1px; background: currentColor;
-  transition: transform 520ms var(--ease); }
-.g-card:hover .g-card__go i { transform: translateX(5px); }
+.g-biz:hover .g-biz__go::after { transform: scaleX(1); }
+.g-biz__go i {
+  display: block; width: 18px; height: 1px; background: currentColor;
+  transition: transform 520ms var(--ease);
+}
+.g-biz:hover .g-biz__go i { transform: translateX(5px); }
+.g-biz:hover [data-plate] img { transform: scale(1.03); }
+
+/* ---- band: full-bleed dark, type laid into the shadow side ------------- */
+.g-biz--band {
+  color: var(--light); background: var(--black); overflow: clip;
+  min-height: clamp(420px, 72svh, 720px); display: flex; align-items: flex-end;
+}
+.g-biz--band .g-biz__img { position: absolute; inset: 0; z-index: 0; }
+.g-biz--band::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(92deg, rgba(4, 8, 8, 0.84) 0%, rgba(4, 8, 8, 0.44) 44%, rgba(4, 8, 8, 0) 74%),
+    linear-gradient(to top, rgba(4, 8, 8, 0.74), rgba(4, 8, 8, 0) 54%);
+}
+.g-biz--band .g-biz__text {
+  position: relative; z-index: 2; max-width: var(--max); margin: 0 auto; width: 100%;
+  padding: 0 var(--gutter) clamp(44px, 6vw, 74px);
+}
+.g-biz--band .g-biz__name { font-size: clamp(2.1rem, 5vw, 4.4rem); }
+.g-biz--band .g-biz__rule { max-width: 360px; }
+
+/* ---- split: an intimate portrait, text in a narrow column -------------- */
+.g-biz--split {
+  max-width: var(--max); margin: 0 auto; padding: clamp(56px, 8vw, 120px) var(--gutter);
+  display: grid; grid-template-columns: 4fr 8fr; gap: clamp(28px, 4vw, 64px); align-items: center;
+}
+.g-biz--split .g-biz__img { aspect-ratio: 4 / 5; overflow: clip; background: var(--ink); order: 2; }
+.g-biz--split .g-biz__name { font-size: clamp(1.9rem, 3.6vw, 3.2rem); }
+
+/* ---- offset: a wide plate held off the right edge, text overlapping ---- */
+.g-biz--offset {
+  max-width: var(--max); margin: 0 auto;
+  padding: clamp(24px, 3vw, 46px) var(--gutter) clamp(60px, 8vw, 110px);
+}
+.g-biz--offset .g-biz__img {
+  margin-left: auto; width: min(100%, 84%); aspect-ratio: 16 / 9;
+  overflow: clip; background: var(--ink);
+}
+.g-biz--offset .g-biz__text {
+  position: relative; z-index: 2; margin-top: clamp(-90px, -7vw, -40px);
+  background: var(--ivory); padding: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 44px) 0 0;
+  max-width: 46ch;
+}
+.g-biz--offset .g-biz__name { font-size: clamp(1.9rem, 3.6vw, 3.2rem); }
+.g-biz--offset .g-biz__rule { max-width: 300px; }
 
 @media (max-width: 860px) {
-  .g-folio__display { max-width: none; }
-  .g-folio__grid { grid-template-columns: 1fr; gap: clamp(40px, 9vw, 56px); }
-  .g-card__plate { aspect-ratio: 3 / 2; }
+  .g-biz--band {
+    min-height: 0; display: block;
+    padding-bottom: 0; margin-bottom: clamp(44px, 10vw, 64px);
+  }
+  .g-biz--band .g-biz__img { position: static; aspect-ratio: 3 / 4; }
+  /* The type sits over the light end of the street on a phone, so the scrim
+     carries further up than it needs to on a wide screen. */
+  .g-biz--band::after {
+    background: linear-gradient(to top, rgba(4, 8, 8, 0.93) 0%, rgba(4, 8, 8, 0.64) 36%,
+                                rgba(4, 8, 8, 0.10) 68%);
+  }
+  .g-biz--band .g-biz__text {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding-bottom: clamp(26px, 6vw, 36px);
+  }
+  .g-biz--split {
+    grid-template-columns: 1fr; gap: clamp(22px, 6vw, 32px);
+    padding: 0 0 clamp(44px, 10vw, 64px);
+  }
+  .g-biz--split .g-biz__img { order: -1; aspect-ratio: 3 / 2; }
+  .g-biz--split .g-biz__text { padding: 0 var(--gutter); }
+  .g-biz--offset { padding: 0 0 clamp(44px, 10vw, 64px); }
+  .g-biz--offset .g-biz__img { width: 100%; aspect-ratio: 3 / 2; }
+  .g-biz--offset .g-biz__text {
+    margin-top: 0; padding: clamp(22px, 6vw, 30px) var(--gutter) 0; max-width: none;
+  }
+  .g-biz__line { max-width: none; }
+  .g-folio__h { max-width: none; }
 }
 
 /* ==========================================================================
    06 — THE CLOSE
-   The red field, then the black. The plan's own sequence, and the loudest
-   moment on the page, used once.
+   The red field, then the black, butted together.
    ========================================================================== */
 
-.g-red {
-  background: var(--red-ink);
-  color: var(--ivory);
-}
-/* The stop inverts here: red on red is invisible, and near-black on this red
-   is 3.02:1, which clears the 3:1 bar the display scale is judged against. */
-.g-red .g-dot { color: var(--ink); }
-.g-red__inner {
-  max-width: var(--max); margin: 0 auto;
-  padding: clamp(66px, 9vh, 128px) var(--gutter);
-  display: grid; grid-template-columns: auto 1fr;
-  gap: clamp(28px, 6vw, 110px); align-items: end;
+.g-red { background: var(--red-ink); color: var(--ivory); }
+.g-red__in {
+  max-width: var(--max); margin: 0 auto; padding: clamp(60px, 8vh, 118px) var(--gutter);
+  display: grid; grid-template-columns: auto 1fr; gap: clamp(26px, 6vw, 110px); align-items: end;
 }
 .g-red__mark { width: clamp(72px, 9vw, 148px); flex: none; }
 .g-red__mark svg { width: 100%; height: auto; display: block; }
 .g-red__line {
   font-family: var(--d); font-weight: 400;
-  font-size: clamp(1.5rem, 3.2vw, 3rem); line-height: 1.14;
+  font-size: clamp(1.6rem, 3.6vw, 3.4rem); line-height: 1.14;
   letter-spacing: -0.016em; max-width: 22ch;
 }
 
-.g-close { position: relative; color: var(--light); background: #070707; overflow: clip; }
-.g-close__plate { position: absolute; inset: 0; z-index: 0; opacity: 0.9; }
+.g-close { position: relative; color: var(--light); background: var(--black); overflow: clip; }
+.g-close__img { position: absolute; inset: 0; z-index: 0; opacity: 0.52; }
 .g-close::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(105deg, rgba(5, 5, 5, 0.86) 0%, rgba(5, 5, 5, 0.52) 60%,
-                              rgba(5, 5, 5, 0.72) 100%);
+  background: linear-gradient(104deg, rgba(5, 5, 5, 0.90) 0%, rgba(5, 5, 5, 0.64) 58%,
+                              rgba(5, 5, 5, 0.82) 100%);
 }
-.g-close__inner {
+.g-close__in {
   position: relative; z-index: 2; max-width: var(--max); margin: 0 auto;
-  padding: clamp(90px, 15vh, 190px) var(--gutter);
-  display: grid; grid-template-columns: 7fr 5fr;
-  gap: clamp(30px, 5vw, 80px); align-items: end;
+  padding: clamp(90px, 15vh, 200px) var(--gutter);
+  display: grid; grid-template-columns: 7fr 5fr; gap: clamp(30px, 5vw, 80px); align-items: end;
 }
-.g-close__line { margin-top: clamp(22px, 2.8vw, 34px); max-width: 17ch; }
+.g-close__h { max-width: 17ch; margin-top: clamp(20px, 2.6vw, 32px); }
 .g-close__cta {
   justify-self: start; display: inline-flex; align-items: baseline; gap: 14px;
-  font-family: var(--d); font-size: clamp(1.3rem, 2.1vw, 1.9rem);
+  font-family: var(--d); font-size: clamp(1.3rem, 2.1vw, 2rem);
   padding-bottom: 8px; border-bottom: 1px solid var(--hair-light);
   transition: border-color 520ms var(--ease);
 }
 .g-close__cta:hover { border-bottom-color: var(--red-signal); }
 .g-close__cta i {
-  display: block; width: 22px; height: 1px; background: currentColor;
+  display: block; width: 24px; height: 1px; background: currentColor;
   transition: transform 520ms var(--ease);
 }
-.g-close__cta:hover i { transform: translateX(6px); }
+.g-close__cta:hover i { transform: translateX(7px); }
 
 @media (max-width: 860px) {
-  .g-red__inner { grid-template-columns: 1fr; gap: clamp(24px, 6vw, 34px); align-items: start; }
-  .g-red__line { max-width: none; }
-  .g-close__inner { grid-template-columns: 1fr; gap: clamp(28px, 7vw, 40px); align-items: start; }
-  .g-close__line { max-width: none; }
+  .g-red__in, .g-close__in {
+    grid-template-columns: 1fr; gap: clamp(24px, 6vw, 34px); align-items: start;
+  }
+  .g-red__line, .g-close__h { max-width: none; }
 }
 
 /* ==========================================================================
    FOOT
    ========================================================================== */
 
-.g-foot { background: #070707; color: var(--light-faint); border-top: 1px solid var(--hair-light); }
-.g-foot__inner {
-  max-width: var(--max); margin: 0 auto;
-  padding: clamp(26px, 3.4vw, 40px) var(--gutter);
+.g-foot { background: var(--black); color: var(--light-faint); border-top: 1px solid var(--hair-light); }
+.g-foot__in {
+  max-width: var(--max); margin: 0 auto; padding: clamp(26px, 3.4vw, 40px) var(--gutter);
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
   gap: 16px clamp(20px, 3vw, 40px);
 }
 .g-foot__links { display: flex; flex-wrap: wrap; gap: 14px clamp(18px, 2.4vw, 30px); }
 .g-foot a:hover { color: var(--light); }
-
-/* ==========================================================================
-   REVEAL
-   ========================================================================== */
-
-.js-reveal .g [data-reveal] {
-  opacity: 0; transform: translateY(18px);
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.js-reveal .g [data-reveal][data-revealed='true'] { opacity: 1; transform: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .js-reveal .g [data-reveal] { opacity: 1; transform: none; }
-  .g .g-hero__plate img, .g .g-who__plate img,
-  .g .g-believe__plate img, .g .g-card__plate img { transform: none !important; }
-  .g .g-hero__rule, .g .g-card__rule { transform: none !important; }
-}

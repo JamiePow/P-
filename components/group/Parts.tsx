@@ -1,17 +1,21 @@
 'use client'
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { img, src } from '@/lib/group'
 
 /*
-  Two small clients, shared by the homepage.
+  The small clients the homepage is built from.
 
   Reveal marks its own element rather than wrapping children in an extra div,
-  so a panel can be both the revealed element and the grid container. Without
-  that the composition needs a wrapper per panel and the grid collapses.
+  so a section can be both the revealed element and the grid container.
 
-  Ready fires once after mount and drives the hero's opening move: the plate
-  settling from a slight overscale and the red rule drawing in. It is one
-  gesture on load and nothing after it.
+  Plate is the image primitive. It carries an art-directed mobile crop via
+  <picture>, and the reveal is a clip-path wipe with the photograph easing
+  down in scale inside it — frame and contents moving at different rates,
+  which is what separates a reveal from a fade.
+
+  next/image is deliberately absent from this codebase, and a composed crop
+  per breakpoint is what <picture> does natively.
 */
 
 type RevealProps = {
@@ -19,11 +23,12 @@ type RevealProps = {
   className?: string
   children: ReactNode
   margin?: string
+  /** Stagger siblings by this many ms, capped at four steps. */
+  index?: number
 }
 
-export function Reveal({ as = 'div', className, children, margin = '0px 0px -90px 0px' }: RevealProps) {
+function useReveal(margin: string, index?: number) {
   const ref = useRef<HTMLElement>(null)
-
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -38,6 +43,7 @@ export function Reveal({ as = 'div', className, children, margin = '0px 0px -90p
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue
+          if (index) el.style.transitionDelay = `${Math.min(index, 4) * 90}ms`
           el.dataset.revealed = 'true'
           io.unobserve(el)
         }
@@ -46,13 +52,59 @@ export function Reveal({ as = 'div', className, children, margin = '0px 0px -90p
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [margin])
+  }, [margin, index])
+  return ref
+}
 
+export function Reveal({
+  as = 'div',
+  className,
+  children,
+  margin = '0px 0px -90px 0px',
+  index,
+}: RevealProps) {
+  const ref = useReveal(margin, index)
   const Tag = as as 'div'
   return (
     <Tag ref={ref as React.Ref<HTMLDivElement>} data-reveal className={className}>
       {children}
     </Tag>
+  )
+}
+
+export function Plate({
+  name,
+  className,
+  priority,
+  sizes,
+}: {
+  name: keyof typeof img | string
+  className?: string
+  priority?: boolean
+  /** Width the mobile source applies below. */
+  sizes?: string
+}) {
+  const ref = useReveal('0px 0px -60px 0px')
+  const meta = img[name]
+  const media = sizes ?? '(max-width: 860px)'
+  return (
+    <figure
+      ref={ref as React.Ref<HTMLElement>}
+      data-plate
+      className={className}
+      {...(priority ? {} : { 'data-reveal-plate': 'true' })}
+    >
+      <picture>
+        <source media={media} srcSet={src(name as string, true)} />
+        <img
+          src={src(name as string)}
+          alt={meta.alt}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          {...(priority ? { fetchPriority: 'high' as const } : {})}
+        />
+      </picture>
+    </figure>
   )
 }
 

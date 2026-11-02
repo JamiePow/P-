@@ -118,6 +118,101 @@ export const featured = businesses.filter((b) => b.featured)
   no figures are invented, and no client or achievement is named.
 */
 
+
+/* ==========================================================================
+   PHOTOGRAPHY
+
+   Unsplash, standard licence — free for commercial use, no permission or
+   attribution required. Unsplash+ (paid) results were excluded. Two
+   candidates were rejected on inspection rather than on their alt text: one
+   carried a political placard, the other a third-party courier's livery.
+   Everything below has been looked at.
+
+   These are stand-ins for a commissioned shoot. They are other people's
+   premises and staff, which is fine for stock and is not the same as
+   photographing P&'s own businesses. Before launch they should be replaced,
+   or at minimum downloaded and self-hosted rather than served from
+   Unsplash's CDN.
+
+   Each entry carries its own mobile crop. The hero's is a chosen frame
+   rather than an automatic one: an entropy crop of the landscape original
+   picked the wall and lost the walking figure.
+   ========================================================================== */
+
+const CDN = 'https://images.unsplash.com/'
+
+export type Img = {
+  id: string
+  alt: string
+  /** Desktop query. */
+  w: string
+  /** Mobile query — an art-directed crop, not a squeeze of the wide one. */
+  m: string
+  credit: string
+}
+
+export const img: Record<string, Img> = {
+  hero: {
+    id: 'photo-1717478054835-519ace54a229',
+    alt: 'A person walking through a daylit concrete walkway.',
+    w: 'w=2400&q=80&auto=format&fit=crop',
+    m: 'w=900&h=1500&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.42&fp-y=0.55',
+    credit: 'unsplash.com/photos/a-person-walking-down-a-walkway-in-a-building-dTtg0z3z_jQ',
+  },
+  who: {
+    id: 'photo-1763890869725-83a0af1d0b8a',
+    alt: 'Someone working at a desk beside a wall of windows in late light.',
+    w: 'w=2400&q=80&auto=format&fit=crop',
+    m: 'w=1100&h=760&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/person-sitting-at-desk-by-large-window-wMeXDTl46Ho',
+  },
+  believe: {
+    id: 'photo-1648824572347-517357c9c44e',
+    alt: 'Two people in a shop looking at something together on a tablet.',
+    w: 'w=2400&q=80&auto=format&fit=crop',
+    m: 'w=900&h=1400&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/two-men-in-a-store-looking-at-a-tablet-r--jcbaXgek',
+  },
+  think: {
+    id: 'photo-1741181296065-8ab8a9883ffe',
+    alt: 'A set square and a knife on a work surface in low sunlight.',
+    w: 'w=1400&q=80&auto=format&fit=crop',
+    m: 'w=1100&h=740&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/triangle-ruler-and-utility-knife-sit-in-the-sunlight-hZej0jWoF8g',
+  },
+  nexus: {
+    id: 'photo-1623235688294-31351ca7d358',
+    alt: 'A van being loaded from the rear on a city street.',
+    w: 'w=2400&q=80&auto=format&fit=crop',
+    m: 'w=900&h=1200&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/a-truck-is-parked-on-the-side-of-the-road-c9p30E94OUU',
+  },
+  atelier: {
+    id: 'photo-1786840320404-4c1c26980075',
+    alt: 'A jeweller cutting metal with a saw at a workbench.',
+    w: 'w=1400&q=80&auto=format&fit=crop',
+    m: 'w=1100&h=740&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/person-using-jewelers-saw-at-workbench-rIKWHwHWQrg',
+  },
+  blueprint: {
+    id: 'photo-1768677903496-becc4be07258',
+    alt: 'A worker checking steel reinforcement on a building site, seen from above.',
+    w: 'w=2000&q=80&auto=format&fit=crop',
+    m: 'w=1100&h=740&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/construction-worker-inspects-rebar-on-a-building-site-dSjrv4w1g1Q',
+  },
+  close: {
+    id: 'photo-1717478101769-b9711eb577c0',
+    alt: '',
+    w: 'w=2400&q=80&auto=format&fit=crop',
+    m: 'w=1100&h=900&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/a-person-standing-in-front-of-a-concrete-wall-dm8yq6X3QyQ',
+  },
+}
+
+export const src = (k: string, mobile = false) =>
+  `${CDN}${img[k].id}?${mobile ? img[k].m : img[k].w}`
+
 /* ------------------------------------------------------------------ 01 */
 export const hero = {
   headline: 'Ideas, made valuable',

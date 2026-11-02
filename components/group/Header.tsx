@@ -19,10 +19,20 @@ import { nav } from '@/lib/group'
 */
 export default function Header() {
   const [solid, setSolid] = useState(false)
+  const [hide, setHide] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.82)
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setSolid(y > window.innerHeight * 0.86)
+      /* Retract on the way down, return on the way up. Never while the sheet
+         is open, and never past the hero's top, or the header disappears
+         before there is anything to scroll back to. */
+      setHide(y > window.innerHeight && y > last + 4)
+      last = y
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -44,7 +54,11 @@ export default function Header() {
 
   return (
     <>
-      <header className="g-head" data-solid={solid ? 'true' : 'false'}>
+      <header
+        className="g-head"
+        data-solid={solid ? 'true' : 'false'}
+        data-hide={hide && !open ? 'true' : 'false'}
+      >
         <Link href="/" className="g-head__mark" aria-label="Pow & Partners, home">
           <LogoHorizontal />
         </Link>
