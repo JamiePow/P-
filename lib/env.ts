@@ -16,7 +16,27 @@ export const deployEnv = (process.env.VERCEL_ENV ?? 'development') as
 
 export const isProduction = deployEnv === 'production'
 
-/** Every page carries this. Only a production deployment is indexable. */
-export const robotsPolicy = isProduction
+/*
+  Indexing is gated twice, and deliberately.
+
+  VERCEL_ENV alone used to decide it, on the assumption that a production
+  deployment meant a launched site. That assumption broke the moment the
+  production URL started being used for review: the redesign went up at
+  powand.vercel.app with robots.txt serving "Allow: /" while the contact
+  mailbox is still unprovisioned, the inner pages are still the previous
+  design and the photography is licensed stock standing in for a shoot.
+
+  So a build is now indexable only when it is a production deployment AND
+  launch has been declared explicitly, by setting ALLOW_INDEXING=1 in the
+  project's environment. Review on production stays closed to crawlers;
+  launch is one variable and one redeploy.
+*/
+export const launchDeclared = process.env.ALLOW_INDEXING === '1'
+
+/** Production alone is not enough. Launch has to be stated. */
+export const indexingAllowed = isProduction && launchDeclared
+
+/** Every page carries this. */
+export const robotsPolicy = indexingAllowed
   ? { index: true, follow: true }
   : { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } }

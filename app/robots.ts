@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { site } from '@/lib/data'
-import { isProduction } from '@/lib/env'
+import { indexingAllowed } from '@/lib/env'
 import { insightsPublished } from '@/lib/insights'
 
 /*
@@ -19,9 +19,11 @@ import { insightsPublished } from '@/lib/insights'
 */
 
 export default function robots(): MetadataRoute.Robots {
-  /* A preview or review deployment is closed to crawlers outright. Only a
-     production deployment publishes an allow rule or a sitemap. */
-  if (!isProduction) {
+  /* Any build that has not declared launch is closed to crawlers outright,
+     production included — the production URL is used for review too, so the
+     environment alone cannot mean "ready to be found". Only a production
+     deployment with ALLOW_INDEXING=1 publishes an allow rule or a sitemap. */
+  if (!indexingAllowed) {
     return { rules: { userAgent: '*', disallow: '/' } }
   }
 
