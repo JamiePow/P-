@@ -70,7 +70,7 @@ export function NexusArt() {
           markerHeight="5"
           orient="auto-start-reverse"
         >
-          <path d="M0 0L10 5L0 10z" fill="#ff0000" />
+          <path d="M0 0L10 5L0 10z" fill="var(--accent)" />
         </marker>
       </defs>
 
@@ -109,7 +109,7 @@ export function NexusArt() {
           ) : null}
         </g>
       ))}
-      <circle cx={x(2) + w / 2} cy="86" r="3.5" fill="#ff0000" />
+      <circle cx={x(2) + w / 2} cy="86" r="3.5" fill="var(--accent)" />
 
       {/* the routing product sits across the first three stages */}
       <path
@@ -129,12 +129,12 @@ export function NexusArt() {
       <path
         d="M472 86V172H56V96"
         fill="none"
-        stroke="#ff0000"
+        stroke="var(--accent)"
         strokeWidth="1.25"
         strokeDasharray="5 5"
         markerEnd="url(#nx-r)"
       />
-      <text {...L} x="264" y="192" textAnchor="middle" fill="#ff0000">
+      <text {...L} x="264" y="192" textAnchor="middle" fill="var(--accent)">
         WHAT ACTUALLY HAPPENED, BACK INTO NEXT WEEK&rsquo;S PLAN
       </text>
       <text {...L} x="12" y="26" fill={EDGE} fillOpacity="0.45">
@@ -164,7 +164,7 @@ export function BlueprintArt() {
     >
       <defs>
         <pattern id="bp-h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="7" stroke="#ff0000" strokeOpacity="0.22" strokeWidth="1" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke="var(--accent)" strokeOpacity="0.22" strokeWidth="1" />
         </pattern>
         <marker id="bp-t" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
           <path d="M5 0V10" stroke={EDGE} strokeOpacity="0.4" strokeWidth="1.2" />
@@ -186,14 +186,14 @@ export function BlueprintArt() {
         </g>
       ))}
       <path d="M268 75V175" fill="none" stroke={EDGE} strokeOpacity="0.3" strokeWidth="1.25" />
-      <path d="M268 125H300" fill="none" stroke="#ff0000" strokeWidth="1.5" />
+      <path d="M268 125H300" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
 
       {/* the valuation */}
-      <rect x="300" y="68" width="160" height="114" fill="url(#bp-h)" stroke="#ff0000" strokeWidth="1.5" />
-      <text {...L} x="380" y="120" textAnchor="middle" fill="#ff0000">
+      <rect x="300" y="68" width="160" height="114" fill="url(#bp-h)" stroke="var(--accent)" strokeWidth="1.5" />
+      <text {...L} x="380" y="120" textAnchor="middle" fill="var(--accent)">
         VALUATION
       </text>
-      <text {...L} x="380" y="138" textAnchor="middle" fill="#ff0000">
+      <text {...L} x="380" y="138" textAnchor="middle" fill="var(--accent)">
         WITH EVIDENCE
       </text>
 
@@ -224,7 +224,7 @@ export function BlueprintArt() {
         <text {...L} x="310" y="266" fill={EDGE} fillOpacity="0.65">
           BLUEPRINT
         </text>
-        <text {...L} x="390" y="266" fill="#ff0000">
+        <text {...L} x="390" y="266" fill="var(--accent)">
           PROPOSED
         </text>
       </g>
@@ -259,7 +259,7 @@ export function NexusArtTall() {
           <path d="M0 0L10 5L0 10z" fill={EDGE} fillOpacity="0.5" />
         </marker>
         <marker id="nxt-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-          <path d="M0 0L10 5L0 10z" fill="#ff0000" />
+          <path d="M0 0L10 5L0 10z" fill="var(--accent)" />
         </marker>
       </defs>
       <text {...L} x="0" y="14" fill={EDGE} fillOpacity="0.45">
@@ -292,11 +292,11 @@ export function NexusArtTall() {
           ) : null}
         </g>
       ))}
-      <circle cx={x + w} cy={y(2) + 17} r="3.5" fill="#ff0000" />
+      <circle cx={x + w} cy={y(2) + 17} r="3.5" fill="var(--accent)" />
       <path
         d={`M${x + w} ${y(4) + 17}H300V${y(0) + 17}H${x + w}`}
         fill="none"
-        stroke="#ff0000"
+        stroke="var(--accent)"
         strokeWidth="1.25"
         strokeDasharray="5 5"
         markerEnd="url(#nxt-r)"
@@ -304,7 +304,7 @@ export function NexusArtTall() {
       <text {...L} x="0" y="336" fill={EDGE} fillOpacity="0.55">
         NEXUS ROUTES · THE PLANNED DAY
       </text>
-      <text {...L} x="0" y="358" fill="#ff0000">
+      <text {...L} x="0" y="358" fill="var(--accent)">
         BACK INTO NEXT WEEK&rsquo;S PLAN
       </text>
       <text {...L} x="0" y="382" fill={EDGE} fillOpacity="0.45">
@@ -329,7 +329,7 @@ export function BlueprintArtTall() {
     >
       <defs>
         <pattern id="bpt-h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="7" stroke="#ff0000" strokeOpacity="0.22" strokeWidth="1" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke="var(--accent)" strokeOpacity="0.22" strokeWidth="1" />
         </pattern>
       </defs>
       <rect x="4" y="4" width="332" height="412" fill="none" stroke={EDGE} strokeOpacity="0.4" strokeWidth="1.25" />
@@ -346,12 +346,12 @@ export function BlueprintArtTall() {
           <path d={`M262 ${b.y + 18}H288V214`} fill="none" stroke={EDGE} strokeOpacity="0.3" strokeWidth="1.25" />
         </g>
       ))}
-      <path d="M288 214H262" fill="none" stroke="#ff0000" strokeWidth="1.5" />
-      <rect x="26" y="214" width="236" height="88" fill="url(#bpt-h)" stroke="#ff0000" strokeWidth="1.5" />
-      <text {...L} x="144" y="252" textAnchor="middle" fill="#ff0000">
+      <path d="M288 214H262" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
+      <rect x="26" y="214" width="236" height="88" fill="url(#bpt-h)" stroke="var(--accent)" strokeWidth="1.5" />
+      <text {...L} x="144" y="252" textAnchor="middle" fill="var(--accent)">
         VALUATION
       </text>
-      <text {...L} x="144" y="270" textAnchor="middle" fill="#ff0000">
+      <text {...L} x="144" y="270" textAnchor="middle" fill="var(--accent)">
         WITH EVIDENCE
       </text>
       <g>
@@ -360,7 +360,7 @@ export function BlueprintArtTall() {
         <text {...L} x="38" y="348" fill={EDGE} fillOpacity="0.65">DWG 01</text>
         <text {...L} x="156" y="348" fill={EDGE} fillOpacity="0.65">REV A</text>
         <text {...L} x="38" y="374" fill={EDGE} fillOpacity="0.65">BLUEPRINT</text>
-        <text {...L} x="156" y="374" fill="#ff0000">PROPOSED</text>
+        <text {...L} x="156" y="374" fill="var(--accent)">PROPOSED</text>
       </g>
       <text {...L} x="26" y="400" fill={EDGE} fillOpacity="0.45">
         IN DEVELOPMENT · NOT YET BUILT
