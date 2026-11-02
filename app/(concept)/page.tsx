@@ -49,10 +49,10 @@ export default function Home() {
         <section className="g-hero on-dark" aria-labelledby="g-hero-h">
           <div className="g-hero__plate">
             <picture>
-              <source media="(max-width: 860px)" srcSet="/plates/hero-tall.webp" />
+              <source media="(max-width: 860px)" srcSet="/plates/dawn-tall.webp" />
               <img
-                src="/plates/hero-wide.webp"
-                alt="Daylight raking across a plaster wall. Temporary material study, pending commissioned photography."
+                src="/plates/dawn-wide.webp"
+                alt="Morning light through a window, falling across the floor of an empty room. Temporary constructed image, pending commissioned photography."
                 width={2000}
                 height={1125}
                 fetchPriority="high"
@@ -91,8 +91,8 @@ export default function Home() {
 
           <Reveal as="figure" className="g-who__plate">
             <img
-              src="/plates/group-tall.webp"
-              alt="Worked stone under soft top light. Temporary material study, pending commissioned photography."
+              src="/plates/wall-tall.webp"
+              alt="A studio wall of pinned drawings and notes in raking light. Temporary constructed image, pending commissioned photography."
               width={1200}
               height={1500}
               loading="lazy"
@@ -105,10 +105,10 @@ export default function Home() {
         <Reveal as="section" className="g-believe on-dark" margin="0px 0px -140px 0px">
           <div className="g-believe__plate">
             <picture>
-              <source media="(max-width: 860px)" srcSet="/plates/hall-tall.webp" />
+              <source media="(max-width: 860px)" srcSet="/plates/studio-tall.webp" />
               <img
-                src="/plates/hall-wide.webp"
-                alt="A colonnade receding, daylight falling between the piers. Temporary material study, pending commissioned photography."
+                src="/plates/studio-wide.webp"
+                alt="A working bench under a task light, with drawings, paper and a steel rule. Temporary constructed image, pending commissioned photography."
                 width={2000}
                 height={1125}
                 loading="lazy"
@@ -146,6 +146,10 @@ export default function Home() {
               </div>
             ))}
           </Reveal>
+
+          <Reveal className="g-help__commercial">
+            <p>{help.commercial}</p>
+          </Reveal>
         </section>
 
         {/* ------------------------------------------ 05 · the portfolio - */}
@@ -174,7 +178,8 @@ export default function Home() {
               <Monogram />
             </span>
             <p className="g-red__line">
-              One group. Distinct identities<span className="g-dot">.</span>
+              {closing.signoff}
+              <span className="g-dot">.</span>
             </p>
           </Reveal>
         </div>

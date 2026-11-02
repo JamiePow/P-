@@ -53,7 +53,7 @@ export const businesses: Business[] = [
     key: 'nexus',
     name: 'Nexus Routes',
     sector: 'Field service and delivery',
-    line: 'Planning, dispatch and proof of delivery, built inside a live route operation.',
+    line: 'Work leaves on a van and comes back on paper. Nexus closes the gap between the job and the invoice.',
     stage: 'In market',
     accent: '#0F3D3E',
     accentNote: 'Established. Extracted from the live Nexus brand assets.',
@@ -67,7 +67,7 @@ export const businesses: Business[] = [
     key: 'blueprint',
     name: 'Blueprint',
     sector: 'Construction',
-    line: 'Site capture tied to the drawing revision, so an application builds itself.',
+    line: 'Site work gets recorded twice and billed late. Blueprint ties what happened on site to the drawing revision.',
     stage: 'In development',
     accent: '#15395B',
     accentNote: 'Proposed. Cyanotype — the blue a drawing is printed in.',
@@ -81,7 +81,7 @@ export const businesses: Business[] = [
     key: 'atelier',
     name: 'Atelier',
     sector: 'Jewellery and bridal',
-    line: 'Jewellery commerce, built for a working premium jeweller and proved in its trading.',
+    line: 'A jeweller answers one question from three systems. Atelier puts the whole piece on a single record.',
     stage: 'In market',
     accent: '#0D6B62',
     accentNote: 'Proposed. Verdigris — see the note on Tiffany in the delivery.',
@@ -95,75 +95,85 @@ export const businesses: Business[] = [
 
 export const featured = businesses.filter((b) => b.featured)
 
-/* ---------------------------------------------------------------- 01 hero
-   "Internally: build it, prove it, scale it. Externally: ideas, made
-   valuable." — plan p.03. The closing page of the plan is titled with the
-   same line, so it is the group's external statement rather than a phrase
-   lifted out of a paragraph. */
+/*
+  ================================================================= COPY ====
+
+  GOVERNING SOURCE: the founder brief of this session. Where it differs from
+  PandP-business-plan.pdf (Sept 2026), the brief wins, as it instructs — and
+  it differs materially. Those contradictions are listed in the delivery, not
+  resolved quietly here. In short: the plan's positioning ("proves them inside
+  real operating environments, then commercialises whatever survives"), its
+  central rule ("nothing is sold that has not first been proven inside a
+  business that was paying for the outcome"), its "five operators, four
+  markets" framing and its five-part capability list have all been removed at
+  the founder's instruction.
+
+  What survives from the plan: "Ideas, made valuable." — its external line and
+  the title of its closing page. Plus the two visual devices, the red full
+  stop and the rule-and-caps eyebrow.
+
+  The experience claim is the founder's own, stated in the brief: more than two
+  decades across design, digital products, technology and commercial delivery,
+  spanning local businesses and enterprise platforms. Nothing is added to it,
+  no figures are invented, and no client or achievement is named.
+*/
+
+/* ------------------------------------------------------------------ 01 */
 export const hero = {
   headline: 'Ideas, made valuable',
   support:
-    'An innovation group that builds technology, brands and businesses, and proves them in live trading before selling them to anyone.',
-  source: 'Plan p.03 (external line) and p.03 positioning.',
+    'We put design, technology and commercial thinking in the same room, then use them to build products, businesses and experiences that make people’s lives easier.',
 }
 
-/* ------------------------------------------------------------ 02 who we are
-   "Five operators. Four markets. One group." — plan p.04. "P& is unusual in
-   that each partner arrives with a live commercial position rather than a
-   plan to build one. The group exists to connect them, and to take what each
-   has built and sell it to the rest of its market." */
+/* ------------------------------------------------------------------ 02 */
 export const who = {
   eyebrow: 'Who we are',
-  display: 'Five operators. Four markets. One group',
+  display: 'Two decades of building, and still most interested in what comes next',
   body:
-    'Each partner arrives with a business already trading rather than a plan to build one, and with the access that comes with it. P& connects them, supplies the design and delivery craft, and takes what each has proved to the rest of its market.',
-  source: 'Plan p.04 — The Partners; p.06 — Pow XD supplies the craft.',
+    'P& runs on more than twenty years of designing, building and looking after digital products — for small local businesses and for enterprise platforms, which are not the same problem. The range is the useful part. We know what a small team can absorb, and what it takes to change something large without breaking it.',
 }
 
-/* ------------------------------------------------------------- 03 the ethos
-   Set in italic in the plan, which is where this treatment comes from. The
-   supporting line is the plan's own justification for it, with the ownership
-   claim removed: the plan says "a business we also own", but it also records
-   that the proof environments stay with their partners, so the public line
-   says what is true of the systems rather than of the ownership. */
+/* ------------------------------------------------------------------ 03 */
 export const believe = {
   eyebrow: 'What we believe',
-  display:
-    'Nothing is sold that has not first been proven inside a business that was paying for the outcome',
+  display: 'Technology should work for people',
   body:
-    'No pilots. It means we can point at a business running the systems we built, and show you what they did to its numbers.',
-  source: 'Plan p.03 — the loop rule, set in italic, and its justification.',
+    'The best software takes work away rather than adding it. It makes a complicated job feel simple and gives people back time they were losing. We automate gladly — the question we care about is who ends up better off.',
 }
 
-/* -------------------------------------------------------- 04 how we help
-   The plan states the capability as five things, not three territories, and
-   states them four times: "branding, design, integration, delivery and
-   ongoing maintenance". They are presented here as the plan presents them —
-   one package, proved first — rather than reorganised into invented
-   groupings. */
+/* ------------------------------------------------------------------ 04 */
 export const help = {
-  eyebrow: 'How we work with brands',
-  display: 'The same five things, proved on our own businesses first',
+  eyebrow: 'How we think',
+  display: 'How it looks, how it works, how it holds up',
   items: [
-    ['Branding', 'The identity and the story a business goes to market with.'],
-    ['Design', 'Products, storefronts and experiences people want to use.'],
-    ['Integration', 'Making the systems a business already runs work together.'],
-    ['Delivery', 'Hands-on build and launch, against a real deadline.'],
-    ['Maintenance', 'Staying with it afterwards, where the value settles.'],
+    [
+      'How it looks',
+      'If an interaction feels careless, people assume the product is too. Details are read as evidence.',
+    ],
+    [
+      'How it works',
+      'Impressive and awkward is a failure. The complicated part is the part that should feel simple.',
+    ],
+    [
+      'How it holds up',
+      'Something that works today but cannot grow is unfinished. We build for the version after this one.',
+    ],
   ] as [string, string][],
-  source: 'Plan p.02, p.03 and p.06 — "the same five things", stated verbatim.',
+  commercial:
+    'We do this for our own businesses and for other people’s — designing, building and improving products, platforms and the experiences around them.',
 }
 
-/* ----------------------------------------------------------- 05 portfolio */
+/* ------------------------------------------------------------------ 05 */
 export const portfolio = {
-  eyebrow: 'Our businesses',
-  display: 'Where the thinking is proved',
+  eyebrow: 'What we are building',
+  display: 'Three problems worth solving',
 }
 
-/* --------------------------------------------------------------- 06 close */
+/* ------------------------------------------------------------------ 06 */
 export const closing = {
-  display: 'Tell us what you are building',
+  display: 'Tell us what you are building, or what you want to make better',
   cta: 'Start a conversation',
+  signoff: 'Ideas, made valuable',
 }
 
 export const nav = [

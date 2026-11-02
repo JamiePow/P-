@@ -365,6 +365,214 @@ def plate_hall(h, w, seed):
     return np.clip(lum, 0, 1)
 
 
+
+# --------------------------------------------------------- constructed rooms
+# The plates above are materials, photographed flat. These three are places,
+# built from analytic geometry, because the brief asks for human purpose and a
+# surface cannot carry it. No people are drawn: a generated face would be both
+# obviously synthetic and a misrepresentation. What they show instead is
+# evidence of someone working — a lit bench, a wall of drawings, morning light
+# across a floor — which is as close to human as honest generation gets.
+
+def _rect(u, v, cx, cy, rw, rh, ang, ar):
+    """Signed test for a rotated rectangle, in frame coordinates."""
+    ca, sa = np.cos(-ang), np.sin(-ang)
+    dx, dy = (u - cx) * ar, v - cy
+    x, y = dx * ca - dy * sa, dx * sa + dy * ca
+    return (np.abs(x) < rw * 0.5) & (np.abs(y) < rh * 0.5)
+
+
+def plate_studio(h, w, seed):
+    """
+    A working surface under a task light. The pool of warm light, a few boards
+    and a rule laid across them, deep fall-off everywhere else.
+    """
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    u, v = xx / w, yy / h
+    ar = w / h
+    horizon = 0.40
+
+    lum = np.full((h, w), 0.035, np.float32)
+
+    # the wall behind, falling away
+    lum = np.where(v < horizon, 0.03 + 0.10 * (v / horizon) ** 1.6, lum)
+    # a wall down the left, so the dark side the type sits on is a surface
+
+    # the bench, receding
+    depth = np.clip((v - horizon) / (1 - horizon), 1e-3, 1)
+    bench = 0.10 + 0.40 * depth ** 0.7
+    lum = np.where(v >= horizon, bench, lum)
+
+    # the pool of light from an off-frame lamp, up and to the left
+    pool = np.exp(-(((u - 0.68) * ar * 0.78) ** 2 + ((v - 0.70) * 1.5) ** 2) / 0.30)
+    lum = lum + 0.92 * pool * np.where(v >= horizon, 1.0, 0.35)
+
+    # boards and paper on the bench, each with a contact shadow beneath it.
+    # These replace the surface rather than tinting it — compositing them over
+    # the pool of light is what made the first attempt look like glass.
+    for (cx, cy, rw, rh, ang, tone) in (
+        (0.63, 0.66, 0.34, 0.23, -0.055, 0.92),   # the big sheet
+        (0.82, 0.79, 0.27, 0.16, 0.045, 0.80),    # paper over it
+        (0.52, 0.88, 0.23, 0.12, -0.02, 0.70),    # a board, half out of frame
+        (0.93, 0.62, 0.14, 0.10, 0.09, 0.26),     # something dark — a device
+    ):
+        sh = _rect(u, v, cx + 0.014, cy + 0.019, rw * 1.03, rh * 1.06, ang, ar)
+        lum = np.where(sh, lum * 0.38, lum)
+        top = _rect(u, v, cx, cy, rw, rh, ang, ar)
+        lum = np.where(top, tone * (0.16 + 0.88 * pool), lum)
+
+    # a drawn line and a block on the big sheet, so it is not a blank card
+    for (lx, ly, lw) in ((0.59, 0.62, 0.17), (0.59, 0.655, 0.11), (0.59, 0.69, 0.14)):
+        mark = _rect(u, v, lx, ly, lw, 0.006, -0.055, ar)
+        lum = np.where(mark, lum * 0.42, lum)
+    block = _rect(u, v, 0.715, 0.655, 0.07, 0.075, -0.055, ar)
+    lum = np.where(block, lum * 0.52, lum)
+
+    # a steel rule laid across, catching a hard specular line
+    rule = _rect(u, v, 0.70, 0.755, 0.46, 0.011, -0.05, ar)
+    lum = np.where(rule, 0.18 + 0.86 * pool, lum)
+
+    # a cylinder standing at the back of the bench — a jar of pencils
+    cyl = (np.abs((u - 0.40) * ar) < 0.055) & (v > 0.47) & (v < 0.64)
+    cshade = 0.22 + 0.55 * np.exp(-(((u - 0.418) * ar) ** 2) / 0.0016)
+    lum = np.where(cyl, cshade * (0.30 + 0.70 * pool), lum)
+
+    tooth = fbm(h, w, seed + 51, octaves=4, base=90, gain=0.5)
+    grainy = fbm(h, w, seed, octaves=4, base=6, gain=0.56)
+    lum = lum * (0.90 + 0.15 * tooth) * (0.93 + 0.12 * grainy)
+    return np.clip(lum, 0, 1)
+
+
+def plate_wall(h, w, seed):
+    """
+    A wall of pinned sheets in raking light. The evidence of thinking, rather
+    than a picture of someone doing it.
+    """
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    u, v = xx / w, yy / h
+    ar = w / h
+    rng = _rng(seed)
+
+    rake = raking_light(h, w, angle_deg=28, softness=0.62, origin=0.12)
+    lum = 0.10 + 0.34 * rake
+
+    # Pinned by hand, so: mixed formats, real overlap, and marks that differ
+    # from sheet to sheet. A regular grid of identical cards reads as a
+    # filing system, which is what the first attempt looked like.
+    sheets = []
+    for c in range(4):
+        n = int(rng.integers(2, 4))
+        for r in range(n):
+            land = bool(rng.random() < 0.38)
+            rw = float(rng.uniform(0.15, 0.23)) * (1.25 if land else 0.92)
+            rh = float(rng.uniform(0.17, 0.27)) * (0.72 if land else 1.08)
+            cx = (c + 0.5) / 4 + float(rng.normal(0, 0.034))
+            cy = (r + 0.5) / n + float(rng.normal(0, 0.040))
+            sheets.append((cx, cy, rw, rh, float(rng.normal(0, 0.030))))
+    rng.shuffle(sheets)
+
+    for (cx, cy, rw, rh, ang) in sheets:
+        light = 0.38 + 0.60 * float(np.interp(cx, [0, 1], [1.0, 0.32]))
+        sh = _rect(u, v, cx + 0.006, cy + 0.010, rw * 1.04, rh * 1.06, ang, ar)
+        lum = np.where(sh, lum * 0.46, lum)
+        sheet = _rect(u, v, cx, cy, rw, rh, ang, ar)
+        lum = np.where(sheet, light * (0.80 + 0.30 * rake), lum)
+
+        kind = int(rng.integers(0, 3))
+        if kind == 0:                      # a block of lines, like notes
+            for k in range(int(rng.integers(3, 6))):
+                mark = _rect(u, v, cx - rw * 0.10, cy - rh * 0.26 + k * rh * 0.13,
+                             rw * float(rng.uniform(0.28, 0.62)), rh * 0.026, ang, ar)
+                lum = np.where(mark, lum * 0.50, lum)
+        elif kind == 1:                    # an image area and a caption
+            img = _rect(u, v, cx, cy - rh * 0.10, rw * 0.72, rh * 0.46, ang, ar)
+            lum = np.where(img, lum * 0.44, lum)
+            cap = _rect(u, v, cx - rw * 0.14, cy + rh * 0.26, rw * 0.42, rh * 0.028, ang, ar)
+            lum = np.where(cap, lum * 0.52, lum)
+        else:                              # a diagram: a frame and a diagonal
+            fr = _rect(u, v, cx, cy, rw * 0.62, rh * 0.50, ang, ar)
+            inr = _rect(u, v, cx, cy, rw * 0.56, rh * 0.42, ang, ar)
+            lum = np.where(fr & ~inr, lum * 0.48, lum)
+            for k in range(3):
+                mark = _rect(u, v, cx, cy - rh * 0.05 + k * rh * 0.10,
+                             rw * 0.44, rh * 0.022, ang + 0.14, ar)
+                lum = np.where(mark, lum * 0.55, lum)
+
+    tooth = fbm(h, w, seed + 7, octaves=4, base=140, gain=0.48)
+    lum = lum * (0.92 + 0.13 * tooth)
+    return np.clip(lum, 0, 1)
+
+
+def plate_dawn(h, w, seed):
+    """
+    Morning light through a window, falling obliquely across a floor.
+
+    The first version cast the light dead centre and symmetrically, which read
+    as a CGI runway — perfect symmetry is the tell. Real window light lands at
+    an angle and drifts across the floor as it comes toward you, and the
+    opening itself is a bloom in a wall rather than a crisp rectangle hanging
+    in space. Both are fixed here.
+
+    The warmest plate in the set, and the only optimistic one.
+    """
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    u, v = xx / w, yy / h
+    ar = w / h
+    horizon = 0.33
+
+    lum = np.full((h, w), 0.055, np.float32)
+    # the far wall
+    lum = np.where(v < horizon, 0.045 + 0.10 * (1 - v / horizon) ** 1.5, lum)
+
+    depth = np.clip((v - horizon) / (1 - horizon), 1e-3, 1)
+    lum = np.where(v >= horizon, 0.075 + 0.17 * depth ** 0.85, lum)
+
+    # the cast light: a skewed quad. It starts right and walks left as it
+    # nears the camera, which is what an oblique shaft actually does.
+    centre = 0.655 - 0.40 * depth
+    half = 0.045 + 0.30 * depth
+    d = np.abs(u - centre)
+    core = np.clip(1.0 - (d - half * 0.72) / (half * 0.42), 0, 1)
+    inside = (v >= horizon) & (core > 0)
+    lum = np.where(inside, lum + 0.92 * core * (0.40 + 0.60 * depth ** 0.45), lum)
+
+    # the window's bars, thinner than before, running with the cast
+    t = (u - centre) / np.maximum(half, 1e-4)
+    for b_ in (-0.46, 0.08, 0.60):
+        bar = inside & (np.abs(t - b_) < 0.030)
+        lum = np.where(bar, lum * 0.62, lum)
+    for tt in (0.38, 0.72):
+        tb = inside & (np.abs(depth - tt) < 0.014)
+        lum = np.where(tb, lum * 0.66, lum)
+
+    # the opening: a tall doorway set into the far wall, standing on the floor
+    # line. A plain ellipse read as a glowing orb and a hard rectangle read as
+    # a canvas hung in the dark, so this is a superellipse — square-ish with
+    # eased corners — with the mullions carried across it.
+    wx = 0.655
+    wtop, wbot = horizon - 0.235, horizon + 0.005
+    wcy = (wtop + wbot) * 0.5
+    sx = np.abs((u - wx) * ar / 0.082)
+    sy = np.abs((v - wcy) / ((wbot - wtop) * 0.5))
+    se = sx ** 5 + sy ** 5
+    pane = np.clip((1.18 - se) / 0.60, 0, 1) ** 0.6
+    # the same bars, continued up through the opening
+    for b_ in (-0.46, 0.08, 0.60):
+        pane = np.where(np.abs((u - wx) * ar / 0.082 - b_) < 0.075, pane * 0.72, pane)
+    lum = np.where(v < horizon + 0.01, np.maximum(lum, pane), lum)
+    # the light it throws onto the wall around itself
+    lum = lum + 0.30 * np.exp(-se / 6.0) * np.where(v < horizon + 0.01, 1.0, 0.25)
+
+    # a wall plane down the left, so the room has a side
+    wall = np.clip((0.16 - u) / 0.16, 0, 1) ** 1.3
+    lum = lum * (1.0 - 0.52 * wall)
+
+    tooth = fbm(h, w, seed + 19, octaves=4, base=110, gain=0.5)
+    drift = fbm(h, w, seed, octaves=4, base=5, gain=0.58)
+    lum = lum * (0.91 + 0.14 * tooth) * (0.94 + 0.11 * drift)
+    return np.clip(lum, 0, 1)
+
+
 def surface_cyanotype(h, w, seed):
     """
     A drafting sheet. Paper tooth, a fine grid, and the arcs and setting-out
@@ -551,6 +759,27 @@ def build():
                 material=MAT['plaster'], direct=True, seed=5107,
                 vig=0.34, warm=0.014, gamma=1.06, grain=0.015,
                 stands_for='IMG 07 — ethos. Architectural interior, daylight between piers.')
+
+    # ---- the constructed rooms. Warm ramps throughout: the previous set was
+    # handsome and cold, and cold was the note.
+    STUDIO = [(0.0, '#090706'), (0.24, '#2a1f17'), (0.54, '#7d6346'),
+              (0.80, '#d3bb94'), (1.0, '#fdf7ec')]
+    WALLP = [(0.0, '#100d0a'), (0.30, '#3a3028'), (0.62, '#9a8a74'),
+             (0.86, '#ded2bd'), (1.0, '#fcf8f1')]
+    DAWN = [(0.0, '#0b0906'), (0.22, '#2e2318'), (0.50, '#8a6a42'),
+            (0.74, '#dcb882'), (0.90, '#f6e2c2'), (1.0, '#fffaf2')]
+
+    for name, (ph, pw), fn, pal, seed in (
+        ('studio-wide', (1125, 2000), plate_studio, STUDIO, 6101),
+        ('studio-tall', (1600, 1050), plate_studio, STUDIO, 6101),
+        ('wall-tall', (1500, 1200), plate_wall, WALLP, 6203),
+        ('wall-wide', (1000, 1600), plate_wall, WALLP, 6203),
+        ('dawn-wide', (1125, 2000), plate_dawn, DAWN, 6307),
+        ('dawn-tall', (1600, 1050), plate_dawn, DAWN, 6307),
+    ):
+        compose(name, ph, pw, fn, pal, material=MAT['plaster'], direct=True,
+                seed=seed, vig=0.30, warm=0.022, gamma=1.0, grain=0.014,
+                stands_for=f'{name} — constructed room, temporary.')
 
     # ---- 04 contact. Near-dark, one slow sweep. Almost nothing in it.
     compose('close-wide', 900, 2000, surface_plaster,

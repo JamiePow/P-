@@ -90,6 +90,42 @@
     "stands_for": "IMG 07 \u2014 ethos. Architectural interior, daylight between piers."
   },
   {
+    "file": "studio-wide.webp",
+    "px": "2000x1125",
+    "kb": 25,
+    "stands_for": "studio-wide \u2014 constructed room, temporary."
+  },
+  {
+    "file": "studio-tall.webp",
+    "px": "1050x1600",
+    "kb": 22,
+    "stands_for": "studio-tall \u2014 constructed room, temporary."
+  },
+  {
+    "file": "wall-tall.webp",
+    "px": "1200x1500",
+    "kb": 24,
+    "stands_for": "wall-tall \u2014 constructed room, temporary."
+  },
+  {
+    "file": "wall-wide.webp",
+    "px": "1600x1000",
+    "kb": 17,
+    "stands_for": "wall-wide \u2014 constructed room, temporary."
+  },
+  {
+    "file": "dawn-wide.webp",
+    "px": "2000x1125",
+    "kb": 27,
+    "stands_for": "dawn-wide \u2014 constructed room, temporary."
+  },
+  {
+    "file": "dawn-tall.webp",
+    "px": "1050x1600",
+    "kb": 23,
+    "stands_for": "dawn-tall \u2014 constructed room, temporary."
+  },
+  {
     "file": "close-wide.webp",
     "px": "2000x900",
     "kb": 43,
