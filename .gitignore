@@ -15,3 +15,4 @@ tsconfig.tsbuildinfo
 .DS_Store
 .qa/
 .e2e/
+_to_delete/
