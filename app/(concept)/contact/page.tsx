@@ -16,7 +16,7 @@ import { contact, publicEmail, enquiriesOpen } from '@/lib/contact'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Start a conversation',
+  title: 'Contact',
   description:
     'Tell us which systems you run and where the time goes, and we will tell you what we would look at first. Working across the United Kingdom and Ireland.',
   alternates: { canonical: '/contact' },
@@ -74,7 +74,7 @@ export default function ContactPage() {
         folio="Contact"
         title={
           <>
-            Start a conversation<span className="c4-stop">.</span>
+            Get in touch<span className="c4-stop">.</span>
           </>
         }
         lead="Tell us which systems you run and where the time goes, and we will tell you what we would look at first. If we do not think there is enough in it to be worth doing, we will say so."

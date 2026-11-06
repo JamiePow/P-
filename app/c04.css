@@ -461,7 +461,7 @@
 .c4-foot { padding-block: var(--s6) var(--s4); }
 .c4-foot__top { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: var(--s5); padding-bottom: var(--s6); }
 .c4-foot__top p { font-size: var(--t-small); line-height: 1.62; color: var(--muted); margin-top: var(--s3); }
-.c4-foot h4 { font-family: var(--l); font-weight: 500; font-size: var(--t-label); font-weight: 500; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--soft); }
+.c4-foot h3, .c4-foot h4 { font-family: var(--l); font-weight: 500; font-size: var(--t-label); font-weight: 500; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--soft); }
 .c4-foot ul { margin-top: var(--s2); }
 .c4-foot li { padding-block: 5px; }
 .c4-foot li a { font-size: var(--t-small); color: var(--muted); transition: color var(--fast) var(--ease); }

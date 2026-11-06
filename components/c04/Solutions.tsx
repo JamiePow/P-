@@ -97,7 +97,7 @@ function Head({ s }: { s: Solution }) {
       <p className="c4-label">
         Solution {s.n} · {s.sector}
       </p>
-      <h3 className="c4-sol__name">{s.name}</h3>
+      <h2 className="c4-sol__name">{s.name}</h2>
     </div>
   )
 }
@@ -106,7 +106,7 @@ function Head({ s }: { s: Solution }) {
 
 function Atelier({ s }: { s: Solution }) {
   return (
-    <article className="c4-atl" id={s.name.toLowerCase()} data-reveal>
+    <article className="c4-atl" id={s.treatment} data-reveal>
       <div className="c4-atl__left">
         <div className="c4-atl__fig">
           <Plate shot={shot(s.img)} variant="portrait" />
@@ -132,7 +132,7 @@ function Atelier({ s }: { s: Solution }) {
 
 function Nexus({ s }: { s: Solution }) {
   return (
-    <article className="c4-nex" id={s.name.toLowerCase()} data-reveal>
+    <article className="c4-nex" id={s.treatment} data-reveal>
       <div className="c4-nex__head">
         <Head s={s} />
         <p className="c4-sol__status">
@@ -158,7 +158,7 @@ function Nexus({ s }: { s: Solution }) {
 
 function Blueprint({ s }: { s: Solution }) {
   return (
-    <article className="c4-bp" id={s.name.toLowerCase()} data-reveal>
+    <article className="c4-bp" id={s.treatment} data-reveal>
       <div className="c4-bp__sheet">
         <div className="c4-bp__title">
           <span className="c4-label">DWG · Solution {s.n}</span>

@@ -3,6 +3,7 @@ import { display, sans } from './fonts'
 import { site } from '@/lib/data'
 import { publicEmail } from '@/lib/contact'
 import { robotsPolicy } from '@/lib/env'
+import { divisions } from '@/lib/group'
 import './c04.css'
 
 /*
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: 'en_GB',
     type: 'website',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: `${site.name}. Give your people their week back.` }],
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: `${site.name}. ${site.tagline}` }],
   },
   twitter: { card: 'summary_large_image', images: ['/og.png'] },
   /* Indexable only on a production deployment. A review build is not. */
@@ -56,6 +57,18 @@ const jsonLd = {
       url: site.url,
       description: site.description,
       areaServed: ['GB', 'IE'],
+      /* The divisions are declared on the one Organization node rather than
+         as a second Organization on the homepage. Two Organization entities
+         describing the same company is how a group ends up with neither of
+         them trusted. */
+      subOrganization: divisions.map((d) => ({
+        '@type': 'Organization',
+        '@id': `${site.url}/#${d.key}`,
+        name: d.name,
+        description: d.summary,
+        knowsAbout: d.sector,
+        parentOrganization: { '@id': `${site.url}/#organization` },
+      })),
       ...(publicEmail() ? { email: publicEmail() } : {}),
     },
     {

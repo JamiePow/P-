@@ -19,7 +19,7 @@ import { img, src } from '@/lib/group'
 */
 
 type RevealProps = {
-  as?: 'div' | 'section' | 'article' | 'figure'
+  as?: 'div' | 'section' | 'article' | 'figure' | 'li'
   className?: string
   children: ReactNode
   margin?: string
@@ -85,8 +85,27 @@ export function Plate({
   sizes?: string
 }) {
   const ref = useReveal('0px 0px -60px 0px')
-  const meta = img[name]
+  const meta = img[name] ?? { alt: 'Awaiting photography.' }
   const media = sizes ?? '(max-width: 860px)'
+  const wide = src(name as string)
+  const narrow = src(name as string, true)
+
+  /* An unsourced slot renders as its own frame rather than a broken image,
+     and says so to a screen reader. */
+  if (!wide) {
+    return (
+      <figure
+        ref={ref as React.Ref<HTMLElement>}
+        data-plate
+        data-pending="true"
+        className={className}
+        aria-label="Photography still to be sourced"
+      >
+        <span aria-hidden="true">Photography to come</span>
+      </figure>
+    )
+  }
+
   return (
     <figure
       ref={ref as React.Ref<HTMLElement>}
@@ -95,9 +114,9 @@ export function Plate({
       {...(priority ? {} : { 'data-reveal-plate': 'true' })}
     >
       <picture>
-        <source media={media} srcSet={src(name as string, true)} />
+        <source media={media} srcSet={narrow} />
         <img
-          src={src(name as string)}
+          src={wide}
           alt={meta.alt}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"

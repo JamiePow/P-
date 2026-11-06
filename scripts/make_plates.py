@@ -625,9 +625,19 @@ PALETTES = {
     'group':     [(0.0, '#2b2721'), (0.34, '#6d6659'), (0.70, '#cec5b7'), (1.0, '#faf8f5')],
     'powxd':     [(0.0, '#0b0406'), (0.38, '#4a0718'), (0.70, '#8c0b2d'), (0.90, '#c9637c'), (1.0, '#f3e4e8')],
     'crafted':   [(0.0, '#14160f'), (0.34, '#3c4434'), (0.64, '#667464'), (0.86, '#b8ae7e'), (1.0, '#f0e4c6')],
-    'nexus':     [(0.0, '#04100f'), (0.40, '#0f3d3e'), (0.72, '#2c6f6a'), (0.90, '#8fc0b4'), (1.0, '#eaf4ef')],
-    'atelier':   [(0.0, '#050d0c'), (0.30, '#07322e'), (0.58, '#0d6b62'), (0.82, '#6aa89a'), (1.0, '#dfe9e0')],
-    'blueprint': [(0.0, '#070e16'), (0.34, '#15395b'), (0.66, '#43688c'), (0.88, '#a9bccd'), (1.0, '#eef1f4')],
+    # The three portfolio plates are deliberately NOT tinted to the business
+    # colours. Mapping each photograph to its brand hue turned the portfolio
+    # into four coloured swatches, and it put Nexus's teal next to Atelier's
+    # green so the two read as the same material. It also quietly asserted a
+    # colour for Atelier that has never been approved.
+    #
+    # The plates now share the parent's material register — graphite, mineral,
+    # paper — and differentiate by surface and light. The business colour
+    # appears exactly twice per entry, in the rule and the status dot, which is
+    # the only place it can be wrong rather than everywhere at once.
+    'nexus':     [(0.0, '#080a0b'), (0.34, '#2f353a'), (0.68, '#9aa2a6'), (0.88, '#ccd1d2'), (1.0, '#f1f3f2')],
+    'atelier':   [(0.0, '#0b0806'), (0.32, '#3a2f26'), (0.64, '#97897a'), (0.88, '#cdbfae'), (1.0, '#f5efe6')],
+    'blueprint': [(0.0, '#101010'), (0.30, '#45423d'), (0.62, '#978f85'), (0.86, '#d6d0c4'), (1.0, '#faf7f0')],
 }
 
 PLATES = []
@@ -746,9 +756,9 @@ def build():
     # Blueprint is ink on paper, not a lit surface, so it is composed flat.
     for suffix, (ph, pw) in (('wide', (1000, 1600)), ('tall', (1500, 1200))):
         compose(f'blueprint-{suffix}', ph, pw, surface_cyanotype, PALETTES['blueprint'],
-                illum=raking_light(ph, pw, angle_deg=40, softness=0.90, origin=0.05),
-                ink=cyanotype_ink(ph, pw, 3723) * 0.30, material=MAT['plaster'],
-                direct=True, seed=3723, vig=0.22, gamma=0.92, grain=0.012,
+                illum=raking_light(ph, pw, angle_deg=34, softness=0.72, origin=0.14),
+                ink=cyanotype_ink(ph, pw, 3723) * 0.62, material=MAT['plaster'],
+                direct=True, seed=3723, vig=0.34, gamma=1.16, grain=0.012,
                 stands_for='blueprint panel — Cyanotype. Drafted geometry on paper.')
 
     # ---- 03b the ethos plate. The one architectural interior in the set.
@@ -788,6 +798,14 @@ def build():
                                                      softness=0.88, origin=0.34), 0, 1),
             material=MAT['plaster'], seed=4801, vig=0.44, grain=0.013, gamma=1.22,
             stands_for='IMG 09 — closing band. Near-dark, single light.')
+
+    # The same room on the long axis, for the mobile <source>.
+    compose('close-tall', 1600, 1050, surface_plaster,
+            [(0.0, '#070707'), (0.46, '#17140f'), (0.80, '#3f372d'), (1.0, '#766a5a')],
+            illum=np.clip(0.06 + 0.94 * raking_light(1600, 1050, angle_deg=16,
+                                                     softness=0.88, origin=0.34), 0, 1),
+            material=MAT['plaster'], seed=4801, vig=0.44, grain=0.013, gamma=1.22,
+            stands_for='IMG 09 — closing band, mobile crop.')
 
     with open(os.path.join(OUT, 'register.json'), 'w') as f:
         json.dump(PLATES, f, indent=2)

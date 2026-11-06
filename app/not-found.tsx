@@ -56,7 +56,7 @@ export default function GlobalNotFound() {
               Or tell us what you were looking for and we will point you at it.
             </p>
             <Link className="c4-btn--line" href="/contact">
-              Start a conversation
+              Get in touch
             </Link>
           </div>
         </div>

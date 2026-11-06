@@ -83,7 +83,15 @@ export default function Header() {
       </header>
 
       <div className="g-sheet" id="g-sheet" data-open={open ? 'true' : 'false'} aria-hidden={!open}>
-        <button type="button" className="g-sheet__close" onClick={() => setOpen(false)}>
+        <button
+          type="button"
+          className="g-sheet__close"
+          /* The sheet carries aria-hidden while closed, so nothing inside it
+             may stay in the tab order — the close button was the one thing
+             still reachable. */
+          tabIndex={open ? 0 : -1}
+          onClick={() => setOpen(false)}
+        >
           Close
         </button>
         <nav aria-label="Primary, expanded">

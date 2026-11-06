@@ -36,9 +36,8 @@ export const contents: Entry[] = [
   { n: '04', id: 'solutions', title: 'Our solutions', short: 'Solutions' },
   { n: '05', id: 'difference', title: 'The P& difference', short: 'Difference' },
   { n: '06', id: 'approach', title: 'Our approach', short: 'Approach' },
-  { n: '07', id: 'pricing', title: 'Commercial transparency', short: 'Pricing' },
   { n: '08', id: 'about', title: 'About P&', short: 'About' },
-  { n: '09', id: 'closing', title: 'Start a conversation', short: 'Contact' },
+  { n: '09', id: 'closing', title: 'Get in touch', short: 'Contact' },
 ]
 
 /* ---------- art direction ----------
@@ -348,7 +347,7 @@ export type Solution = {
 export const solutions: Solution[] = [
   {
     n: '01',
-    name: 'Atelier',
+    name: 'P& Atelier',
     sector: 'Jewellery and bridal',
     whoFor:
       'Independent and multi-site jewellers, bridal specialists and premium retailers who sell on knowledge rather than on price.',
@@ -378,7 +377,7 @@ export const solutions: Solution[] = [
   },
   {
     n: '02',
-    name: 'Nexus',
+    name: 'P& Nexus',
     sector: 'Field services, delivery and route operations',
     whoFor:
       'Operators running vans, engineers or recurring service rounds, where the work happens away from the office and comes back on paper.',
@@ -408,7 +407,7 @@ export const solutions: Solution[] = [
   },
   {
     n: '03',
-    name: 'Blueprint',
+    name: 'P& Blueprint',
     sector: 'Construction subcontractors',
     whoFor:
       'Subcontractors running labour, materials and plant across several contracts, who assemble applications from records held in three places.',
@@ -576,7 +575,7 @@ export const ctas = {
   },
   pricing: {
     line: 'Not sure which tier fits. Tell us the systems you run and we will say which one it is.',
-    action: 'Ask about pricing',
+    action: 'Get in touch',
   },
 }
 

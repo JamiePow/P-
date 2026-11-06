@@ -44,37 +44,37 @@
   {
     "file": "nexus-wide.webp",
     "px": "1600x1000",
-    "kb": 109,
+    "kb": 164,
     "stands_for": "nexus panel \u2014 Water. Refracted light over a dark floor."
   },
   {
     "file": "nexus-tall.webp",
     "px": "1200x1500",
-    "kb": 102,
+    "kb": 161,
     "stands_for": "nexus panel, portrait \u2014 Water. Refracted light over a dark floor."
   },
   {
     "file": "atelier-wide.webp",
     "px": "1600x1000",
-    "kb": 215,
+    "kb": 273,
     "stands_for": "atelier panel \u2014 Patinated bronze. Oxidised, mineral."
   },
   {
     "file": "atelier-tall.webp",
     "px": "1200x1500",
-    "kb": 205,
+    "kb": 267,
     "stands_for": "atelier panel, portrait \u2014 Patinated bronze. Oxidised, mineral."
   },
   {
     "file": "blueprint-wide.webp",
     "px": "1600x1000",
-    "kb": 8,
+    "kb": 11,
     "stands_for": "blueprint panel \u2014 Cyanotype. Drafted geometry on paper."
   },
   {
     "file": "blueprint-tall.webp",
     "px": "1200x1500",
-    "kb": 8,
+    "kb": 12,
     "stands_for": "blueprint panel \u2014 Cyanotype. Drafted geometry on paper."
   },
   {
@@ -130,5 +130,11 @@
     "px": "2000x900",
     "kb": 43,
     "stands_for": "IMG 09 \u2014 closing band. Near-dark, single light."
+  },
+  {
+    "file": "close-tall.webp",
+    "px": "1050x1600",
+    "kb": 46,
+    "stands_for": "IMG 09 \u2014 closing band, mobile crop."
   }
 ]

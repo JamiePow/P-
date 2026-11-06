@@ -49,7 +49,7 @@ export default function AboutPage() {
           </div>
           <Cta
             line="If that is how you would want it done, the audit is where it starts."
-            action="Start a conversation"
+            action="Get in touch"
             href="/contact"
           />
         </div>

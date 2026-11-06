@@ -18,7 +18,6 @@ export const NAV = [
   { href: '/what-we-do', label: 'What we do' },
   { href: '/solutions', label: 'Solutions' },
   { href: '/how-we-work', label: 'How we work' },
-  { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
 ]
 
@@ -40,7 +39,7 @@ export function Header({ current }: { current?: string }) {
             className="c4-head2__cta"
             aria-current={current === '/contact' ? 'page' : undefined}
           >
-            Start a conversation
+            Get in touch
           </Link>
         </nav>
 
@@ -69,7 +68,7 @@ export function Header({ current }: { current?: string }) {
                 </Link>
               ))}
               <Link href="/contact" className="c4-menu__cta">
-                Start a conversation
+                Get in touch
               </Link>
             </nav>
           </div>
@@ -121,21 +120,21 @@ export function Footer() {
             <p>{meta.support}</p>
           </div>
           <div>
-            <h4>Solutions</h4>
+            <h3>Solutions</h3>
             <ul>
               <li>
-                <Link href="/solutions#atelier">Atelier</Link>
+                <Link href="/solutions#atelier">P&amp; Atelier</Link>
               </li>
               <li>
-                <Link href="/solutions#nexus">Nexus</Link>
+                <Link href="/solutions#nexus">P&amp; Nexus</Link>
               </li>
               <li>
-                <Link href="/solutions#blueprint">Blueprint</Link>
+                <Link href="/solutions#blueprint">P&amp; Blueprint</Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4>Company</h4>
+            <h3>Company</h3>
             <ul>
               <li>
                 <Link href="/what-we-do">What we do</Link>
@@ -144,15 +143,12 @@ export function Footer() {
                 <Link href="/how-we-work">How we work</Link>
               </li>
               <li>
-                <Link href="/pricing">Pricing</Link>
-              </li>
-              <li>
                 <Link href="/about">About</Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4>Contact</h4>
+            <h3>Contact</h3>
             <ul>
               {email ? (
                 <li>
@@ -160,7 +156,7 @@ export function Footer() {
                 </li>
               ) : null}
               <li>
-                <Link href="/contact">Start a conversation</Link>
+                <Link href="/contact">Get in touch</Link>
               </li>
               <li>
                 <Link href="/privacy">Privacy</Link>

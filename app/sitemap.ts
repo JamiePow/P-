@@ -11,7 +11,6 @@ const routes = [
   '/what-we-do',
   '/solutions',
   '/how-we-work',
-  '/pricing',
   '/about',
   '/contact',
   '/privacy',

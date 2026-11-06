@@ -2,9 +2,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Monogram } from '@/components/Brand'
 import Header from '@/components/group/Header'
-import Business from '@/components/group/Business'
+import Division from '@/components/group/Division'
 import { Plate, Ready, Reveal } from '@/components/group/Parts'
-import { believe, closing, featured, help, hero, img, portfolio, src, who } from '@/lib/group'
+import { belief, contact, divisions, group, hero, model, portfolio } from '@/lib/group'
 import { site } from '@/lib/data'
 
 import '../group.css'
@@ -12,26 +12,32 @@ import '../group.css'
 /*
   The P& group homepage.
 
-  Six moments, no two sharing a shape: a figure inside an ambitious space;
-  a band with the headline crossing its edge; one italic sentence at full
-  viewport; a held detail with three principles stepping past it; three
-  businesses in three treatments; the red field into the black.
+  Structured as a corporate group site rather than an editorial feature: what
+  the group is, what it sells, how it works, which divisions it holds, and how
+  to reach it. Each section is a real section with a real heading and real
+  prose — the previous version carried one display line per screen, which read
+  well and ranked for nothing.
 
-  Every section opens with a red rule and letterspaced caps, and every
-  display statement closes with a red full stop. Both devices are taken from
-  the business plan, not invented for the site.
+  Section order is deliberate and conventional, because conventional is what
+  a group site is for. A visitor who has never heard of P& should be able to
+  answer "what is this company, and what does it own" inside two screens.
 
-  The photography is licensed stock standing in for a commissioned shoot; the
-  register and its caveats are in lib/group.ts.
-
-  This page shares no layout, component or stylesheet with the rest of the
-  site; the remaining pages still render from c04.css and are unchanged.
+  No package pricing anywhere. Commercial terms belong to each division's own
+  site, not to the group.
 */
 
 export const metadata: Metadata = {
-  title: { absolute: `${site.name} | Ideas, made valuable` },
+  title: { absolute: `${site.name} — Innovation group | Ideas, made valuable` },
   description:
-    'We put design, technology and commercial thinking in the same room, then use them to build products, businesses and experiences that make people’s lives easier.',
+    'P& is an innovation group building technology, brands and businesses across jewellery commerce, operations software and construction. We prove platforms inside real trading businesses, then take them to market.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: site.name,
+    title: `${site.name} — Innovation group`,
+    description:
+      'An innovation group building technology, brands and businesses. Four divisions, four markets, one way of working.',
+  },
 }
 
 export default function Home() {
@@ -43,156 +49,161 @@ export default function Home() {
       <Header />
 
       <main id="main">
-        {/* --------------------------------------------- 01 · the hero --- */}
-        <section className="g-hero on-dark" aria-labelledby="g-hero-h">
-          <div className="g-hero__img">
-            <picture>
-              <source media="(max-width: 860px)" srcSet={src('hero', true)} />
-              <img
-                src={src('hero')}
-                alt={img.hero.alt}
-                fetchPriority="high"
-                decoding="async"
-              />
-            </picture>
+        {/* ------------------------------------------- 01 · masthead --- */}
+        <section className="g-mast on-dark" aria-labelledby="g-mast-h">
+          <div className="g-mast__img">
+            <Plate name="hero" className="g-mast__plate" priority />
           </div>
 
-          <div className="g-hero__in">
-            <div>
-              <div className="g-hero__rule" aria-hidden="true" />
-              <h1 className="g-hero__h" id="g-hero-h">
-                {hero.headline}
-                <span className="g-dot">.</span>
-              </h1>
-            </div>
-            <p className="g-hero__sub">{hero.support}</p>
+          <div className="g-mast__in">
+            <div className="g-mast__rule" aria-hidden="true" />
+            <h1 className="g-mast__h" id="g-mast-h">
+              {hero.headline}
+              <span className="g-dot">.</span>
+            </h1>
+            <p className="g-mast__sub">{hero.standfirst}</p>
           </div>
 
-          <p className="g-hero__cue" aria-hidden="true">
-            Scroll
-          </p>
+          <dl className="g-facts">
+            {hero.facts.map(([k, v]) => (
+              <div key={k} className="g-facts__i">
+                <dt className="g-label">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
-        {/* ------------------------------------------ 02 · who we are --- */}
-        <section className="g-who" aria-labelledby="g-who-h">
-          <div className="g-who__band">
-            <Plate name="who" className="g-who__plate" />
-            <div className="g-who__over">
-              <Reveal as="div">
-                <h2 className="g-who__h" id="g-who-h">
-                  {who.display}
-                  <span className="g-dot">.</span>
-                </h2>
-              </Reveal>
-            </div>
-          </div>
-          <div className="g-who__wrap">
-            <div className="g-who__grid">
-              <Reveal>
-                <p className="g-eyebrow">{who.eyebrow}</p>
-              </Reveal>
-              <Reveal className="g-who__text" index={1}>
-                <p>{who.body}</p>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* -------------------------------------- 03 · what we believe --- */}
-        <section className="g-believe on-dark" aria-labelledby="g-believe-h">
-          <div className="g-believe__img">
-            <Plate name="believe" />
-          </div>
-          <div className="g-believe__in">
-            <Reveal>
-              <p className="g-eyebrow">{believe.eyebrow}</p>
-            </Reveal>
-            <Reveal as="div" index={1}>
-              <h2 className="g-believe__h" id="g-believe-h">
-                {believe.display}
+        {/* ------------------------------------------ 02 · the group --- */}
+        <section className="g-sec g-group" aria-labelledby="g-group-h">
+          <div className="g-sec__in">
+            <Reveal className="g-sec__head">
+              <p className="g-eyebrow">{group.eyebrow}</p>
+              <h2 className="g-display g-sec__h" id="g-group-h">
+                {group.heading}
                 <span className="g-dot">.</span>
               </h2>
             </Reveal>
-            <Reveal className="g-believe__text" index={2}>
-              <p>{believe.body}</p>
-            </Reveal>
-          </div>
-        </section>
 
-        {/* ---------------------------------------- 04 · how we think --- */}
-        <section className="g-think" aria-labelledby="g-think-h">
-          <div className="g-think__grid">
-            <Plate name="think" className="g-think__fig" />
-            <div>
-              <div className="g-think__head">
-                <Reveal>
-                  <p className="g-eyebrow">{help.eyebrow}</p>
-                </Reveal>
-                <Reveal as="div" index={1}>
-                  <h2 className="g-display g-think__h" id="g-think-h">
-                    {help.display}
-                    <span className="g-dot">.</span>
-                  </h2>
-                </Reveal>
-              </div>
+            <div className="g-group__grid">
+              <Reveal className="g-group__text" index={1}>
+                {group.body.map((p) => (
+                  <p key={p.slice(0, 24)}>{p}</p>
+                ))}
+              </Reveal>
 
-              {help.items.map(([name, body], i) => (
-                <Reveal key={name} className="g-step" index={i}>
-                  <h3>{name}</h3>
-                  <p>{body}</p>
-                </Reveal>
-              ))}
-
-              <Reveal className="g-think__comm">
-                <p>{help.commercial}</p>
+              <Reveal className="g-group__offer" as="div" index={2}>
+                <h3 className="g-offer__h g-label">What every division sells</h3>
+                <dl>
+                  {group.offer.map(([k, v]) => (
+                    <div key={k}>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ----------------------------------- 05 · what we are building - */}
-        <section id="businesses" aria-labelledby="g-folio-h">
-          <Reveal className="g-folio__head">
-            <p className="g-eyebrow">{portfolio.eyebrow}</p>
-            <h2 className="g-display g-folio__h" id="g-folio-h">
-              {portfolio.display}
-              <span className="g-dot">.</span>
-            </h2>
-          </Reveal>
+        {/* --------------------------------------------- 03 · model --- */}
+        <section className="g-sec g-model" aria-labelledby="g-model-h">
+          <div className="g-sec__in">
+            <div className="g-model__grid">
+              <Plate name="model" className="g-model__fig" />
 
-          {featured.map((b, i) => (
-            <Business
-              key={b.key}
-              b={b}
-              treatment={(['band', 'split', 'offset'] as const)[i % 3]}
-            />
-          ))}
+              <div>
+                <Reveal className="g-sec__head">
+                  <p className="g-eyebrow">{model.eyebrow}</p>
+                  <h2 className="g-display g-sec__h" id="g-model-h">
+                    {model.heading}
+                    <span className="g-dot">.</span>
+                  </h2>
+                  <p className="g-model__lead">{model.body}</p>
+                </Reveal>
+
+                {/* Reveal renders the <li> itself: wrapping each item in a
+                    div put non-<li> children directly inside the <ol>. */}
+                <ol className="g-steps">
+                  {model.steps.map(([name, body], i) => (
+                    <Reveal as="li" key={name} className="g-step" index={i}>
+                      <span className="g-step__n g-label" aria-hidden="true">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <h3>{name}</h3>
+                      <p>{body}</p>
+                    </Reveal>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/* ---------------------------------------------- 06 · close ---- */}
+        {/* ---------------------------------------- 04 · businesses --- */}
+        <section className="g-sec g-folio" id="businesses" aria-labelledby="g-folio-h">
+          <div className="g-sec__in">
+            <Reveal className="g-sec__head">
+              <p className="g-eyebrow">{portfolio.eyebrow}</p>
+              <h2 className="g-display g-sec__h" id="g-folio-h">
+                {portfolio.heading}
+                <span className="g-dot">.</span>
+              </h2>
+              <p className="g-folio__lead">{portfolio.standfirst}</p>
+            </Reveal>
+
+            <div className="g-folio__list">
+              {divisions.map((d, i) => (
+                <Division key={d.key} d={d} index={i} />
+              ))}
+            </div>
+
+            <p className="g-folio__note">{portfolio.note}</p>
+          </div>
+        </section>
+
+        {/* -------------------------------------------- 05 · belief --- */}
+        <section className="g-belief on-dark" aria-labelledby="g-belief-h">
+          <div className="g-belief__in">
+            <Reveal>
+              <p className="g-eyebrow">{belief.eyebrow}</p>
+            </Reveal>
+            <Reveal as="div" index={1}>
+              <h2 className="g-belief__h" id="g-belief-h">
+                {belief.heading}
+                <span className="g-dot">.</span>
+              </h2>
+            </Reveal>
+            <Reveal className="g-belief__text" index={2}>
+              <p>{belief.body}</p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* --------------------------------------------- 06 · close --- */}
         <div className="g-red">
           <Reveal className="g-red__in">
             <span className="g-red__mark">
               <Monogram />
             </span>
-            <p className="g-red__line">{closing.signoff}.</p>
+            <p className="g-red__line">{contact.signoff}.</p>
           </Reveal>
         </div>
 
         <section className="g-close on-dark" aria-labelledby="g-close-h">
-          <div className="g-close__img">
-            <Plate name="close" />
-          </div>
+          <Plate name="close" className="g-close__img" />
           <Reveal className="g-close__in">
             <div>
-              <p className="g-eyebrow">Start here</p>
+              <p className="g-eyebrow">{contact.eyebrow}</p>
               <h2 className="g-display g-close__h" id="g-close-h">
-                {closing.display}
+                {contact.heading}
                 <span className="g-dot">.</span>
               </h2>
+              <p className="g-close__text">{contact.body}</p>
             </div>
             <Link className="g-close__cta" href="/contact">
-              <span>{closing.cta}</span>
+              <span>{contact.cta}</span>
               <i aria-hidden="true" />
             </Link>
           </Reveal>
@@ -206,6 +217,8 @@ export default function Home() {
           </span>
           <nav className="g-foot__links" aria-label="Legal">
             <Link href="/about">About</Link>
+            <Link href="/what-we-do">What we do</Link>
+            <Link href="/insights">Insights</Link>
             <Link href="/contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/cookies">Cookies</Link>

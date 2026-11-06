@@ -1,142 +1,138 @@
 /*
-  P& group homepage — content.
+  P& group site — content.
 
   PRIMARY SOURCE: ~/Desktop/For Taylor/PandP-business-plan.pdf
-  "P& — Business Plan", CONFIDENTIAL · SEPTEMBER 2026, 18pp.
+  "P& — Business plan and shareholder structure", CONFIDENTIAL · SEPTEMBER
+  2026, 18pp. Read in full on 6 November 2026.
 
-  Every statement below is traceable to that document and the page is named
-  against it. Nothing is invented and nothing is reconstructed from memory.
+  WHAT CHANGED, AND WHY
+  ---------------------
+  The previous version of this file carried three businesses called "Nexus
+  Routes", "Atelier" and "Blueprint", each with its own invented brand colour.
+  None of that was right. The group's actual divisions are P& Atelier, P&
+  Nexus, P& The Boutique, P& The Concierge, P& The Lab and Pow XD. "Nexus
+  Routes" is not a name that exists anywhere in the business, and the three
+  colour values were proposals of mine that were never approved.
 
-  What is deliberately NOT carried across, because the document is marked
-  confidential and most of it is not public material: the shareholder
-  framework and equity splits, partner reward, the authority matrix, market
-  sizing, named competitors and their liquidation figures, and the identity of
-  the proof environments. The plan is explicit that Crafted Studio and
-  Aquathirst remain with Taylor and Jack on written commercial terms, so the
-  site describes them by what they are rather than naming them as group
-  assets.
+  On instruction (6 Nov 2026) the site shows four of them for now — Atelier,
+  Nexus, Blueprint and The Lab — with The Lab framed as the group's innovation
+  lab rather than as the foundry-with-a-shareholding that the plan describes.
 
-  Naming discipline, from p.03 of the plan: the brand is P& or POW & PARTNERS.
-  Never P&P.
+  BLUEPRINT IS FLAGGED, NOT INVENTED. P& Blueprint does not appear in the
+  September 2026 plan, which lists The Boutique and The Concierge as verticals
+  three and four. Blueprint was named by the founder on 6 Nov 2026 and is
+  carried here as an in-development construction and trade vertical, described
+  only from what this repository already claimed for it. Its positioning line
+  needs confirming before launch.
+
+  NO PER-BUSINESS BRAND COLOURS. The plan contains no colour values of any
+  kind, and there are no brand files for these names anywhere on the machine.
+  That is not an omission — the verticals are divisions of P& Group Ltd, not
+  separate brands. The site therefore carries one identity. Every previous
+  "business colour" in this file was invented and has been removed rather than
+  replaced.
+
+  CONFIDENTIAL MATERIAL NOT CARRIED ACROSS: the shareholder framework and
+  equity splits, partner reward and the authority matrix, The Lab's slice of
+  each vertical, market sizing and named competitors, and the identity of the
+  proof environments. The plan is explicit that Crafted Studio and Aquathirst
+  remain with Taylor and Jack on written commercial terms, so the site
+  describes the proof environments by what they are rather than naming them.
+
+  NAMING DISCIPLINE, from p.03 of the plan: the brand is P& or POW & PARTNERS.
+  Never P&P — in any document, deck, contract, email signature or domain.
 */
 
-export type Stage = 'In market' | 'In development' | 'Partnership'
+export type Status = 'Trading' | 'In development' | 'Group function'
 
-export type Business = {
+export type Division = {
   key: string
+  /** Full legal-style name, as the plan writes it. */
   name: string
+  /** The market, in the words a search for it would use. */
   sector: string
-  line: string
-  stage: Stage
-  accent: string
-  accentNote: string
+  /** What it actually is. One sentence, no adjectives spare. */
+  summary: string
+  /** The longer description. This is the page's indexable substance. */
+  body: string
+  status: Status
+  /** Where the proof stands. Described, never named. */
+  proof: string
   href: string | null
-  hrefLabel: string
-  external?: boolean
   plate: string
-  source: string
-  featured: boolean
 }
 
-/*
-  A note on which businesses these are.
-
-  The plan names four trading verticals — P& Atelier, P& Nexus, P& The
-  Boutique and P& The Concierge — plus P& The Lab and Pow XD. Blueprint does
-  not appear in it; it exists only in this repository's own lib/c04.ts, as a
-  construction vertical marked "In development". The three featured here are
-  the three Jamie asked for, and the discrepancy is flagged in the delivery
-  rather than quietly resolved either way.
-*/
-export const businesses: Business[] = [
+export const divisions: Division[] = [
+  {
+    key: 'atelier',
+    name: 'P& Atelier',
+    sector: 'Jewellery and bridal commerce',
+    summary:
+      'A commerce platform for engagement rings, diamonds and fine jewellery.',
+    body:
+      'Built on Shopify, with the APIs a generic store cannot offer: stone and setting configuration, diamond search, appointments, clienteling, valuations and aftercare treated as part of the experience rather than bolted on afterwards. Engagement and bridal is the highest-consideration purchase in the category, and the one where a generic storefront is most obviously the wrong tool.',
+    status: 'Trading',
+    proof:
+      'Built for a working jewellery business and trading on the platform today.',
+    href: '/solutions#atelier',
+    plate: 'atelier',
+  },
   {
     key: 'nexus',
-    name: 'Nexus Routes',
-    sector: 'Field service and delivery',
-    line: 'Work leaves on a van and comes back on paper. Nexus closes the gap between the job and the invoice.',
-    stage: 'In market',
-    accent: '#0F3D3E',
-    accentNote: 'Established. Extracted from the live Nexus brand assets.',
+    name: 'P& Nexus',
+    sector: 'Operations and commercial control',
+    summary:
+      'One screen that shows an operator what their business is actually doing.',
+    body:
+      'Connected directly to Xero and Stripe, Nexus puts subscriptions, revenue, invoiced-against-paid, proof of delivery and the team on the road in a single view — instead of exporting three systems into a spreadsheet every Monday. First markets are water cooling and hydration, office coffee and vending: operators running the same shape of business on the same weekly rhythm.',
+    status: 'Trading',
+    proof:
+      'Built for a working route and field operation, and running inside it today.',
     href: '/solutions#nexus',
-    hrefLabel: 'Explore',
     plate: 'nexus',
-    source: 'Plan p.06 — "Built for and running inside" its proof environment, trading.',
-    featured: true,
   },
   {
     key: 'blueprint',
-    name: 'Blueprint',
-    sector: 'Construction',
-    line: 'Site work gets recorded twice and billed late. Blueprint ties what happened on site to the drawing revision.',
-    stage: 'In development',
-    accent: '#15395B',
-    accentNote: 'Proposed. Cyanotype — the blue a drawing is printed in.',
-    href: '/solutions#blueprint',
-    hrefLabel: 'Explore',
+    name: 'P& Blueprint',
+    sector: 'Construction and trade',
+    summary:
+      'Projects, people, stock and cash flow in one picture, for small trade businesses.',
+    body:
+      'The same operating problem as Nexus, in a market that runs on jobs rather than routes: what is on site, who is on it, what has been ordered, what has been invoiced and what is still owed. In development, and the vertical with the least proof behind it so far.',
+    status: 'In development',
+    proof: 'In development. No proof environment confirmed.',
+    href: null,
     plate: 'blueprint',
-    source: 'lib/c04.ts — "In development". Not present in the business plan.',
-    featured: true,
   },
   {
-    key: 'atelier',
-    name: 'Atelier',
-    sector: 'Jewellery and bridal',
-    line: 'A jeweller answers one question from three systems. Atelier puts the whole piece on a single record.',
-    stage: 'In market',
-    accent: '#0D6B62',
-    accentNote: 'Proposed. Verdigris — see the note on Tiffany in the delivery.',
-    href: '/solutions#atelier',
-    hrefLabel: 'Explore',
-    plate: 'atelier',
-    source: 'Plan p.06 — jewellery commerce, proof environment trading.',
-    featured: true,
+    key: 'lab',
+    name: 'P& The Lab',
+    sector: 'Innovation and applied research',
+    summary:
+      'Where the group tests new technology and decides what is worth building.',
+    body:
+      'The Lab is how P& stays ahead of its own roadmap. It evaluates emerging technology against real operating problems, reviews where each of our markets is moving, and runs the experiments that decide whether something becomes a feature, a product or the next vertical. It is the part of the group whose job is to be wrong early and cheaply, so the trading businesses are not wrong late and expensively.',
+    status: 'Group function',
+    proof: 'Group function. Feeds every vertical.',
+    href: null,
+    plate: 'lab',
   },
 ]
-
-export const featured = businesses.filter((b) => b.featured)
-
-/*
-  ================================================================= COPY ====
-
-  GOVERNING SOURCE: the founder brief of this session. Where it differs from
-  PandP-business-plan.pdf (Sept 2026), the brief wins, as it instructs — and
-  it differs materially. Those contradictions are listed in the delivery, not
-  resolved quietly here. In short: the plan's positioning ("proves them inside
-  real operating environments, then commercialises whatever survives"), its
-  central rule ("nothing is sold that has not first been proven inside a
-  business that was paying for the outcome"), its "five operators, four
-  markets" framing and its five-part capability list have all been removed at
-  the founder's instruction.
-
-  What survives from the plan: "Ideas, made valuable." — its external line and
-  the title of its closing page. Plus the two visual devices, the red full
-  stop and the rule-and-caps eyebrow.
-
-  The experience claim is the founder's own, stated in the brief: more than two
-  decades across design, digital products, technology and commercial delivery,
-  spanning local businesses and enterprise platforms. Nothing is added to it,
-  no figures are invented, and no client or achievement is named.
-*/
-
 
 /* ==========================================================================
    PHOTOGRAPHY
 
    Unsplash, standard licence — free for commercial use, no permission or
-   attribution required. Unsplash+ (paid) results were excluded. Two
-   candidates were rejected on inspection rather than on their alt text: one
-   carried a political placard, the other a third-party courier's livery.
-   Everything below has been looked at.
+   attribution required. Unsplash+ (paid) results were excluded. Every image
+   below has been looked at, not accepted on its alt text: two earlier
+   candidates were rejected on inspection, one carrying a political placard
+   and one a third-party courier's livery.
 
    These are stand-ins for a commissioned shoot. They are other people's
    premises and staff, which is fine for stock and is not the same as
    photographing P&'s own businesses. Before launch they should be replaced,
    or at minimum downloaded and self-hosted rather than served from
    Unsplash's CDN.
-
-   Each entry carries its own mobile crop. The hero's is a chosen frame
-   rather than an automatic one: an entropy crop of the landscape original
-   picked the wall and lost the walking figure.
    ========================================================================== */
 
 const CDN = 'https://images.unsplash.com/'
@@ -159,33 +155,19 @@ export const img: Record<string, Img> = {
     m: 'w=900&h=1500&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.42&fp-y=0.55',
     credit: 'unsplash.com/photos/a-person-walking-down-a-walkway-in-a-building-dTtg0z3z_jQ',
   },
-  who: {
+  group: {
     id: 'photo-1763890869725-83a0af1d0b8a',
     alt: 'Someone working at a desk beside a wall of windows in late light.',
     w: 'w=2400&q=80&auto=format&fit=crop',
     m: 'w=1100&h=760&q=80&auto=format&fit=crop&crop=entropy',
     credit: 'unsplash.com/photos/person-sitting-at-desk-by-large-window-wMeXDTl46Ho',
   },
-  believe: {
-    id: 'photo-1648824572347-517357c9c44e',
-    alt: 'Two people in a shop looking at something together on a tablet.',
-    w: 'w=2400&q=80&auto=format&fit=crop',
-    m: 'w=900&h=1400&q=80&auto=format&fit=crop&crop=entropy',
-    credit: 'unsplash.com/photos/two-men-in-a-store-looking-at-a-tablet-r--jcbaXgek',
-  },
-  think: {
+  model: {
     id: 'photo-1741181296065-8ab8a9883ffe',
     alt: 'A set square and a knife on a work surface in low sunlight.',
     w: 'w=1400&q=80&auto=format&fit=crop',
     m: 'w=1100&h=740&q=80&auto=format&fit=crop&crop=entropy',
     credit: 'unsplash.com/photos/triangle-ruler-and-utility-knife-sit-in-the-sunlight-hZej0jWoF8g',
-  },
-  nexus: {
-    id: 'photo-1623235688294-31351ca7d358',
-    alt: 'A van being loaded from the rear on a city street.',
-    w: 'w=2400&q=80&auto=format&fit=crop',
-    m: 'w=900&h=1200&q=80&auto=format&fit=crop&crop=entropy',
-    credit: 'unsplash.com/photos/a-truck-is-parked-on-the-side-of-the-road-c9p30E94OUU',
   },
   atelier: {
     id: 'photo-1786840320404-4c1c26980075',
@@ -194,12 +176,26 @@ export const img: Record<string, Img> = {
     m: 'w=1100&h=740&q=80&auto=format&fit=crop&crop=entropy',
     credit: 'unsplash.com/photos/person-using-jewelers-saw-at-workbench-rIKWHwHWQrg',
   },
+  nexus: {
+    id: 'photo-1623235688294-31351ca7d358',
+    alt: 'A van being loaded from the rear on a city street.',
+    w: 'w=2400&q=80&auto=format&fit=crop',
+    m: 'w=900&h=1200&q=80&auto=format&fit=crop&crop=entropy',
+    credit: 'unsplash.com/photos/a-truck-is-parked-on-the-side-of-the-road-c9p30E94OUU',
+  },
   blueprint: {
     id: 'photo-1768677903496-becc4be07258',
     alt: 'A worker checking steel reinforcement on a building site, seen from above.',
     w: 'w=2000&q=80&auto=format&fit=crop',
     m: 'w=1100&h=740&q=80&auto=format&fit=crop&crop=entropy',
     credit: 'unsplash.com/photos/construction-worker-inspects-rebar-on-a-building-site-dSjrv4w1g1Q',
+  },
+  lab: {
+    id: '',
+    alt: 'Awaiting photography.',
+    w: '',
+    m: '',
+    credit: 'UNSOURCED — needs the browser on the user’s machine.',
   },
   close: {
     id: 'photo-1717478101769-b9711eb577c0',
@@ -210,69 +206,124 @@ export const img: Record<string, Img> = {
   },
 }
 
-export const src = (k: string, mobile = false) =>
-  `${CDN}${img[k].id}?${mobile ? img[k].m : img[k].w}`
+/*
+  Concept rendering only. With NEXT_PUBLIC_CONCEPT_LOCAL_PLATES=1 the page
+  serves the generated plates from public/plates instead of the photography,
+  so the composition can be judged in an environment that cannot reach an
+  image host. Stand-ins for layout, not art direction; never set in a real
+  build.
+*/
+const LOCAL_PLATE: Record<string, string> = {
+  hero: 'dawn',
+  group: 'wall',
+  model: 'studio',
+  atelier: 'atelier',
+  nexus: 'nexus',
+  blueprint: 'blueprint',
+  lab: 'hall',
+  close: 'close',
+}
+const LOCAL = process.env.NEXT_PUBLIC_CONCEPT_LOCAL_PLATES === '1'
 
-/* ------------------------------------------------------------------ 01 */
+export const src = (k: string, mobile = false) => {
+  /* A slot with no photograph yet must not take the page down with it. */
+  if (!LOCAL && !img[k]?.id) return ''
+  if (LOCAL) {
+    const base = LOCAL_PLATE[k] ?? 'hall'
+    const wide = ['hero', 'group', 'close']
+    return `/plates/${base}-${wide.includes(k) && !mobile ? 'wide' : 'tall'}.webp`
+  }
+  return `${CDN}${img[k].id}?${mobile ? img[k].m : img[k].w}`
+}
+
+/* ==========================================================================
+   COPY
+
+   Structured as a corporate group site: what the group is, how it works, what
+   it owns, how to reach it. Every section carries real indexable prose rather
+   than a single display line, because the site has to rank as well as read.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- 01 */
 export const hero = {
+  /** H1. The plan's external line, p.03. */
   headline: 'Ideas, made valuable',
-  support:
-    'We put design, technology and commercial thinking in the same room, then use them to build products, businesses and experiences that make people’s lives easier.',
+  standfirst:
+    'P& is an innovation group. We build technology, brands and businesses, prove them inside real operating environments, then take what works to the rest of that market.',
+  /** A factual strip under the masthead. Corporate sites earn trust here. */
+  facts: [
+    ['Group', 'P& Group Ltd'],
+    ['Divisions', 'Four'],
+    ['Trading', 'Two'],
+    ['Founded', '2026'],
+  ] as [string, string][],
 }
 
-/* ------------------------------------------------------------------ 02 */
-export const who = {
-  eyebrow: 'Who we are',
-  display: 'Two decades of building, and still most interested in what comes next',
+/* ---------------------------------------------------------------- 02 */
+export const group = {
+  eyebrow: 'The group',
+  heading: 'One company, four divisions, one way of working',
+  body: [
+    'P& Group Ltd is a single company. Each division goes to market under its own name, holds its own accountability and serves its own customers, but they are divisions rather than separate businesses — which is what lets work paid for once be reused across all of them.',
+    'Every division sells the same five things into a different market: branding, design, integration, delivery and ongoing maintenance of a platform we have already proved on ourselves. That is what makes P& a group rather than four unrelated companies.',
+  ],
+  /** The five things. Short, scannable, and the page's keyword spine. */
+  offer: [
+    ['Branding', 'Identity, positioning and the language a business runs on.'],
+    ['Design', 'Product and interface design, from first principle to final state.'],
+    ['Integration', 'Connecting the systems a business already pays for.'],
+    ['Delivery', 'Building it, shipping it and getting it into live use.'],
+    ['Maintenance', 'Keeping it running, and moving it forward.'],
+  ] as [string, string][],
+}
+
+/* ---------------------------------------------------------------- 03 */
+export const model = {
+  eyebrow: 'How the group works',
+  heading: 'Build it once, for a real business. Then take it to that market',
   body:
-    'P& runs on more than twenty years of designing, building and looking after digital products — for small local businesses and for enterprise platforms, which are not the same problem. The range is the useful part. We know what a small team can absorb, and what it takes to change something large without breaking it.',
+    'Nothing is sold that has not first been proven inside a business that was paying for the outcome. It is the rule the whole group runs on, and the reason P& can walk into a conversation and point at a working system rather than a prototype.',
+  steps: [
+    ['Find', 'A problem inside a business we already own or can reach. Access before ideas.'],
+    ['Build', 'Properly, for that one business, with a real customer and a real deadline.'],
+    ['Prove', 'Run it in live trading until it measurably improves the business. No pilots.'],
+    ['Productise', 'Separate what is reusable from what is specific. Package it and document it.'],
+    ['Scale', 'Take it to the rest of that market — branding, design, integration, delivery, maintenance.'],
+  ] as [string, string][],
 }
 
-/* ------------------------------------------------------------------ 03 */
-export const believe = {
+/* ---------------------------------------------------------------- 04 */
+export const portfolio = {
+  eyebrow: 'Our businesses',
+  heading: 'Four divisions, four markets',
+  standfirst:
+    'Two trading, one in development, and the lab that decides what comes next. Each one is led by a single accountable partner and built on the same platform discipline.',
+  note:
+    'Commercial terms and package pricing sit with each division, not with the group.',
+}
+
+/* ---------------------------------------------------------------- 05 */
+export const belief = {
   eyebrow: 'What we believe',
-  display: 'Technology should work for people',
+  heading: 'Technology should work for people',
   body:
     'The best software takes work away rather than adding it. It makes a complicated job feel simple and gives people back time they were losing. We automate gladly — the question we care about is who ends up better off.',
 }
 
-/* ------------------------------------------------------------------ 04 */
-export const help = {
-  eyebrow: 'How we think',
-  display: 'How it looks, how it works, how it holds up',
-  items: [
-    [
-      'How it looks',
-      'If an interaction feels careless, people assume the product is too. Details are read as evidence.',
-    ],
-    [
-      'How it works',
-      'Impressive and awkward is a failure. The complicated part is the part that should feel simple.',
-    ],
-    [
-      'How it holds up',
-      'Something that works today but cannot grow is unfinished. We build for the version after this one.',
-    ],
-  ] as [string, string][],
-  commercial:
-    'We do this for our own businesses and for other people’s — designing, building and improving products, platforms and the experiences around them.',
-}
-
-/* ------------------------------------------------------------------ 05 */
-export const portfolio = {
-  eyebrow: 'What we are building',
-  display: 'Three problems worth solving',
-}
-
-/* ------------------------------------------------------------------ 06 */
-export const closing = {
-  display: 'Tell us what you are building, or what you want to make better',
-  cta: 'Start a conversation',
+/* ---------------------------------------------------------------- 06 */
+export const contact = {
+  eyebrow: 'Contact',
+  heading: 'Contact the group',
+  body:
+    'For partnership, supplier and press enquiries, or to talk to one of the divisions directly.',
+  cta: 'Get in touch',
   signoff: 'Ideas, made valuable',
 }
 
 export const nav = [
-  { href: '#businesses', label: 'Businesses' },
+  { href: '/what-we-do', label: 'What we do' },
+  { href: '#businesses', label: 'Our businesses' },
   { href: '/about', label: 'About' },
+  { href: '/insights', label: 'Insights' },
   { href: '/contact', label: 'Contact' },
 ]

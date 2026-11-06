@@ -68,8 +68,14 @@
 @media (prefers-reduced-motion: reduce) { .g { --dur: 1ms; } }
 
 .g *, .g *::before, .g *::after { box-sizing: border-box; }
-.g h1, .g h2, .g h3, .g p, .g figure, .g ul, .g li { margin: 0; }
-.g ul { list-style: none; padding: 0; }
+/* The root layout puts .c4 on <body>, and c04.css zeroes `.c4 dl`. That
+   selector outranks a bare .g-facts, so the group's own definition lists are
+   reset here and their spacing is set at .g-scoped specificity below. dd also
+   carries a 40px inline-start margin by default, which no reset was clearing. */
+.g h1, .g h2, .g h3, .g h4, .g p, .g figure,
+.g ul, .g ol, .g li, .g dl, .g dt, .g dd { margin: 0; }
+.g ul, .g ol { list-style: none; padding: 0; }
+.g dl { padding: 0; }
 .g a { color: inherit; text-decoration: none; }
 .g img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .g :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -208,321 +214,270 @@
 }
 
 /* ==========================================================================
-   01 — THE HERO
-   Type low and wide; the supporting line pushed hard right under a hairline,
-   so headline and copy hold opposite corners instead of stacking.
+   01 — MASTHEAD
+
+   A group site earns its credibility in the first screen: who this is, what
+   it does, and four facts that can be checked. The previous hero gave a
+   display line and nothing else.
    ========================================================================== */
 
-.g-hero {
-  position: relative; min-height: 100svh; display: flex; align-items: flex-end;
-  color: var(--light); overflow: clip; background: #0b0a09;
+.g-mast {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: min(82svh, 860px); overflow: clip; color: var(--light); background: var(--black);
 }
-.g-hero__img { position: absolute; inset: 0; z-index: 0; }
-.g-hero__img img { transform: scale(1.12); transition: transform 2600ms var(--ease); }
-.g[data-ready='true'] .g-hero__img img { transform: scale(1); }
-.g-hero::after {
+.g-mast__img { position: absolute; inset: 0; z-index: 0; }
+.g-mast__plate { position: absolute; inset: 0; }
+.g-mast__plate img { transform: scale(1.1); transition: transform 2600ms var(--ease); }
+.g[data-ready='true'] .g-mast__plate img { transform: scale(1); }
+.g-mast::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(104deg, rgba(6, 6, 6, 0.80) 0%, rgba(6, 6, 6, 0.46) 40%,
-                    rgba(6, 6, 6, 0.06) 70%, rgba(6, 6, 6, 0.26) 100%),
-    linear-gradient(to top, rgba(6, 6, 6, 0.74) 0%, rgba(6, 6, 6, 0) 48%);
+  background: linear-gradient(to top, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.58) 38%,
+                              rgba(5, 5, 5, 0.10) 76%);
 }
-.g-hero__in {
+.g-mast__in {
   position: relative; z-index: 2; width: 100%; max-width: var(--max); margin: 0 auto;
-  padding: 0 var(--gutter) clamp(64px, 8vh, 112px);
-  display: grid; grid-template-columns: 1fr auto; gap: clamp(24px, 5vw, 90px); align-items: end;
+  padding: clamp(100px, 16vh, 190px) var(--gutter) clamp(32px, 4vw, 54px);
 }
-.g-hero__h {
+.g-mast__rule {
+  width: clamp(44px, 5vw, 76px); height: 2px; background: var(--red-signal);
+  margin-bottom: clamp(18px, 2vw, 26px);
+}
+.g-mast__h {
   font-family: var(--d); font-weight: 400; font-size: var(--t-hero);
-  line-height: 0.94; letter-spacing: -0.03em; padding-bottom: 0.06em;
-  max-width: 11ch; text-wrap: balance;
+  line-height: 0.94; letter-spacing: -0.03em; max-width: 13ch;
 }
-.g-hero__rule {
-  width: clamp(44px, 6vw, 86px); height: 2px; background: var(--red-signal);
-  margin: 0 0 clamp(24px, 3vw, 36px);
-  transform-origin: left; transform: scaleX(0);
-  transition: transform 1100ms var(--ease) 240ms;
-}
-.g[data-ready='true'] .g-hero__rule { transform: scaleX(1); }
-.g-hero__sub {
-  font-size: var(--t-lead); color: var(--light-soft); max-width: 30ch;
-  padding-top: 22px; padding-bottom: 0.9rem; border-top: 1px solid var(--hair-light);
-}
-.g-hero__cue {
-  position: absolute; z-index: 2; right: var(--gutter); top: 50%;
-  transform: translateY(-50%); writing-mode: vertical-rl;
-  font-size: 0.64rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--light-faint);
+.g-mast__sub {
+  margin-top: clamp(22px, 2.6vw, 34px); max-width: 60ch;
+  font-size: clamp(1.02rem, 1.35vw, 1.3rem); line-height: 1.5; color: var(--light-soft);
 }
 
-@media (max-width: 860px) {
-  .g-hero__in { grid-template-columns: 1fr; gap: 24px; }
-  .g-hero__h { max-width: 9ch; }
-  .g-hero__sub { max-width: none; padding-bottom: 0; }
-  .g-hero__cue { display: none; }
-  .g-hero::after {
-    background: linear-gradient(to top, rgba(6, 6, 6, 0.86) 0%, rgba(6, 6, 6, 0.34) 52%,
-                                rgba(6, 6, 6, 0.46) 100%);
-  }
-}
-
-/* ==========================================================================
-   02 — WHO WE ARE
-   A full-bleed band with the headline crossing its lower edge onto the ivory.
-   Type and photograph share a plane; that layering is the section.
-   ========================================================================== */
-
-.g-who { position: relative; padding: clamp(80px, 11vh, 150px) 0 clamp(70px, 9vh, 120px); }
-.g-who__wrap { padding-top: clamp(26px, 3.2vw, 44px); }
-.g-who__band {
-  position: relative; width: 100%; height: clamp(360px, 60vh, 620px);
-  overflow: clip; background: var(--ink);
-}
-/* A scrim across the lower half, so the headline's contrast does not depend
-   on how dark the photograph happens to be at that point. */
-.g-who__band::after {
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(to top, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.52) 34%,
-                              rgba(5, 5, 5, 0.04) 68%);
-}
-/* The headline is anchored to the band's bottom edge rather than pulled up
-   across it. The layering reads the same — type on photograph, flush to its
-   boundary — and the text can never land on the ivory, where ivory on ivory
-   measured 1.2:1 and axe was right to stop it. */
-.g-who__over {
-  position: absolute; z-index: 2; inset: auto 0 0 0;
-  max-width: var(--max); margin: 0 auto;
-  padding: 0 var(--gutter) clamp(26px, 3.4vw, 52px);
-}
-.g-who__wrap { position: relative; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
-.g-who__h {
-  font-family: var(--d); font-weight: 400;
-  font-size: clamp(1.9rem, 5.2vw, 4.6rem); line-height: 1.02; letter-spacing: -0.022em;
-  max-width: 15ch; color: var(--light);
-}
-.g-who__grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 5vw, 90px); margin-top: clamp(22px, 2.6vw, 34px);
-}
-.g-who__text { grid-column: 2; font-size: var(--t-lead); color: var(--ink-soft); max-width: 46ch; }
-
-@media (max-width: 860px) {
-  .g-who__h { max-width: none; font-size: clamp(1.75rem, 8.2vw, 2.5rem); }
-  .g-who__band { height: clamp(420px, 66vh, 560px); }
-  .g-who__grid { grid-template-columns: 1fr; gap: 18px; }
-  .g-who__text { grid-column: 1; max-width: none; }
-}
-
-/* ==========================================================================
-   03 — WHAT WE BELIEVE
-   Full viewport, one italic sentence, nothing else. The page's largest type
-   and its quietest section.
-   ========================================================================== */
-
-.g-believe {
-  position: relative; min-height: 100svh; display: flex; align-items: center;
-  color: var(--light); background: var(--black); overflow: clip;
-}
-.g-believe__img { position: absolute; inset: 0; z-index: 0; }
-.g-believe::after {
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(96deg, rgba(6, 5, 4, 0.90) 0%, rgba(6, 5, 4, 0.68) 42%,
-                              rgba(6, 5, 4, 0.20) 74%, rgba(6, 5, 4, 0.44) 100%);
-}
-.g-believe__in {
+/* The facts strip. Four cells, hairline-divided, flush to the masthead's
+   bottom edge — the corporate equivalent of a dateline. */
+.g .g-facts {
   position: relative; z-index: 2; width: 100%; max-width: var(--max); margin: 0 auto;
-  padding: clamp(80px, 12vh, 150px) var(--gutter);
+  padding: 0 var(--gutter); display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--hair-light);
 }
-.g-believe__h {
-  font-family: var(--d); font-style: italic; font-weight: 400;
-  font-size: clamp(2.4rem, 7vw, 6.2rem); line-height: 1.02; letter-spacing: -0.025em;
-  max-width: 13ch; margin-top: clamp(26px, 3.4vw, 44px);
+.g .g-facts__i {
+  padding: clamp(16px, 1.8vw, 24px) 0 clamp(18px, 2vw, 28px);
+  padding-right: 16px; border-left: 1px solid var(--hair-light); padding-left: clamp(14px, 1.6vw, 26px);
 }
-.g-believe__text {
-  margin-top: clamp(26px, 3.4vw, 44px); font-size: var(--t-lead);
-  color: var(--light-soft); max-width: 40ch;
+.g .g-facts__i:first-child { border-left: 0; padding-left: 0; }
+.g-facts__i dt { color: var(--light-faint); }
+.g-facts__i dd {
+  margin-top: 7px; font-family: var(--d); font-size: clamp(1.05rem, 1.6vw, 1.5rem);
+  line-height: 1.15; color: var(--light);
 }
 
 @media (max-width: 860px) {
-  .g-believe { min-height: 0; }
-  .g-believe__h, .g-believe__text { max-width: none; }
-  .g-believe::after {
-    background: linear-gradient(to top, rgba(6, 5, 4, 0.90) 0%, rgba(6, 5, 4, 0.60) 54%,
-                                rgba(6, 5, 4, 0.74) 100%);
-  }
+  .g-mast { min-height: min(86svh, 720px); }
+  .g-mast__h { max-width: none; letter-spacing: -0.024em; }
+  /* Scoped to .g to match the base rules above, which had to outrank
+     `.c4 dl` from the root layout's stylesheet. */
+  .g .g-facts { grid-template-columns: 1fr 1fr; }
+  .g .g-facts__i:nth-child(3) { border-left: 0; padding-left: 0; }
+  .g .g-facts__i:nth-child(-n+2) { border-bottom: 1px solid var(--hair-light); }
 }
 
 /* ==========================================================================
-   04 — HOW WE THINK
-   A held detail image on the left and three moments walking down the right,
-   each stepped further in. Not three columns.
+   SECTION SHELL
+
+   Every content section below the masthead uses the same container, the same
+   head block and the same vertical rhythm. On a group site the sections are
+   supposed to look like siblings.
    ========================================================================== */
 
-.g-think { max-width: var(--max); margin: 0 auto; padding: clamp(80px, 11vh, 160px) var(--gutter); }
-.g-think__grid {
-  display: grid; grid-template-columns: 5fr 7fr;
-  gap: clamp(30px, 5vw, 90px); align-items: start;
+.g-sec { padding: clamp(76px, 10vh, 150px) 0; }
+.g-sec__in { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.g-sec__head { max-width: 72ch; }
+.g-sec__h { max-width: 20ch; margin-top: clamp(18px, 2.4vw, 30px); }
+.g-sec + .g-sec { border-top: 1px solid var(--hair); }
+
+/* ==========================================================================
+   02 — THE GROUP
+   ========================================================================== */
+
+.g-group__grid {
+  display: grid; grid-template-columns: 7fr 5fr; gap: clamp(36px, 6vw, 110px);
+  margin-top: clamp(38px, 5vw, 72px); align-items: start;
 }
-.g-think__fig {
+.g-group__text p {
+  font-size: var(--t-lead); line-height: 1.62; color: var(--ink-soft); max-width: 56ch;
+}
+.g-group__text p + p { margin-top: clamp(16px, 1.8vw, 24px); }
+
+.g-group__offer { border-top: 2px solid var(--red-signal); padding-top: clamp(18px, 2vw, 26px); }
+.g-offer__h { color: var(--ink-faint); }
+.g-group__offer dl { margin-top: clamp(14px, 1.6vw, 20px); }
+.g .g-group__offer dl > div {
+  display: grid; grid-template-columns: minmax(104px, 28%) 1fr; gap: clamp(12px, 1.6vw, 26px);
+  padding: clamp(13px, 1.5vw, 18px) 0; border-top: 1px solid var(--hair);
+}
+.g-group__offer dl > div:first-child { border-top: 0; }
+.g-group__offer dt { font-family: var(--d); font-size: 1.08rem; line-height: 1.2; }
+.g-group__offer dd { color: var(--ink-soft); }
+
+@media (max-width: 980px) {
+  .g-group__grid { grid-template-columns: 1fr; }
+  .g-group__text p { max-width: none; }
+}
+
+/* ==========================================================================
+   03 — HOW THE GROUP WORKS
+   ========================================================================== */
+
+.g-model__grid {
+  display: grid; grid-template-columns: 4fr 8fr; gap: clamp(32px, 5vw, 90px); align-items: start;
+}
+.g-model__fig {
   position: sticky; top: clamp(90px, 14vh, 150px);
   aspect-ratio: 4 / 5; overflow: clip; background: var(--ink);
 }
-.g-think__head { margin-bottom: clamp(40px, 5vw, 72px); }
-.g-think__h { max-width: 16ch; margin-top: clamp(20px, 2.6vw, 32px); }
+.g-model__lead {
+  margin-top: clamp(20px, 2.4vw, 30px); font-size: var(--t-lead);
+  line-height: 1.62; color: var(--ink-soft); max-width: 58ch;
+}
 
-.g-step { padding: clamp(26px, 3.4vw, 44px) 0; border-top: 1px solid var(--hair); }
+.g-steps { margin-top: clamp(34px, 4.5vw, 62px); list-style: none; counter-reset: none; }
+.g-step {
+  border-top: 1px solid var(--hair);
+  display: grid; grid-template-columns: clamp(44px, 5vw, 78px) 1fr;
+  gap: 0 clamp(14px, 2vw, 32px); padding: clamp(20px, 2.6vw, 32px) 0; align-items: baseline;
+}
 .g-step:first-of-type { border-top: 2px solid var(--red-signal); }
-.g-step:nth-of-type(2) { padding-left: clamp(0px, 4vw, 64px); }
-.g-step:nth-of-type(3) { padding-left: clamp(0px, 8vw, 128px); }
+.g-step__n { grid-row: span 2; color: var(--ink-faint); padding-top: 6px; }
 .g-step h3 {
   font-family: var(--d); font-weight: 400; font-size: var(--t-name);
   line-height: 1.1; letter-spacing: -0.012em;
 }
-.g-step p { margin-top: 12px; color: var(--ink-soft); max-width: 44ch; }
+.g-step p { grid-column: 2; margin-top: 9px; color: var(--ink-soft); max-width: 56ch; }
 
-/* The brief is explicit that a visitor must understand we work with other
-   businesses, so it is stated plainly rather than inferred from the portfolio. */
-.g-think__comm {
-  margin-top: clamp(40px, 5vw, 70px); padding-top: clamp(24px, 3vw, 34px);
-  border-top: 2px solid var(--red-signal); max-width: 46ch;
-}
-.g-think__comm p {
-  font-family: var(--d); font-size: clamp(1.15rem, 1.9vw, 1.7rem);
-  line-height: 1.3; color: var(--ink);
-}
-
-@media (max-width: 860px) {
-  .g-think__grid { grid-template-columns: 1fr; gap: clamp(26px, 6vw, 38px); }
-  .g-think__fig { position: static; aspect-ratio: 3 / 2; }
-  .g-step:nth-of-type(2), .g-step:nth-of-type(3) { padding-left: 0; }
-  .g-step p, .g-think__h, .g-think__comm { max-width: none; }
+@media (max-width: 980px) {
+  .g-model__grid { grid-template-columns: 1fr; }
+  .g-model__fig { position: static; aspect-ratio: 16 / 9; }
+  .g-model__lead, .g-step p { max-width: none; }
 }
 
 /* ==========================================================================
-   05 — WHAT WE ARE BUILDING
-   Three businesses, three treatments.
+   04 — OUR BUSINESSES
+
+   A register, not a gallery. Index number, photograph, name, market, what it
+   is, where it stands. The same row four times, so the divisions can be
+   compared rather than admired one at a time.
    ========================================================================== */
 
-.g-folio__head {
-  max-width: var(--max); margin: 0 auto;
-  padding: clamp(70px, 9vh, 130px) var(--gutter) clamp(34px, 4.4vw, 58px);
+.g-folio__lead {
+  margin-top: clamp(18px, 2.2vw, 28px); font-size: var(--t-lead);
+  line-height: 1.6; color: var(--ink-soft); max-width: 62ch;
 }
-.g-folio__h { max-width: 18ch; margin-top: clamp(20px, 2.6vw, 32px); }
+.g-folio__list { margin-top: clamp(40px, 5.5vw, 80px); }
+.g-folio__note {
+  margin-top: clamp(28px, 3.4vw, 44px); padding-top: clamp(16px, 2vw, 24px);
+  border-top: 1px solid var(--hair); color: var(--ink-faint); max-width: 62ch;
+}
 
-.g-biz { --mark: var(--red-ink); position: relative; }
-.g-biz--nexus     { --accent: #0f3d3e; --mark: #1f6b66; }
-.g-biz--blueprint { --accent: #15395b; --mark: #27659f; }
-.g-biz--atelier   { --accent: #0d6b62; --mark: #2f8f80; }
-/* Lifted on a dark ground, where the canonical values sit under 4:1. */
-.g-biz--band.g-biz--nexus { --mark: #68b4a7; }
+.g-div {
+  display: grid;
+  grid-template-columns: clamp(44px, 4.5vw, 76px) minmax(220px, 26%) 1fr;
+  gap: 0 clamp(20px, 3vw, 54px);
+  padding: clamp(32px, 4vw, 58px) 0;
+  border-top: 1px solid var(--hair);
+}
+.g-div:first-child { border-top: 2px solid var(--red-signal); }
+.g-div__n { color: var(--ink-faint); padding-top: 5px; }
+.g-div__img { aspect-ratio: 4 / 5; overflow: clip; background: var(--ink); }
 
-.g-biz__name {
-  font-family: var(--d); font-weight: 400; line-height: 1; letter-spacing: -0.016em;
+/* A slot with no photograph yet says so, in the brand's own register. An
+   unlabelled black rectangle reads as a bug; a grey placeholder was ruled
+   out. This is neither. */
+.g [data-plate][data-pending='true'] {
+  display: flex; align-items: flex-end; padding: clamp(14px, 1.6vw, 22px);
 }
-.g-biz__sector { margin-top: 12px; opacity: 0.72; }
-.g-biz__line { margin-top: 16px; max-width: 34ch; }
-.g-biz__rule {
-  height: 1.5px; background: var(--mark); margin-top: clamp(16px, 2vw, 24px);
-  transform-origin: left; transform: scaleX(0);
-  transition: transform 1100ms var(--ease) 0.15s;
+.g [data-plate][data-pending='true']::before {
+  content: ''; position: absolute; left: clamp(14px, 1.6vw, 22px);
+  top: clamp(14px, 1.6vw, 22px); width: clamp(28px, 3vw, 44px); height: 2px;
+  background: var(--red-signal);
 }
-.g-biz[data-revealed='true'] .g-biz__rule { transform: scaleX(1); }
-.g-biz__foot { margin-top: clamp(18px, 2.2vw, 26px); display: flex; align-items: center; gap: 22px; }
-.g-biz__stage { display: inline-flex; align-items: center; gap: 9px; opacity: 0.72; }
-.g-biz__stage::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--mark); flex: none;
-}
-.g-biz__go {
-  display: inline-flex; align-items: center; gap: 10px;
+.g [data-plate][data-pending='true'] { position: relative; }
+.g [data-plate][data-pending='true'] span {
   font-size: var(--t-label); letter-spacing: var(--ls-label);
-  text-transform: uppercase; font-weight: 500; padding: 6px 0; position: relative;
+  text-transform: uppercase; color: var(--light-faint);
 }
-.g-biz__go::after {
-  content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
-  background: var(--mark); transform: scaleX(0); transform-origin: left;
-  transition: transform 520ms var(--ease);
-}
-.g-biz:hover .g-biz__go::after { transform: scaleX(1); }
-.g-biz__go i {
-  display: block; width: 18px; height: 1px; background: currentColor;
-  transition: transform 520ms var(--ease);
-}
-.g-biz:hover .g-biz__go i { transform: translateX(5px); }
-.g-biz:hover [data-plate] img { transform: scale(1.03); }
+.g-div:hover [data-plate] img { transform: scale(1.03); }
 
-/* ---- band: full-bleed dark, type laid into the shadow side ------------- */
-.g-biz--band {
-  color: var(--light); background: var(--black); overflow: clip;
-  min-height: clamp(420px, 72svh, 720px); display: flex; align-items: flex-end;
+.g-div__name {
+  font-family: var(--d); font-weight: 400; font-size: var(--t-name);
+  line-height: 1.08; letter-spacing: -0.014em;
 }
-.g-biz--band .g-biz__img { position: absolute; inset: 0; z-index: 0; }
-.g-biz--band::after {
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(92deg, rgba(4, 8, 8, 0.84) 0%, rgba(4, 8, 8, 0.44) 44%, rgba(4, 8, 8, 0) 74%),
-    linear-gradient(to top, rgba(4, 8, 8, 0.74), rgba(4, 8, 8, 0) 54%);
+.g-div__sector { margin-top: 10px; color: var(--ink-faint); }
+.g-div__summary {
+  margin-top: clamp(14px, 1.8vw, 22px); font-family: var(--d);
+  font-size: clamp(1.15rem, 1.65vw, 1.6rem); line-height: 1.26; max-width: 32ch;
 }
-.g-biz--band .g-biz__text {
-  position: relative; z-index: 2; max-width: var(--max); margin: 0 auto; width: 100%;
-  padding: 0 var(--gutter) clamp(44px, 6vw, 74px);
+.g-div__text {
+  margin-top: clamp(13px, 1.5vw, 18px); color: var(--ink-soft);
+  line-height: 1.62; max-width: 62ch;
 }
-.g-biz--band .g-biz__name { font-size: clamp(2.1rem, 5vw, 4.4rem); }
-.g-biz--band .g-biz__rule { max-width: 360px; }
 
-/* ---- split: an intimate portrait, text in a narrow column -------------- */
-.g-biz--split {
-  max-width: var(--max); margin: 0 auto; padding: clamp(56px, 8vw, 120px) var(--gutter);
-  display: grid; grid-template-columns: 4fr 8fr; gap: clamp(28px, 4vw, 64px); align-items: center;
+.g .g-div__meta {
+  margin-top: clamp(20px, 2.4vw, 30px); display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 42px);
+  max-width: 62ch;
 }
-.g-biz--split .g-biz__img { aspect-ratio: 4 / 5; overflow: clip; background: var(--ink); order: 2; }
-.g-biz--split .g-biz__name { font-size: clamp(1.9rem, 3.6vw, 3.2rem); }
+.g-div__meta dt { color: var(--ink-faint); }
+.g-div__meta dd { margin-top: 7px; }
 
-/* ---- offset: a wide plate held off the right edge, text overlapping ---- */
-.g-biz--offset {
+.g-div__go {
+  display: inline-flex; align-items: center; gap: 11px; margin-top: clamp(20px, 2.4vw, 28px);
+  font-size: var(--t-label); letter-spacing: var(--ls-label); text-transform: uppercase;
+  color: var(--ink); text-decoration: none; position: relative; padding-bottom: 6px;
+}
+.g-div__go::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--ink); transform: scaleX(0); transform-origin: left;
+  transition: transform 560ms var(--ease);
+}
+.g-div:hover .g-div__go::after { transform: scaleX(1); }
+.g-div__go i {
+  width: 22px; height: 1px; background: currentColor; display: block;
+  transition: transform 560ms var(--ease);
+}
+.g-div:hover .g-div__go i { transform: translateX(5px); }
+
+@media (max-width: 980px) {
+  .g-div { grid-template-columns: 1fr; gap: clamp(18px, 3vw, 26px) 0; }
+  .g-div__n { padding-top: 0; }
+  .g-div__img { aspect-ratio: 16 / 10; }
+  .g-div__summary, .g-div__text, .g-div__meta { max-width: none; }
+}
+@media (max-width: 560px) {
+  .g-div__meta { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   05 — WHAT WE BELIEVE
+
+   One statement, no photograph. After the register, the page needs a breath
+   and a point of view before the contact band.
+   ========================================================================== */
+
+.g-belief { color: var(--light); background: var(--black); }
+.g-belief__in {
   max-width: var(--max); margin: 0 auto;
-  padding: clamp(24px, 3vw, 46px) var(--gutter) clamp(60px, 8vw, 110px);
+  padding: clamp(76px, 11vh, 150px) var(--gutter);
 }
-.g-biz--offset .g-biz__img {
-  margin-left: auto; width: min(100%, 84%); aspect-ratio: 16 / 9;
-  overflow: clip; background: var(--ink);
+.g-belief__h {
+  font-family: var(--d); font-style: italic; font-weight: 400;
+  font-size: clamp(2.1rem, 5.6vw, 4.8rem); line-height: 1.04; letter-spacing: -0.025em;
+  max-width: 15ch; margin-top: clamp(22px, 2.8vw, 36px);
 }
-.g-biz--offset .g-biz__text {
-  position: relative; z-index: 2; margin-top: clamp(-90px, -7vw, -40px);
-  background: var(--ivory); padding: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 44px) 0 0;
-  max-width: 46ch;
+.g-belief__text {
+  margin-top: clamp(24px, 3vw, 40px); font-size: var(--t-lead);
+  line-height: 1.6; color: var(--light-soft); max-width: 56ch;
 }
-.g-biz--offset .g-biz__name { font-size: clamp(1.9rem, 3.6vw, 3.2rem); }
-.g-biz--offset .g-biz__rule { max-width: 300px; }
 
 @media (max-width: 860px) {
-  .g-biz--band {
-    min-height: 0; display: block;
-    padding-bottom: 0; margin-bottom: clamp(44px, 10vw, 64px);
-  }
-  .g-biz--band .g-biz__img { position: static; aspect-ratio: 3 / 4; }
-  /* The type sits over the light end of the street on a phone, so the scrim
-     carries further up than it needs to on a wide screen. */
-  .g-biz--band::after {
-    background: linear-gradient(to top, rgba(4, 8, 8, 0.93) 0%, rgba(4, 8, 8, 0.64) 36%,
-                                rgba(4, 8, 8, 0.10) 68%);
-  }
-  .g-biz--band .g-biz__text {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding-bottom: clamp(26px, 6vw, 36px);
-  }
-  .g-biz--split {
-    grid-template-columns: 1fr; gap: clamp(22px, 6vw, 32px);
-    padding: 0 0 clamp(44px, 10vw, 64px);
-  }
-  .g-biz--split .g-biz__img { order: -1; aspect-ratio: 3 / 2; }
-  .g-biz--split .g-biz__text { padding: 0 var(--gutter); }
-  .g-biz--offset { padding: 0 0 clamp(44px, 10vw, 64px); }
-  .g-biz--offset .g-biz__img { width: 100%; aspect-ratio: 3 / 2; }
-  .g-biz--offset .g-biz__text {
-    margin-top: 0; padding: clamp(22px, 6vw, 30px) var(--gutter) 0; max-width: none;
-  }
-  .g-biz__line { max-width: none; }
-  .g-folio__h { max-width: none; }
+  .g-belief__h, .g-belief__text { max-width: none; }
 }
 
 /* ==========================================================================
@@ -544,7 +499,7 @@
 }
 
 .g-close { position: relative; color: var(--light); background: var(--black); overflow: clip; }
-.g-close__img { position: absolute; inset: 0; z-index: 0; opacity: 0.52; }
+.g-close__img { position: absolute; inset: 0; z-index: 0; opacity: 0.52; overflow: clip; }
 .g-close::after {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(104deg, rgba(5, 5, 5, 0.90) 0%, rgba(5, 5, 5, 0.64) 58%,
@@ -556,6 +511,10 @@
   display: grid; grid-template-columns: 7fr 5fr; gap: clamp(30px, 5vw, 80px); align-items: end;
 }
 .g-close__h { max-width: 17ch; margin-top: clamp(20px, 2.6vw, 32px); }
+.g-close__text {
+  margin-top: clamp(18px, 2.2vw, 28px); font-size: var(--t-lead);
+  line-height: 1.6; color: var(--light-soft); max-width: 52ch;
+}
 .g-close__cta {
   justify-self: start; display: inline-flex; align-items: baseline; gap: 14px;
   font-family: var(--d); font-size: clamp(1.3rem, 2.1vw, 2rem);
